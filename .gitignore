@@ -1,16 +1,21 @@
-# Ignore Play! working directory #
-bin/
-/db
-.eclipse
-/lib/
-/logs/
-/modules
-/project/project
-/project/target
-/target
-tmp/
-test-result
-server.pid
-*.eml
-/dist/
-.cache
+# Generated File
+logs
+target
+
+# Package File
+*.zip
+*.rar
+*.tar.gz
+
+# IntelliJ IDEA
+.idea
+*.iws
+*.iml
+*.ipr
+
+# Vim
+*.swp
+
+# macOS
+.DS_STORE
+
