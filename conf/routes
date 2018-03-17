@@ -1,1 +1,4 @@
-GET     /                           controllers.ApiController.index
+# GraphQL
+GET     /graphql        controllers.GraphqlController.graphql(query: String, variables: Option[String], operation: Option[String])
+POST    /graphql        controllers.GraphqlController.graphqlBody
+GET     /               controllers.GraphqlController.schema
