@@ -2,7 +2,6 @@ package controllers
 
 import controllers.api.{ApiController, GraphqlQuery}
 import definitions.Handlers
-import io.circe
 import io.circe.Json
 import io.circe.generic.auto.exportDecoder
 import persists.SpacePersist
@@ -13,6 +12,7 @@ import sangria.parser.QueryParser
 import sangria.renderer.SchemaRenderer.renderSchema
 import schemas.SpaceSchema
 import utils.Functional._
+import utils.GraphqlUtil
 import utils.GraphqlUtil.parseVariables
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -29,7 +29,7 @@ class GraphqlController(cc: ControllerComponents)
     executeQuery(form) toResult
   }
 
-  def graphqlBody: Action[GraphqlQuery] = Action.async(circe.json[GraphqlQuery]) { request =>
+  def graphqlBody: Action[GraphqlQuery] = Action.async(circe.json[GraphqlQuery]) { implicit request =>
     executeQuery(request.body) toResult
   }
 
