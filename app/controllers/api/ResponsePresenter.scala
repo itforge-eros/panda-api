@@ -1,4 +1,4 @@
-package presenters
+package controllers.api
 
 import scala.util.{Failure, Success, Try}
 
@@ -6,9 +6,9 @@ abstract class ResponsePresenter[T]
 
 object ResponsePresenter {
 
-  case class SuccessResponsePresenter[T](result: T) extends ResponsePresenter[T]
+  case class SuccessResponsePresenter[T](data: T) extends ResponsePresenter[T]
 
-  case class SuccessWithMessageResponsePresenter[T](result: T, message: String) extends ResponsePresenter[T]
+  case class SuccessWithMessageResponsePresenter[T](data: T, message: String) extends ResponsePresenter[T]
 
   case class FailResponsePresenter[T](message: String) extends ResponsePresenter[T]
 
