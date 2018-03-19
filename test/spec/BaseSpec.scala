@@ -1,14 +1,16 @@
 package spec
 
 import configurations.CustomApplicationLoader
+import controllers.api.GraphqlQuery
+import io.circe.Json
+import io.circe.syntax._
 import org.scalatest._
 import org.scalatest.time.SpanSugar
 import org.scalatestplus.play.FakeApplicationFactory
 import play.api.inject.DefaultApplicationLifecycle
-import play.api.libs.json.{JsObject, JsString}
+import play.api.libs.json.{JsValue, Json => ScalaJson}
 import play.api.{Application, ApplicationLoader, Configuration, Environment}
 import play.core.DefaultWebCommands
-import sangria.macros._
 
 abstract class BaseSpec extends AsyncWordSpec
   with FakeApplicationFactory
@@ -34,10 +36,18 @@ abstract class BaseSpec extends AsyncWordSpec
 
   override def fakeApplication(): Application = new CustomApplicationLoader().load(context)
 
-  protected val query = "{spaces{id}}"
+  implicit def CirceToScalaJson(circe: Json): JsValue = ScalaJson.parse(circe.noSpaces)
 
-  protected val graphqlBody = JsObject(Seq(
-    "query" -> JsString(query)
-  ))
+  protected val query: GraphqlQuery = GraphqlQuery(
+    query = """
+      | query findSpace($id: String!) {
+      |   space(id: $id) {
+      |     id
+      |   }
+      | }
+    """.stripMargin,
+    operation = Some("findSpace"),
+    variables = Some(Map("id" -> "001") asJson)
+  )
 
 }
