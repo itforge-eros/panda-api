@@ -12,11 +12,11 @@ import sangria.parser.QueryParser
 import sangria.renderer.SchemaRenderer.renderSchema
 import schemas.SpaceSchema
 import utils.Functional._
-import utils.GraphqlUtil
 import utils.GraphqlUtil.parseVariables
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
+import scala.util.Try
 
 class GraphqlController(cc: ControllerComponents)
                        (implicit ec: ExecutionContext) extends ApiController(cc) {
@@ -38,7 +38,7 @@ class GraphqlController(cc: ControllerComponents)
   }
 
   private def executeQuery(form: GraphqlQuery): Future[Json] =
-    QueryParser.parse(form.query) mapFuture { parsedQuery =>
+    QueryParser.parse(form.query).toFuture flatMap { parsedQuery =>
       Executor.execute(
         schema = SpaceSchema.schema,
         queryAst = parsedQuery,

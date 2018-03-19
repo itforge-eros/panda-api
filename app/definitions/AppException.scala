@@ -4,7 +4,7 @@ import play.api.data.Form
 
 object AppException {
 
-  class GraphqlSyntaxErrorException
+  class GraphqlSyntaxError
     extends Exception("")
 
   case object TooComplexQueryError extends Exception("Query is too expensive.")
