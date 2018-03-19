@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.databind.{ObjectMapper, PropertyNamingStrategy}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
+import io.circe.jackson.CirceJsonModule
 import play.api.libs.json.jackson.PlayJsonModule
 
 import scala.util.Try
@@ -33,6 +34,7 @@ object JsonUtil {
   private val mapper = new ObjectMapper with ScalaObjectMapper
   mapper.registerModule(DefaultScalaModule)
   mapper.registerModule(PlayJsonModule)
+  mapper.registerModule(CirceJsonModule)
   mapper.setSerializationInclusion(Include.NON_NULL)
   mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
 

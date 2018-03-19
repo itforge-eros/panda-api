@@ -10,9 +10,9 @@ class SpacePersist {
 
   private val spaces = List(
     Space("001", "M23", Some("This is a note"), 90, 1, isReservable = true),
-    Space("002", "M04", Some("This is a note"), 90, 1, isReservable = false),
-    Space("003", "203", Some("This is a note"), 50, 1, isReservable = true),
-    Space("004", "207", Some("This is a note"), 50, 1, isReservable = true),
+    Space("002", "M04", None, 90, 1, isReservable = false),
+    Space("003", "203", None, 50, 1, isReservable = true),
+    Space("004", "207", None, 50, 1, isReservable = true),
     Space("005", "324", Some("This is a note"), 10, 1, isReservable = false)
   )
 
