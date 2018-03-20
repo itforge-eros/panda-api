@@ -16,15 +16,14 @@ import utils.GraphqlUtil.parseVariables
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
-import scala.util.Try
 
 class GraphqlController(cc: ControllerComponents)
                        (implicit ec: ExecutionContext) extends ApiController(cc) {
 
   def graphql(query: String,
-              variables: Option[String],
-              operation: Option[String]): Action[AnyContent] = Action.async {
-    val form = GraphqlQuery(query, operation, variables flatMap parseVariables)
+              operationName: Option[String],
+              variables: Option[String]): Action[AnyContent] = Action.async {
+    val form = GraphqlQuery(query, operationName, variables flatMap parseVariables)
 
     executeQuery(form) toResult
   }
@@ -43,7 +42,7 @@ class GraphqlController(cc: ControllerComponents)
         schema = SpaceSchema.schema,
         queryAst = parsedQuery,
         userContext = new SpacePersist,
-        operationName = form.operation,
+        operationName = form.operationName,
         variables = form.variables getOrElse Json.obj(),
         exceptionHandler = Handlers.exceptionHandler
       )

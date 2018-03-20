@@ -19,3 +19,7 @@ target
 # macOS
 .DS_STORE
 
+# Elastic Beanstalk
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

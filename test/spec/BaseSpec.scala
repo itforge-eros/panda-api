@@ -46,7 +46,7 @@ abstract class BaseSpec extends AsyncWordSpec
       |   }
       | }
     """.stripMargin,
-    operation = Some("findSpace"),
+    operationName = Some("findSpace"),
     variables = Some(Map("id" -> "001") asJson)
   )
 
