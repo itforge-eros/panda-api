@@ -1,16 +1,28 @@
 package definitions
 
+import java.io.{PrintWriter, StringWriter}
+
+import com.typesafe.scalalogging.LazyLogging
 import play.api.data.Form
 
-object AppException {
+object AppException extends LazyLogging {
 
   class GraphqlSyntaxError
-    extends Exception("")
+    extends Exception("GraphQL syntax error.")
 
-  case object TooComplexQueryError extends Exception("Query is too expensive.")
+  case object TooComplexQueryError
+    extends Exception("Query is too expensive.")
+
+  class UnexpectedError(other: Throwable)
+    extends Exception("Something went wrong. Please try again.") {
+
+    val stringWriter = new StringWriter
+    other.printStackTrace(new PrintWriter(stringWriter))
+    logger.error(stringWriter.toString)
+  }
 
   case class FormException(message: String)
-    extends Exception("input error." + description(message)) {
+    extends Exception("Input error." + description(message)) {
 
     def this(form: Form[_]) = {
       this(
@@ -24,6 +36,7 @@ object AppException {
       )
     }
   }
+
 
   private def description(message: String): String =
     if (message.isEmpty) "" else " " + message

@@ -17,14 +17,19 @@ val scalazVersion = "7.2.20"
 val scalaMockVersion = "3.5.0"
 val circeJacksonVersion = "0.9.0"
 val playCirceVersion = "2609.1"
+val anormVersion = "2.6.0-M1"
+val scalaLoggingVersion = "3.8.0"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
 libraryDependencies ++= Seq(
+  jdbc,
+  "com.typesafe.play" %% "anorm" % anormVersion,
   "com.softwaremill.macwire" %% "macros" % macWireVersion % "provided",
   "com.softwaremill.macwire" %% "macrosakka" % macWireVersion % "provided",
   "com.softwaremill.macwire" %% "util" % macWireVersion,
   "com.softwaremill.macwire" %% "proxy" % macWireVersion,
+  "org.postgresql" % "postgresql" % "9.4.1208",
   "org.sangria-graphql" %% "sangria" % sangriaVersion,
   "org.sangria-graphql" %% "sangria-play-json" % sangriaJsonVersion,
   "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonVersion,
@@ -33,4 +38,7 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-jackson29" % circeJacksonVersion,
   "org.scalatestplus.play" %% "scalatestplus-play" % scalaTestVersion % Test,
   "org.scalamock" %% "scalamock-scalatest-support" % scalaMockVersion % Test,
+  "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion
 )
+
+parallelExecution in Test := true

@@ -2,10 +2,10 @@ package persists
 
 import models.Space
 
-class SpacePersist {
+trait SpacePersist {
 
-  def findSpace(id: String): Option[Space] = Data.spaces find (_.id == id)
+  def findSpace(id: String): Option[Space]
 
-  def findAllSpaces: List[Space] = Data.spaces
+  def findAllSpaces: List[Space]
 
 }
