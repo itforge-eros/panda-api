@@ -2,6 +2,7 @@ package schemas
 
 import models.Space.graph
 import persists.SpacePersist
+import persists.postgres.SpacePostgres
 import sangria.schema.{Argument, Field, ListType, ObjectType, OptionType, Schema, StringType, fields}
 
 object SpaceSchema {

@@ -4,7 +4,8 @@ import controllers.api.{ApiController, GraphqlQuery}
 import definitions.Handlers
 import io.circe.Json
 import io.circe.generic.auto.exportDecoder
-import persists.SpacePersist
+import persists.postgres.SpacePostgres
+import play.api.db.Database
 import play.api.mvc._
 import sangria.execution.Executor
 import sangria.marshalling.circe._
@@ -17,7 +18,7 @@ import utils.GraphqlUtil.parseVariables
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
 
-class GraphqlController(cc: ControllerComponents)
+class GraphqlController(cc: ControllerComponents, db: Database)
                        (implicit ec: ExecutionContext) extends ApiController(cc) {
 
   def graphql(query: String,
@@ -36,12 +37,12 @@ class GraphqlController(cc: ControllerComponents)
     Ok(renderSchema(SpaceSchema.schema))
   }
 
-  private def executeQuery(form: GraphqlQuery): Future[Json] =
+  private def executeQuery(form: GraphqlQuery)(): Future[Json] =
     QueryParser.parse(form.query).toFuture flatMap { parsedQuery =>
       Executor.execute(
         schema = SpaceSchema.schema,
         queryAst = parsedQuery,
-        userContext = new SpacePersist,
+        userContext = new SpacePostgres(db),
         operationName = form.operationName,
         variables = form.variables getOrElse Json.obj(),
         exceptionHandler = Handlers.exceptionHandler

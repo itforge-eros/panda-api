@@ -1,6 +1,6 @@
 package spec
 
-import configurations.CustomApplicationLoader
+import configurations.ApiLoader
 import controllers.api.GraphqlQuery
 import io.circe.Json
 import io.circe.syntax._
@@ -11,6 +11,8 @@ import play.api.inject.DefaultApplicationLifecycle
 import play.api.libs.json.{JsValue, Json => ScalaJson}
 import play.api.{Application, ApplicationLoader, Configuration, Environment}
 import play.core.DefaultWebCommands
+
+import scala.language.postfixOps
 
 abstract class BaseSpec extends AsyncWordSpec
   with FakeApplicationFactory
@@ -34,7 +36,7 @@ abstract class BaseSpec extends AsyncWordSpec
 
   override implicit lazy val application: Application = fakeApplication()
 
-  override def fakeApplication(): Application = new CustomApplicationLoader().load(context)
+  override def fakeApplication(): Application = new ApiLoader().load(context)
 
   implicit def CirceToScalaJson(circe: Json): JsValue = ScalaJson.parse(circe.noSpaces)
 
