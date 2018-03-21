@@ -4,8 +4,7 @@ import controllers.api.{ApiController, GraphqlQuery}
 import definitions.Handlers
 import io.circe.Json
 import io.circe.generic.auto.exportDecoder
-import persists.postgres.SpacePostgres
-import play.api.db.Database
+import persists.SpacePersist
 import play.api.mvc._
 import sangria.execution.Executor
 import sangria.marshalling.circe._
@@ -18,18 +17,19 @@ import utils.GraphqlUtil.parseVariables
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
 
-class GraphqlController(cc: ControllerComponents, db: Database)
+class GraphqlController(cc: ControllerComponents,
+                        persist: SpacePersist)
                        (implicit ec: ExecutionContext) extends ApiController(cc) {
 
   def graphql(query: String,
               operationName: Option[String],
-              variables: Option[String]): Action[AnyContent] = Action.async {
+              variables: Option[String]) = Action.async {
     val form = GraphqlQuery(query, operationName, variables flatMap parseVariables)
 
     executeQuery(form) toResult
   }
 
-  def graphqlBody: Action[GraphqlQuery] = Action.async(circe.json[GraphqlQuery]) { implicit request =>
+  def graphqlBody = Action.async(circe.json[GraphqlQuery]) { implicit request =>
     executeQuery(request.body) toResult
   }
 
@@ -42,7 +42,7 @@ class GraphqlController(cc: ControllerComponents, db: Database)
       Executor.execute(
         schema = SpaceSchema.schema,
         queryAst = parsedQuery,
-        userContext = new SpacePostgres(db),
+        userContext = persist,
         operationName = form.operationName,
         variables = form.variables getOrElse Json.obj(),
         exceptionHandler = Handlers.exceptionHandler
