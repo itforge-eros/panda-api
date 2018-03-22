@@ -1,4 +1,4 @@
-package configurations
+package configs
 
 import play.api.ApplicationLoader.Context
 import play.api._

@@ -1,4 +1,4 @@
-package spec
+package spec.helpers
 
 import play.api.Application
 import play.api.libs.json.{JsNull, JsValue, Json, Reads}

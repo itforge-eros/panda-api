@@ -1,4 +1,4 @@
-package configurations
+package configs
 
 import controllers.GraphqlController
 import persists.SpacePersist

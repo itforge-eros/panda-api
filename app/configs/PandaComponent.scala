@@ -1,4 +1,4 @@
-package configurations
+package configs
 
 import com.softwaremill.macwire.wire
 import controllers.GraphqlController

@@ -1,6 +1,6 @@
 package spec
 
-import configurations.PandaApplicationLoader
+import configs.PandaApplicationLoader
 import controllers.api.GraphqlQuery
 import io.circe.Json
 import io.circe.syntax._
@@ -11,6 +11,8 @@ import play.api.inject.DefaultApplicationLifecycle
 import play.api.libs.json.{JsValue, Json => ScalaJson}
 import play.api.{Application, ApplicationLoader, Configuration, Environment}
 import play.core.DefaultWebCommands
+import spec.configs.MockApplicationLoader
+import spec.helpers.{ControllerSpecHelper, CustomMatcher}
 
 import scala.language.{implicitConversions, postfixOps}
 

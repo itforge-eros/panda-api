@@ -1,7 +1,7 @@
-package spec
+package spec.configs
 
 import com.softwaremill.macwire.wire
-import configurations.PandaModule
+import configs.PandaModule
 import controllers.{AssetsComponents, GraphqlController}
 import persists.SpacePersist
 import play.api.ApplicationLoader.Context
@@ -9,6 +9,7 @@ import play.api.i18n.I18nComponents
 import play.api.routing.Router
 import play.api.{BuiltInComponentsFromContext, LoggerConfigurator, NoHttpFiltersComponents}
 import router.Routes
+import spec.MockSpacePersist
 
 import scala.concurrent.ExecutionContext
 
