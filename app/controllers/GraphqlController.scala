@@ -1,9 +1,10 @@
 package controllers
 
-import controllers.api.{ApiController, GraphqlQuery}
+import controllers.api.ApiController
 import definitions.Handlers
 import io.circe.Json
 import io.circe.generic.auto.exportDecoder
+import models.GraphqlQuery
 import persists.SpacePersist
 import play.api.mvc._
 import sangria.execution.Executor

@@ -1,4 +1,4 @@
-package controllers.api
+package models
 
 import io.circe.Json
 

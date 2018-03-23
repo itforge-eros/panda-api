@@ -1,7 +1,11 @@
 package utils
 
+import java.util.UUID
+
 import io.circe.Json
 import io.circe.parser._
+import sangria.schema.{ScalarAlias, StringType}
+import sangria.validation.ValueCoercionViolation
 
 object GraphqlUtil {
 
@@ -9,5 +13,13 @@ object GraphqlUtil {
     case "" | "null" => Some(Json.obj())
     case _ => parse(variables).toOption
   }
+
+  case object IDViolation extends ValueCoercionViolation("Invalid ID")
+
+  implicit val UUIDType: ScalarAlias[UUID, String] = ScalarAlias[UUID, String](StringType,
+    toScalar = _.toString,
+    fromScalar = idString ⇒ try Right(UUID.fromString(idString)) catch {
+      case _: IllegalArgumentException ⇒ Left(IDViolation)
+    })
 
 }

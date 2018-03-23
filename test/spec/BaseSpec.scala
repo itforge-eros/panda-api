@@ -1,9 +1,8 @@
 package spec
 
-import configs.PandaApplicationLoader
-import controllers.api.GraphqlQuery
 import io.circe.Json
 import io.circe.syntax._
+import models.GraphqlQuery
 import org.scalatest._
 import org.scalatest.time.SpanSugar
 import org.scalatestplus.play.FakeApplicationFactory
@@ -12,7 +11,7 @@ import play.api.libs.json.{JsValue, Json => ScalaJson}
 import play.api.{Application, ApplicationLoader, Configuration, Environment}
 import play.core.DefaultWebCommands
 import spec.configs.MockApplicationLoader
-import spec.helpers.{ControllerSpecHelper, CustomMatcher}
+import spec.helpers.ControllerSpecHelper
 
 import scala.language.{implicitConversions, postfixOps}
 
