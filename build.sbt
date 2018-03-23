@@ -23,9 +23,9 @@ val scalaLoggingVersion = "3.8.0"
 resolvers += Resolver.sonatypeRepo("releases")
 
 libraryDependencies ++= Seq(
-  jdbc
-    exclude("com.h2database", "h2")
-    exclude("com.jolbox", "bonecp"),
+  jdbc,
+//    exclude("com.h2database", "h2"),
+//    exclude("com.jolbox", "bonecp"),
   evolutions,
   "com.typesafe.play" %% "anorm" % anormVersion,
   "com.softwaremill.macwire" %% "macros" % macWireVersion % "provided",
