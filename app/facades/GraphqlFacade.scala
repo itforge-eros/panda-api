@@ -17,18 +17,18 @@ import scala.concurrent.{ExecutionContext, Future}
 
 object GraphqlFacade {
 
-  def executeQuery(context: BaseContext)
-                  (form: GraphqlQuery)
-                  (implicit ec: ExecutionContext): Future[Json] =
+  def executeQuery(form: GraphqlQuery)
+                  (implicit ec: ExecutionContext,
+                   context: BaseContext): Future[Json] =
     QueryParser.parse(form.query).toFuture flatMap (
-      executeQuery(context, _, form.operationName, form.variables)
+      executeQuery(_, form.operationName, form.variables)
     )
 
-  def executeQuery(context: BaseContext,
-                   document: Document,
+  def executeQuery(document: Document,
                    operationName: Option[String],
                    variables: Option[Json])
-                  (implicit executionContext: ExecutionContext): Future[Json] = {
+                  (implicit executionContext: ExecutionContext,
+                   context: BaseContext): Future[Json] = {
     Executor.execute(
       schema = SpaceSchema.schema,
       queryAst = document,

@@ -28,11 +28,11 @@ class PandaComponent(context: Context) extends BuiltInComponentsFromContext(cont
 
   implicit lazy val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 
+  implicit lazy val baseContext: BaseContext = BaseContext(wire[SpacePostgres])
+
   lazy val prefix: String = "/"
 
   lazy val database: Database = dbApi.database("default")
-
-  lazy val baseContext: BaseContext = BaseContext(wire[SpacePostgres])
 
   lazy val controller: GraphqlController = wire[GraphqlController]
 

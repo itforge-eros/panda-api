@@ -25,9 +25,9 @@ class MockComponent(context: Context) extends BuiltInComponentsFromContext(conte
 
   implicit lazy val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 
-  lazy val prefix: String = "/"
+  implicit lazy val baseContext: BaseContext = BaseContext(wire[MockSpacePersist])
 
-  lazy val baseContext: BaseContext = BaseContext(wire[MockSpacePersist])
+  lazy val prefix: String = "/"
 
   lazy val controller: GraphqlController = wire[GraphqlController]
 
