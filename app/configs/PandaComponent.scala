@@ -1,8 +1,8 @@
 package configs
 
 import com.softwaremill.macwire.wire
+import context.BaseContext
 import controllers.GraphqlController
-import persists.SpacePersist
 import persists.postgres.SpacePostgres
 import play.api.ApplicationLoader.Context
 import play.api.db.evolutions.EvolutionsComponents
@@ -11,7 +11,6 @@ import play.api.i18n.I18nComponents
 import play.api.routing.Router
 import play.api.{BuiltInComponentsFromContext, LoggerConfigurator, NoHttpFiltersComponents}
 import router.Routes
-import services.UuidService
 
 import scala.concurrent.ExecutionContext
 
@@ -33,7 +32,7 @@ class PandaComponent(context: Context) extends BuiltInComponentsFromContext(cont
 
   lazy val database: Database = dbApi.database("default")
 
-  lazy val persist: SpacePersist = wire[SpacePostgres]
+  lazy val baseContext: BaseContext = BaseContext(wire[SpacePostgres])
 
   lazy val controller: GraphqlController = wire[GraphqlController]
 

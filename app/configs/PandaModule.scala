@@ -15,8 +15,6 @@ trait PandaModule {
 
   val prefix: String
 
-  val persist: SpacePersist
-
   val controller: GraphqlController
 
   val router: Router

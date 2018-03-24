@@ -4,6 +4,7 @@ import java.util.UUID
 
 import sangria.macros.derive._
 import sangria.schema._
+import utils.GraphqlUtil
 
 case class Space(id: UUID,
                  name: String,
@@ -12,11 +13,17 @@ case class Space(id: UUID,
                  requiredApproval: Int,
                  isReservable: Boolean)
 
-object Space {
-
-  import utils.GraphqlUtil.UUIDType
+object Space extends GraphqlUtil {
 
   val graph: ObjectType[Unit, Space] = deriveObjectType[Unit, Space]()
+
+//  val graph: ObjectType[Unit, Space] = ObjectType("space",
+//    fields = fields[Unit, Space](
+//      Field("id", UUIDType,
+//        resolve = _.value.id
+//      )
+//    )
+//  )
 
 }
 

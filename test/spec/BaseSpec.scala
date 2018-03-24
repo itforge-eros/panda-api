@@ -10,6 +10,10 @@ import play.api.inject.DefaultApplicationLifecycle
 import play.api.libs.json.{JsValue, Json => ScalaJson}
 import play.api.{Application, ApplicationLoader, Configuration, Environment}
 import play.core.DefaultWebCommands
+import sangria.marshalling.MarshallingUtil._
+import sangria.marshalling.circe.{CirceInputUnmarshaller, CirceResultMarshaller}
+import sangria.marshalling.playJson._
+import sangria.marshalling.{InputUnmarshaller, ResultMarshaller}
 import spec.configs.MockApplicationLoader
 import spec.helpers.ControllerSpecHelper
 
@@ -39,7 +43,11 @@ abstract class BaseSpec extends AsyncWordSpec
 
   override def fakeApplication(): Application = new MockApplicationLoader().load(context)
 
-  implicit def CirceToScalaJson(circe: Json): JsValue = ScalaJson.parse(circe.noSpaces)
+  implicit def CirceToScalaJson(circe: Json): JsValue = circe.convertMarshaled[JsValue]
+
+  implicit val resultMarshaller: ResultMarshaller = CirceResultMarshaller
+
+  implicit val inputUnmarshaller: InputUnmarshaller[Json] = CirceInputUnmarshaller
 
   protected val query: GraphqlQuery = GraphqlQuery(
     query = """
