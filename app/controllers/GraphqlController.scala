@@ -8,8 +8,7 @@ import models.GraphqlQuery
 import play.api.mvc._
 import sangria.renderer.SchemaRenderer.renderSchema
 import schemas.SpaceSchema
-import utils.GraphqlUtil.{forceStringToObject, parseVariables}
-import monocle.macros.syntax.lens._
+import utils.GraphqlUtil.parseVariables
 
 import scala.concurrent.ExecutionContext
 import scala.language.postfixOps
@@ -26,10 +25,8 @@ class GraphqlController(cc: ControllerComponents)
     GraphqlFacade.executeQuery(form) toResult
   }
 
-  def graphqlBody = Action.async(circe.json[GraphqlQuery]) { implicit request =>
-    val form = request.body lens (_.variables) modify (_ map forceStringToObject)
-
-    GraphqlFacade.executeQuery(form) toResult
+  def graphqlBody = Action.async(circe.json[GraphqlQuery]) { request =>
+    GraphqlFacade.executeQuery(request.body) toResult
   }
 
   def schema = Action {

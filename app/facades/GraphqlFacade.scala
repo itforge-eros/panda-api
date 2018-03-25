@@ -12,6 +12,8 @@ import sangria.marshalling.circe.CirceResultMarshaller
 import sangria.parser.QueryParser
 import schemas.SpaceSchema
 import utils.Functional.TryHelpers
+import utils.GraphqlUtil
+import utils.GraphqlUtil.forceStringToObject
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -21,7 +23,7 @@ object GraphqlFacade {
                   (implicit ec: ExecutionContext,
                    context: BaseContext): Future[Json] =
     QueryParser.parse(form.query).toFuture flatMap (
-      executeQuery(_, form.operationName, form.variables)
+      executeQuery(_, form.operationName, form.variables map forceStringToObject)
     )
 
   def executeQuery(document: Document,
