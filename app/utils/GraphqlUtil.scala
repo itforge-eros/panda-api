@@ -2,10 +2,11 @@ package utils
 
 import java.util.UUID
 
-import io.circe.Json
+import io.circe.{Json, parser}
 import io.circe.parser._
 import sangria.schema.{ScalarAlias, StringType}
 import sangria.validation.ValueCoercionViolation
+import utils.Functional._
 
 trait GraphqlUtil {
 
@@ -18,6 +19,10 @@ object GraphqlUtil {
   def parseVariables(variables: String): Option[Json] = variables.trim match {
     case "" | "null" => Some(Json.obj())
     case _ => parse(variables).toOption
+  }
+
+  def forceStringToObject(json: Json): Json = {
+    json.asString flatMapEither parser.parse getOrElse json
   }
 
   case object IDViolation extends ValueCoercionViolation("Invalid ID")

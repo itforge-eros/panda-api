@@ -6,6 +6,7 @@ scalaVersion := "2.12.3"
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
   .enablePlugins(JavaServerAppPackaging)
+  .enablePlugins(DockerPlugin)
 
 val macWireVersion = "2.3.0"
 val scalaTestVersion = "3.1.2"
@@ -19,13 +20,12 @@ val circeJacksonVersion = "0.9.0"
 val playCirceVersion = "2609.1"
 val anormVersion = "2.6.0-M1"
 val scalaLoggingVersion = "3.8.0"
+val monocleVersion = "1.5.0"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
 libraryDependencies ++= Seq(
   jdbc,
-//    exclude("com.h2database", "h2"),
-//    exclude("com.jolbox", "bonecp"),
   evolutions,
   "com.typesafe.play" %% "anorm" % anormVersion,
   "com.softwaremill.macwire" %% "macros" % macWireVersion % "provided",
@@ -41,7 +41,16 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-jackson29" % circeJacksonVersion,
   "org.scalatestplus.play" %% "scalatestplus-play" % scalaTestVersion % Test,
   "org.scalamock" %% "scalamock-scalatest-support" % scalaMockVersion % Test,
-  "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion
+  "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion,
+  "com.github.julien-truffaut" %%  "monocle-core"  % monocleVersion,
+  "com.github.julien-truffaut" %%  "monocle-macro" % monocleVersion,
+  "com.github.julien-truffaut" %%  "monocle-law"   % monocleVersion % "test"
 )
+
+packageName in Docker := "panda-api"
+dockerRepository := Some("docker.io")
+dockerUsername := Some("kavinvin")
+dockerUpdateLatest := true
+dockerExposedPorts := Seq(9000)
 
 parallelExecution in Test := true

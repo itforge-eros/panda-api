@@ -2,7 +2,7 @@ package spec.data
 
 import java.util.UUID
 
-object Mocks {
+object MockData {
 
   val uuid1: UUID = UUID.fromString("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
   val uuid2: UUID = UUID.fromString("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12")
