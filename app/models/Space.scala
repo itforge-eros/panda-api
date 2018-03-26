@@ -18,8 +18,8 @@ object Space extends GraphqlUtil {
 
 //  val graph: ObjectType[Unit, Space] = deriveObjectType[Unit, Space]()
 
-  val Type: ObjectType[BaseContext, Space] = ObjectType("space",
-    fields = fields[BaseContext, Space](
+  lazy val Type: ObjectType[BaseContext, Space] = ObjectType("space",
+    () => fields[BaseContext, Space](
       Field("id", UUIDType, resolve = _.value.id),
       Field("name", StringType, resolve = _.value.name),
       Field("description", OptionType(StringType), resolve = _.value.description),

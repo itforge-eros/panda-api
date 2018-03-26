@@ -1,6 +1,5 @@
 package models
 
-import java.sql.Timestamp
 import java.util.UUID
 
 import models.Space.UUIDType
@@ -12,10 +11,11 @@ case class Request(id: UUID,
 
 object Request {
 
-  val Type: ObjectType[Unit, Request] = ObjectType("request",
-    fields = fields[Unit, Request](
+  lazy val Type: ObjectType[Unit, Request] = ObjectType("request",
+    () => fields[Unit, Request](
       Field("id", UUIDType, resolve = _.value.id),
       Field("proposal", StringType, resolve = _.value.proposal),
+      Field("space", Space.Type, resolve = _.value.space)
     )
   )
 
