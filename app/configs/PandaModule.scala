@@ -13,7 +13,7 @@ trait PandaModule {
 
   def controllerComponents: ControllerComponents
 
-  val prefix: String
+  lazy val prefix: String = "/"
 
   val controller: GraphqlController
 

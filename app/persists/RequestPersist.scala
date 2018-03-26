@@ -6,6 +6,6 @@ import models.Request
 
 trait RequestPersist {
 
-  def findBySpaceId(id: UUID): List[Request]
+  def findBySpaceId(spaceId: UUID): List[Request]
 
 }

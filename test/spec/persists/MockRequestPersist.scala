@@ -1,11 +1,10 @@
-package spec
+package spec.persists
 
 import java.util.UUID
 
 import models.Request
 import persists.RequestPersist
 import spec.data.{Data, SpaceData}
-import utils.Time
 
 class MockRequestPersist extends RequestPersist {
 

@@ -1,6 +1,7 @@
 package context
 
-import persists.{RequestPersist, SpacePersist}
+import persists.{MemberPersist, RequestPersist, SpacePersist}
 
 case class BaseContext(space: SpacePersist,
-                       request: RequestPersist)
+                       request: RequestPersist,
+                       member: MemberPersist)
