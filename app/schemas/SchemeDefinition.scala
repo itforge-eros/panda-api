@@ -1,5 +1,9 @@
 package schemas
 
+import java.time.Instant
+import java.util.UUID
+import java.util.UUID.randomUUID
+
 import context.BaseContext
 import models.{Member, Space}
 import sangria.schema._
@@ -35,15 +39,16 @@ object SchemeDefinition extends GraphqlUtil {
     "Mutation",
     fields[BaseContext, Unit](
       Field("createSpace", Space.Type,
-        arguments = id :: name :: description :: capacity :: requiredApproval :: isReservable :: Nil,
+        arguments = name :: description :: capacity :: requiredApproval :: isReservable :: Nil,
         resolve = $ => {
           val space = Space(
-            $.arg("id"),
+            randomUUID(),
             $.arg("name"),
             None,
             $.arg("capacity"),
             $.arg("requiredApproval"),
-            $.arg("isReservable")
+            $.arg("isReservable"),
+            Instant.now()
           )
 
           $.ctx.space.insert(space).get

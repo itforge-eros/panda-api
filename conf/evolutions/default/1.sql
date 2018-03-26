@@ -9,7 +9,8 @@ CREATE TABLE space (
   description           TEXT,
   capacity              positive_int NOT NULL,
   required_approval     positive_int NOT NULL,
-  is_reservable         BOOLEAN NOT NULL
+  is_reservable         BOOLEAN NOT NULL,
+  created_at            TIMESTAMP NOT NULL
 );
 
 # ---!Downs

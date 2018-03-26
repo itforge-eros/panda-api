@@ -1,10 +1,9 @@
 package models
 
+import java.time.Instant
 import java.util.UUID
 
-import context.BaseContext
 import sangria.macros.derive._
-import sangria.schema._
 import utils.GraphqlUtil
 
 case class Space(id: UUID,
@@ -12,10 +11,11 @@ case class Space(id: UUID,
                  description: Option[String],
                  capacity: Int,
                  requiredApproval: Int,
-                 isReservable: Boolean) {
+                 isReservable: Boolean,
+                 createdAt: Instant) extends GraphqlUtil {
 
   @GraphQLField
-  def requests(ctx: Context[BaseContext, Space]) =
+  def requests(ctx: AppContext[Space]) =
     ctx.ctx.request.findBySpaceId(id)
 
 }

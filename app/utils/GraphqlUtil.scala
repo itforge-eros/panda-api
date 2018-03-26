@@ -17,7 +17,7 @@ trait GraphqlUtil {
 
   type CustomField[A] = Field[PartialContext, A]
   type CustomType[A] = ObjectType[PartialContext, A]
-  type CustomContext[A] = Context[PartialContext, A]
+  type AppContext[A] = Context[PartialContext, A]
   type Resolver[A, B] = Context[PartialContext, A] ⇒ Action[PartialContext, B]
 
   implicit val UuidType: ScalarAlias[UUID, String] = GraphqlUtil.UuidType

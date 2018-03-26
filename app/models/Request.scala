@@ -4,24 +4,26 @@ import java.time.Instant
 import java.util.UUID
 
 import sangria.macros.derive._
-import sangria.schema._
 import utils.GraphqlUtil
 
 case class Request(id: UUID,
                    proposal: String,
                    createdAt: Instant,
-                   @GraphQLExclude
-                   spaceId: UUID,
-                   @GraphQLExclude
-                   clientId: UUID)
+                   @GraphQLExclude spaceId: UUID,
+                   @GraphQLExclude clientId: UUID) extends GraphqlUtil {
+
+  @GraphQLField
+  def space(ctx: AppContext[Request]) =
+    ctx.ctx.space.find(spaceId)
+
+  @GraphQLField
+  def client(ctx: AppContext[Request]) =
+    ctx.ctx.member.find(clientId)
+
+}
 
 object Request extends GraphqlUtil {
 
-  lazy val Type: CustomType[Request] = deriveObjectType(
-    AddFields(
-      Field("space", Space.Type, resolve = $ => $.ctx.space.find($.value.spaceId).get),
-      Field("client", Member.Type, resolve = $ => $.ctx.member.find($.value.clientId).get)
-    )
-  )
+  lazy val Type: CustomType[Request] = deriveObjectType()
 
 }
