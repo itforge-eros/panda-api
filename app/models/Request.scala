@@ -3,9 +3,9 @@ package models
 import java.time.Instant
 import java.util.UUID
 
-import context.BaseContext
+import sangria.macros.derive._
 import sangria.schema._
-import utils.GraphqlUtil._
+import utils.GraphqlUtil
 
 case class Request(id: UUID,
                    proposal: String,
@@ -13,13 +13,10 @@ case class Request(id: UUID,
                    spaceId: UUID,
                    clientId: UUID)
 
-object Request {
+object Request extends GraphqlUtil {
 
-  lazy val Type: ObjectType[BaseContext, Request] = ObjectType("request",
-    () => fields[BaseContext, Request](
-      Field("id", UuidType, resolve = _.value.id),
-      Field("proposal", StringType, resolve = _.value.proposal),
-      Field("createdAt", InstantType, resolve = _.value.createdAt),
+  lazy val Type: CustomType[Request] = deriveObjectType(
+    AddFields(
       Field("space", Space.Type, resolve = $ => $.ctx.space.find($.value.spaceId).get),
       Field("client", Member.Type, resolve = $ => $.ctx.member.find($.value.clientId).get)
     )

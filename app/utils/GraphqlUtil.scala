@@ -3,15 +3,23 @@ package utils
 import java.time.{DateTimeException, Instant}
 import java.util.UUID
 
+import context.BaseContext
 import io.circe.parser._
 import io.circe.{Json, parser}
+import sangria.macros.derive._
 import sangria.schema._
 import sangria.validation.ValueCoercionViolation
 import utils.Functional._
 
 trait GraphqlUtil {
 
+  type CustomContext = BaseContext
+
+  type CustomField[A] = Field[CustomContext, A]
+  type CustomType[A] = ObjectType[CustomContext, A]
+
   implicit val UuidType: ScalarAlias[UUID, String] = GraphqlUtil.UuidType
+  implicit val InstantType: ScalarAlias[Instant, Long] = GraphqlUtil.InstantType
 
 }
 
@@ -30,13 +38,13 @@ object GraphqlUtil {
 
   case object InvalidTimestampViolation extends ValueCoercionViolation("Invalid timestamp")
 
-  implicit val UuidType: ScalarAlias[UUID, String] = ScalarAlias(StringType,
+  val UuidType: ScalarAlias[UUID, String] = ScalarAlias(StringType,
     toScalar = _.toString,
     fromScalar = idString => try Right(UUID.fromString(idString)) catch {
       case _: IllegalArgumentException => Left(InvalidIdViolation)
     })
 
-  implicit val InstantType: ScalarAlias[Instant, Long] = ScalarAlias(LongType,
+  val InstantType: ScalarAlias[Instant, Long] = ScalarAlias(LongType,
     toScalar = _.getEpochSecond,
     fromScalar = instantLong => try Right(Instant.ofEpochSecond(instantLong)) catch {
       case _: DateTimeException => Left(InvalidTimestampViolation)
