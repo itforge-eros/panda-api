@@ -3,6 +3,7 @@ package configs
 import com.softwaremill.macwire.wire
 import context.BaseContext
 import controllers.GraphqlController
+import persists.{MockRequestPersist, RequestPersist, SpacePersist}
 import persists.postgres.SpacePostgres
 import play.api.ApplicationLoader.Context
 import play.api.db.evolutions.EvolutionsComponents
@@ -28,7 +29,11 @@ class PandaComponent(context: Context) extends BuiltInComponentsFromContext(cont
 
   implicit lazy val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 
-  implicit lazy val baseContext: BaseContext = BaseContext(wire[SpacePostgres])
+  lazy val spacePersist: SpacePersist = wire[SpacePostgres]
+
+  lazy val requestPersist: RequestPersist = wire[MockRequestPersist]
+
+  implicit lazy val baseContext: BaseContext = wire[BaseContext]
 
   lazy val prefix: String = "/"
 

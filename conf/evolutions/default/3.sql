@@ -2,7 +2,7 @@
 
 CREATE TABLE request (
   id                    UUID PRIMARY KEY,
-  purposal              TEXT,
+  proposal              TEXT,
   created_at            TIMESTAMP NOT NULL,
   space_id              UUID NOT NULL REFERENCES space (id),
   client_id             UUID NOT NULL REFERENCES member (id)

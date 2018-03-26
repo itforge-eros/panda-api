@@ -1,5 +1,6 @@
 package context
 
-import persists.SpacePersist
+import persists.{RequestPersist, SpacePersist}
 
-case class BaseContext(space: SpacePersist)
+case class BaseContext(space: SpacePersist,
+                       request: RequestPersist)
