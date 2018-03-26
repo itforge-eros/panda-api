@@ -17,10 +17,8 @@ class GraphqlController(cc: ControllerComponents)
                        (implicit ec: ExecutionContext,
                         context: BaseContext) extends ApiController(cc) {
 
-  def graphql(query: String,
-              operationName: Option[String],
-              variables: Option[String]) = Action.async {
-    val form = GraphqlQuery(query, operationName, variables flatMap parseVariables)
+  def graphql(query: String, operation: Option[String], variables: Option[String]) = Action.async {
+    val form = GraphqlQuery(query, operation, variables flatMap parseVariables)
 
     GraphqlFacade.executeQuery(form) toResult
   }
