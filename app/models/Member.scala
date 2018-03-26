@@ -3,6 +3,8 @@ package models
 import java.util.UUID
 
 import context.BaseContext
+import models.Request.CustomType
+import sangria.macros.derive.{AddFields, deriveObjectType}
 import sangria.schema.{Field, ListType, ObjectType, StringType, fields}
 import utils.GraphqlUtil
 
@@ -13,12 +15,8 @@ case class Member(id: UUID,
 
 object Member extends GraphqlUtil {
 
-  lazy val Type: ObjectType[BaseContext, Member] = ObjectType("member",
-    () => fields[BaseContext, Member](
-      Field("id", UuidType, resolve = _.value.id),
-      Field("firstName", StringType, resolve = _.value.firstName),
-      Field("lastName", StringType, resolve = _.value.lastName),
-      Field("email", StringType, resolve = _.value.email),
+  lazy val Type: CustomType[Member] = deriveObjectType(
+    AddFields(
       Field("requests", ListType(Request.Type), resolve = $ => $.ctx.request.findByClientId($.value.id))
     )
   )
