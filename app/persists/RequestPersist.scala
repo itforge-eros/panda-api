@@ -8,6 +8,6 @@ trait RequestPersist {
 
   def findBySpaceId(spaceId: UUID): List[Request]
 
-  def findByMemberId(memberId: UUID): List[Request]
+  def findByClientId(clientId: UUID): List[Request]
 
 }

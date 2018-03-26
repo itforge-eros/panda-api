@@ -19,7 +19,7 @@ object Member extends GraphqlUtil {
       Field("firstName", StringType, resolve = _.value.firstName),
       Field("lastName", StringType, resolve = _.value.lastName),
       Field("email", StringType, resolve = _.value.email),
-      Field("requests", ListType(Request.Type), resolve = $ => $.ctx.request.findByMemberId($.value.id))
+      Field("requests", ListType(Request.Type), resolve = $ => $.ctx.request.findByClientId($.value.id))
     )
   )
 

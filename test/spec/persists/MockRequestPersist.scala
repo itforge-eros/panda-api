@@ -9,6 +9,6 @@ class MockRequestPersist extends RequestPersist {
 
   override def findBySpaceId(id: UUID): List[Request] = ???
 
-  override def findByMemberId(memberId: UUID) = ???
+  override def findByClientId(clientId: UUID) = ???
 
 }

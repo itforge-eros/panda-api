@@ -15,8 +15,8 @@ class RequestPostgres(db: Database) extends BasePostgres(db)
     SQL"select * from request where space_id=$spaceId::uuid" as rowParser.*
   }
 
-  override def findByMemberId(memberId: UUID): List[Request] = execute { implicit connection =>
-    SQL"select * from request where client_id=$memberId::uuid" as rowParser.*
+  override def findByClientId(clientId: UUID): List[Request] = execute { implicit connection =>
+    SQL"select * from request where client_id=$clientId::uuid" as rowParser.*
   }
 
   private lazy val rowParser: RowParser[Request] =
