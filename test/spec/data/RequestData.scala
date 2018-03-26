@@ -8,7 +8,9 @@ object RequestData {
       | VALUES (
       |   '${Data.uuid}',
       |   'This room is mine',
+      |   now(),
       |   '${Data.uuid1})'
+      |   '${Data.uuid2})'
       | )
     """.stripMargin
 

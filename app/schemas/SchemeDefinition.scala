@@ -4,11 +4,11 @@ import context.BaseContext
 import models.{Member, Space}
 import persists.SpacePersist
 import sangria.schema.{Argument, Field, ListType, ObjectType, OptionType, Schema, fields}
-import utils.GraphqlUtil.UUIDType
+import utils.GraphqlUtil.UuidType
 
 object SchemeDefinition {
 
-  val id = Argument("id", UUIDType)
+  val id = Argument("id", UuidType)
 
   val query = ObjectType(
     "Query",

@@ -3,7 +3,7 @@ package persists.postgres
 import java.util.UUID
 
 import anorm.Macro.ColumnNaming
-import anorm.{Macro, RowParser, _}
+import anorm._
 import models.Member
 import persists.MemberPersist
 import play.api.db.Database
