@@ -3,8 +3,8 @@ package configs
 import com.softwaremill.macwire.wire
 import context.BaseContext
 import controllers.GraphqlController
-import persists.{MemberPersist, RequestPersist, RequestPostgres, SpacePersist}
-import persists.postgres.{MemberPostgres, SpacePostgres}
+import persists.{MemberPersist, RequestPersist, SpacePersist}
+import persists.postgres.{MemberPostgres, RequestPostgres, SpacePostgres}
 import play.api.ApplicationLoader.Context
 import play.api.db.evolutions.EvolutionsComponents
 import play.api.db.{DBComponents, Database, HikariCPComponents}

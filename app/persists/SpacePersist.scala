@@ -10,4 +10,6 @@ trait SpacePersist {
 
   def findAll: List[Space]
 
+  def insert(space: Space): Option[Space]
+
 }

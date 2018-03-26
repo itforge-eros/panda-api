@@ -10,7 +10,9 @@ import utils.GraphqlUtil
 case class Request(id: UUID,
                    proposal: String,
                    createdAt: Instant,
+                   @GraphQLExclude
                    spaceId: UUID,
+                   @GraphQLExclude
                    clientId: UUID)
 
 object Request extends GraphqlUtil {

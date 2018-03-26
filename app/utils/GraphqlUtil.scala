@@ -6,20 +6,26 @@ import java.util.UUID
 import context.BaseContext
 import io.circe.parser._
 import io.circe.{Json, parser}
-import sangria.macros.derive._
+import models.{Member, Request, Space}
 import sangria.schema._
 import sangria.validation.ValueCoercionViolation
 import utils.Functional._
 
 trait GraphqlUtil {
 
-  type CustomContext = BaseContext
+  type PartialContext = BaseContext
 
-  type CustomField[A] = Field[CustomContext, A]
-  type CustomType[A] = ObjectType[CustomContext, A]
+  type CustomField[A] = Field[PartialContext, A]
+  type CustomType[A] = ObjectType[PartialContext, A]
+  type CustomContext[A] = Context[PartialContext, A]
+  type Resolver[A, B] = Context[PartialContext, A] ⇒ Action[PartialContext, B]
 
   implicit val UuidType: ScalarAlias[UUID, String] = GraphqlUtil.UuidType
   implicit val InstantType: ScalarAlias[Instant, Long] = GraphqlUtil.InstantType
+
+  implicit val SpaceType: CustomType[Space] = Space.Type
+  implicit val RequestType: CustomType[Request] = Request.Type
+  implicit val MemberType: CustomType[Member] = Member.Type
 
 }
 
@@ -49,12 +55,5 @@ object GraphqlUtil {
     fromScalar = instantLong => try Right(Instant.ofEpochSecond(instantLong)) catch {
       case _: DateTimeException => Left(InvalidTimestampViolation)
     })
-
-//  implicit val InstantType: ScalarAlias[Instant, String] = ScalarAlias(LongType,
-//    toScalar = _.toString,
-//    fromScalar = try Right(Instant.ofEpochSecond(_)) catch {
-//      case _: IllegalArgumentException => Left(IDViolation)
-//    }
-//  )
 
 }

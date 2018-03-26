@@ -8,11 +8,10 @@ import models.Member
 import persists.MemberPersist
 import play.api.db.Database
 
-class MemberPostgres(db: Database) extends BasePostgres(db)
-  with MemberPersist {
+class MemberPostgres(db: Database) extends MemberPersist {
 
-  override def find(id: UUID): Option[Member] = execute { implicit connection =>
-    SQL"select * from member where id=$id::uuid" as rowParser.singleOpt
+  override def find(id: UUID): Option[Member] = db.withConnection { implicit connection =>
+    SQL"SELECT * FROM member WHERE id=$id::uuid" as rowParser.singleOpt
   }
 
   private lazy val rowParser: RowParser[Member] =

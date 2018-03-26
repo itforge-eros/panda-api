@@ -2,6 +2,7 @@ package models
 
 import java.util.UUID
 
+import context.BaseContext
 import sangria.macros.derive._
 import sangria.schema._
 import utils.GraphqlUtil
