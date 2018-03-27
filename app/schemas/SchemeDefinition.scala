@@ -1,11 +1,11 @@
 package schemas
 
 import java.time.Instant
-import java.util.UUID
 import java.util.UUID.randomUUID
 
 import context.BaseContext
 import models.{Member, Space}
+import sangria.macros.derive._
 import sangria.schema._
 import utils.GraphqlUtil
 
@@ -35,27 +35,33 @@ object SchemeDefinition extends GraphqlUtil {
     )
   )
 
-  val MutationType = ObjectType(
-    "Mutation",
-    fields[BaseContext, Unit](
-      Field("createSpace", Space.Type,
-        arguments = name :: description :: capacity :: requiredApproval :: isReservable :: Nil,
-        resolve = $ => {
-          val space = Space(
-            randomUUID(),
-            $.arg("name"),
-            $.argOpt("description"),
-            $.arg("capacity"),
-            $.arg("requiredApproval"),
-            $.arg("isReservable"),
-            Instant.now()
-          )
+  class Mutation {
 
-          $.ctx.space.insert(space).get
-        }
+    @GraphQLField
+    def createSpace(name: String,
+                    description: Option[String],
+                    capacity: Int,
+                    requiredApproval: Int,
+                    isReservable: Boolean)
+                   (ctx: AppContext[Unit]) = {
+      val space = Space(
+        randomUUID(),
+        ctx.arg("name"),
+        ctx.argOpt("description"),
+        ctx.arg("capacity"),
+        ctx.arg("requiredApproval"),
+        ctx.arg("isReservable"),
+        Instant.now()
       )
-    )
-  )
+
+      ctx.ctx.space.insert(space).get
+    }
+
+  }
+
+  case class Context(mutation: Mutation)
+
+  val MutationType = deriveContextObjectType[BaseContext, Mutation, Unit](_.mutation)
 
   val schema = Schema(QueryType, Some(MutationType))
 

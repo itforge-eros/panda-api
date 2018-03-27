@@ -12,6 +12,7 @@ import play.api.i18n.I18nComponents
 import play.api.routing.Router
 import play.api.{BuiltInComponentsFromContext, LoggerConfigurator, NoHttpFiltersComponents}
 import router.Routes
+import schemas.SchemeDefinition.Mutation
 
 import scala.concurrent.ExecutionContext
 
@@ -32,6 +33,7 @@ class PandaComponent(context: Context) extends BuiltInComponentsFromContext(cont
   lazy val spacePersist: SpacePersist = wire[SpacePostgres]
   lazy val requestPersist: RequestPersist = wire[RequestPostgres]
   lazy val memberPersist: MemberPersist = wire[MemberPostgres]
+  lazy val mutation: Mutation = wire[Mutation]
 
   implicit lazy val baseContext: BaseContext = wire[BaseContext]
   lazy val database: Database = dbApi.database("default")
