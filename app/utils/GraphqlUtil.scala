@@ -6,8 +6,6 @@ import java.util.UUID
 import context.BaseContext
 import io.circe.parser._
 import io.circe.{Json, parser}
-import models.{Member, Request, Space}
-import sangria.macros.derive.deriveObjectType
 import sangria.schema._
 import sangria.validation.ValueCoercionViolation
 import utils.Functional._
@@ -22,10 +20,6 @@ trait GraphqlUtil {
 
   implicit val UuidType: ScalarAlias[UUID, String] = GraphqlUtil.UuidType
   implicit val InstantType: ScalarAlias[Instant, Long] = GraphqlUtil.InstantType
-
-  implicit val SpaceType: CustomType[Space] = deriveObjectType()
-  implicit val RequestType: CustomType[Request] = deriveObjectType()
-  implicit val MemberType: CustomType[Member] = deriveObjectType()
 
 }
 

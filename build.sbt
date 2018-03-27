@@ -10,7 +10,7 @@ lazy val root = (project in file("."))
 
 val macWireVersion = "2.3.0"
 val scalaTestVersion = "3.1.2"
-val sangriaVersion = "1.3.0"
+val sangriaVersion = "1.4.0"
 val sangriaJsonVersion = "1.0.4"
 val sangriaCirceVersion = "1.2.1"
 val jacksonVersion = "2.9.4"

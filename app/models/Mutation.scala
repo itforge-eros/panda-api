@@ -4,7 +4,7 @@ import java.time.Instant
 import java.util.UUID.randomUUID
 
 import sangria.macros.derive.GraphQLField
-import schemas.SchemeDefinition.AppContext
+import schemas.SchemaDefinition.AppContext
 
 class Mutation {
 

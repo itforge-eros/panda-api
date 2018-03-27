@@ -14,18 +14,10 @@ import spec.persists.{MockMemberPersist, MockRequestPersist, MockSpacePersist}
 import scala.concurrent.ExecutionContext
 
 class MockComponent(context: Context) extends BuiltInComponentsFromContext(context)
-  with PandaModule {
-
-  LoggerConfigurator(context.environment.classLoader).foreach {
-    _.configure(context.environment, context.initialConfiguration, Map.empty)
-  }
+  with PandaModule
+  with MockDatabaseModule {
 
   implicit lazy val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
-
-  lazy val spacePersist: SpacePersist = new MockSpacePersist
-  lazy val requestPersist: RequestPersist = new MockRequestPersist
-  lazy val memberPersist: MemberPersist = new MockMemberPersist
-
   implicit lazy val baseContext: BaseContext = wire[BaseContext]
   lazy val controller: GraphqlController = wire[GraphqlController]
   lazy val router: Router = wire[Routes]

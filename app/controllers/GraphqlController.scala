@@ -7,7 +7,7 @@ import io.circe.generic.auto.exportDecoder
 import models.GraphqlQuery
 import play.api.mvc._
 import sangria.renderer.SchemaRenderer.renderSchema
-import schemas.SchemeDefinition
+import schemas.SchemaDefinition
 import utils.GraphqlUtil.parseVariables
 
 import scala.concurrent.ExecutionContext
@@ -28,7 +28,7 @@ class GraphqlController(cc: ControllerComponents)
   }
 
   def schema = Action {
-    Ok(renderSchema(SchemeDefinition.schema))
+    Ok(renderSchema(SchemaDefinition.schema))
   }
 
 }
