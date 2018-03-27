@@ -4,16 +4,14 @@ import com.softwaremill.macwire.wire
 import configs.modules.PandaModule
 import context.BaseContext
 import controllers.GraphqlController
-import persists.{MemberPersist, RequestPersist, SpacePersist}
 import persists.postgres.{MemberPostgres, RequestPostgres, SpacePostgres}
+import persists.{MemberPersist, RequestPersist, SpacePersist}
 import play.api.ApplicationLoader.Context
 import play.api.db.evolutions.EvolutionsComponents
 import play.api.db.{DBComponents, Database, HikariCPComponents}
-import play.api.i18n.I18nComponents
 import play.api.routing.Router
-import play.api.{BuiltInComponentsFromContext, LoggerConfigurator, NoHttpFiltersComponents}
+import play.api.{BuiltInComponentsFromContext, LoggerConfigurator}
 import router.Routes
-import schemas.SchemeDefinition.{Mutation, Query}
 
 import scala.concurrent.ExecutionContext
 

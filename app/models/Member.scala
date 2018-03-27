@@ -11,8 +11,7 @@ case class Member(id: UUID,
                   email: String) extends GraphqlUtil {
 
   @GraphQLField
-  def requests(ctx: AppContext[Member]) =
-    ctx.ctx.request.findByClientId(id)
+  def requests(ctx: AppContext[Member]) = ctx.ctx.request.findByClientId(id)
 
 }
 

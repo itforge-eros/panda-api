@@ -1,7 +1,7 @@
 package context
 
+import models.{Mutation, Query}
 import persists.{MemberPersist, RequestPersist, SpacePersist}
-import schemas.SchemeDefinition.{Mutation, Query}
 
 case class BaseContext(space: SpacePersist,
                        request: RequestPersist,
