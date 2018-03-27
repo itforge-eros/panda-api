@@ -1,13 +1,12 @@
 package controllers
 
-import context.BaseContext
 import controllers.api.ApiController
 import facades.GraphqlFacade
 import io.circe.generic.auto.exportDecoder
 import models.GraphqlQuery
 import play.api.mvc._
 import sangria.renderer.SchemaRenderer.renderSchema
-import schemas.SchemeDefinition
+import schemas.{BaseContext, SchemaDefinition}
 import utils.GraphqlUtil.parseVariables
 
 import scala.concurrent.ExecutionContext
@@ -28,7 +27,7 @@ class GraphqlController(cc: ControllerComponents)
   }
 
   def schema = Action {
-    Ok(renderSchema(SchemeDefinition.schema))
+    Ok(renderSchema(SchemaDefinition.schema))
   }
 
 }

@@ -19,10 +19,3 @@ case class Space(id: UUID,
     ctx.ctx.request.findBySpaceId(id)
 
 }
-
-object Space extends GraphqlUtil {
-
-  lazy val Type: CustomType[Space] = deriveObjectType()
-
-}
-

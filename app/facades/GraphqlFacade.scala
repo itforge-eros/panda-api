@@ -1,6 +1,5 @@
 package facades
 
-import context.BaseContext
 import definitions.Handlers
 import io.circe.Json
 import models.GraphqlQuery
@@ -10,7 +9,7 @@ import sangria.execution.Executor
 import sangria.marshalling.circe.CirceInputUnmarshaller
 import sangria.marshalling.circe.CirceResultMarshaller
 import sangria.parser.QueryParser
-import schemas.SchemeDefinition
+import schemas.{BaseContext, SchemaDefinition}
 import utils.Functional.TryHelpers
 import utils.GraphqlUtil
 import utils.GraphqlUtil.forceStringToObject
@@ -32,7 +31,7 @@ object GraphqlFacade {
                   (implicit executionContext: ExecutionContext,
                    context: BaseContext): Future[Json] = {
     Executor.execute(
-      schema = SchemeDefinition.schema,
+      schema = SchemaDefinition.schema,
       queryAst = document,
       userContext = context,
       operationName = operationName,

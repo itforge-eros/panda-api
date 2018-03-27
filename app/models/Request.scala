@@ -13,17 +13,9 @@ case class Request(id: UUID,
                    @GraphQLExclude clientId: UUID) extends GraphqlUtil {
 
   @GraphQLField
-  def space(ctx: AppContext[Request]) =
-    ctx.ctx.space.find(spaceId)
+  def space(ctx: AppContext[Request]) = ctx.ctx.space.find(spaceId)
 
   @GraphQLField
-  def client(ctx: AppContext[Request]) =
-    ctx.ctx.member.find(clientId)
-
-}
-
-object Request extends GraphqlUtil {
-
-  lazy val Type: CustomType[Request] = deriveObjectType()
+  def client(ctx: AppContext[Request]) = ctx.ctx.member.find(clientId)
 
 }
