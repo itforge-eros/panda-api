@@ -4,7 +4,7 @@ import java.time.Instant
 import java.util.UUID
 
 import sangria.macros.derive._
-import utils.GraphqlUtil
+import utils.GraphqlUtil.AppContext
 
 case class Space(id: UUID,
                  name: String,
@@ -12,7 +12,7 @@ case class Space(id: UUID,
                  capacity: Int,
                  requiredApproval: Int,
                  isReservable: Boolean,
-                 createdAt: Instant) extends GraphqlUtil {
+                 createdAt: Instant) {
 
   @GraphQLField
   def requests(ctx: AppContext[Space]) =
