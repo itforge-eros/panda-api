@@ -1,6 +1,7 @@
 package schemas
 
 import java.time.Instant
+import java.util.UUID
 import java.util.UUID.randomUUID
 
 import context.BaseContext
@@ -18,22 +19,18 @@ object SchemeDefinition extends GraphqlUtil {
   val requiredApproval = Argument("requiredApproval", IntType)
   val isReservable = Argument("isReservable", BooleanType)
 
-  val QueryType = ObjectType(
-    "Query",
-    fields[BaseContext, Unit](
-      Field("space", OptionType(Space.Type),
-        arguments = id :: Nil,
-        resolve = $ => $.ctx.space.find($.arg(id))
-      ),
-      Field("spaces", ListType(Space.Type),
-        resolve = _.ctx.space.findAll
-      ),
-      Field("member", OptionType(Member.Type),
-        arguments = id :: Nil,
-        resolve = $ => $.ctx.member.find($.arg(id))
-      )
-    )
-  )
+  class Query {
+
+    @GraphQLField
+    def space(id: UUID)(ctx: AppContext[Unit]) = ctx.ctx.space.find(id)
+
+    @GraphQLField
+    def spaces(ctx: AppContext[Unit]) = ctx.ctx.space.findAll
+
+    @GraphQLField
+    def member(id: UUID)(ctx: AppContext[Unit]) = ctx.ctx.member.find(id)
+
+  }
 
   class Mutation {
 
@@ -59,8 +56,7 @@ object SchemeDefinition extends GraphqlUtil {
 
   }
 
-  case class Context(mutation: Mutation)
-
+  val QueryType = deriveContextObjectType[BaseContext, Query, Unit](_.query)
   val MutationType = deriveContextObjectType[BaseContext, Mutation, Unit](_.mutation)
 
   val schema = Schema(QueryType, Some(MutationType))
