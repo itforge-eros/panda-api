@@ -7,12 +7,12 @@ import utils.GraphqlUtil
 
 object SchemaDefinition extends GraphqlUtil {
 
-  implicit val SpaceType: CustomType[Space] = deriveObjectType()
-  implicit val RequestType: CustomType[Request] = deriveObjectType()
-  implicit val MemberType: CustomType[Member] = deriveObjectType()
+  implicit val SpaceType: Type[Space] = deriveObjectType()
+  implicit val RequestType: Type[Request] = deriveObjectType()
+  implicit val MemberType: Type[Member] = deriveObjectType()
 
-  val QueryType: CustomType[Unit] = deriveContextObjectType(_.query)
-  val MutationType: CustomType[Unit] = deriveContextObjectType(_.mutation)
+  val QueryType: Type[Unit] = deriveContextObjectType(_.query)
+  val MutationType: Type[Unit] = deriveContextObjectType(_.mutation)
 
   val schema = Schema(QueryType, Some(MutationType))
 

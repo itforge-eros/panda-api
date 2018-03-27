@@ -2,13 +2,13 @@ package spec.configs
 
 import com.softwaremill.macwire.wire
 import configs.modules.PandaModule
-import context.BaseContext
 import controllers.GraphqlController
 import persists.{MemberPersist, RequestPersist, SpacePersist}
 import play.api.ApplicationLoader.Context
 import play.api.routing.Router
 import play.api.{BuiltInComponentsFromContext, LoggerConfigurator}
 import router.Routes
+import schemas.BaseContext
 import spec.persists.{MockMemberPersist, MockRequestPersist, MockSpacePersist}
 
 import scala.concurrent.ExecutionContext

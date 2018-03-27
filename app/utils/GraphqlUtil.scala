@@ -3,20 +3,18 @@ package utils
 import java.time.{DateTimeException, Instant}
 import java.util.UUID
 
-import context.BaseContext
 import io.circe.parser._
 import io.circe.{Json, parser}
 import sangria.schema._
 import sangria.validation.ValueCoercionViolation
+import schemas.BaseContext
 import utils.Functional._
 
 trait GraphqlUtil {
 
   type PartialContext = BaseContext
-  type CustomField[A] = Field[PartialContext, A]
-  type CustomType[A] = ObjectType[PartialContext, A]
   type AppContext[A] = Context[PartialContext, A]
-  type Resolver[A, B] = Context[PartialContext, A] ⇒ Action[PartialContext, B]
+  type Type[A] = ObjectType[PartialContext, A]
 
   implicit val UuidType: ScalarAlias[UUID, String] = GraphqlUtil.UuidType
   implicit val InstantType: ScalarAlias[Instant, Long] = GraphqlUtil.InstantType

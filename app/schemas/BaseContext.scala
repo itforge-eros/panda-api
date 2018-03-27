@@ -1,4 +1,4 @@
-package context
+package schemas
 
 import models.{Mutation, Query}
 import persists.{MemberPersist, RequestPersist, SpacePersist}

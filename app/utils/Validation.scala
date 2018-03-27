@@ -6,10 +6,10 @@ import scala.util.{Failure, Try}
 
 trait Validation {
 
-  type Guard                 = ExceptionGuard
-  val Guard                  = ExceptionGuard
+  type Guard = ExceptionGuard
+  val Guard = ExceptionGuard
 
-  val Validate               = ExceptionValidate
+  val Validate = ExceptionValidate
 
 
   def TryWith[T](guards: Guard*)(action: => T): Try[T] = Try {

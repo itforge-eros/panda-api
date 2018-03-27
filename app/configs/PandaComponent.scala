@@ -2,12 +2,12 @@ package configs
 
 import com.softwaremill.macwire.wire
 import configs.modules.{DatabaseModule, PandaModule}
-import context.BaseContext
 import controllers.GraphqlController
 import play.api.ApplicationLoader.Context
 import play.api.routing.Router
 import play.api.{BuiltInComponentsFromContext, LoggerConfigurator}
 import router.Routes
+import schemas.BaseContext
 
 import scala.concurrent.ExecutionContext
 
