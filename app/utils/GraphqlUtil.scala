@@ -7,6 +7,7 @@ import context.BaseContext
 import io.circe.parser._
 import io.circe.{Json, parser}
 import models.{Member, Request, Space}
+import sangria.macros.derive.deriveObjectType
 import sangria.schema._
 import sangria.validation.ValueCoercionViolation
 import utils.Functional._
@@ -14,7 +15,6 @@ import utils.Functional._
 trait GraphqlUtil {
 
   type PartialContext = BaseContext
-
   type CustomField[A] = Field[PartialContext, A]
   type CustomType[A] = ObjectType[PartialContext, A]
   type AppContext[A] = Context[PartialContext, A]
@@ -23,9 +23,9 @@ trait GraphqlUtil {
   implicit val UuidType: ScalarAlias[UUID, String] = GraphqlUtil.UuidType
   implicit val InstantType: ScalarAlias[Instant, Long] = GraphqlUtil.InstantType
 
-  implicit val SpaceType: CustomType[Space] = Space.Type
-  implicit val RequestType: CustomType[Request] = Request.Type
-  implicit val MemberType: CustomType[Member] = Member.Type
+  implicit val SpaceType: CustomType[Space] = deriveObjectType()
+  implicit val RequestType: CustomType[Request] = deriveObjectType()
+  implicit val MemberType: CustomType[Member] = deriveObjectType()
 
 }
 

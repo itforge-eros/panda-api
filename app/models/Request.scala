@@ -19,9 +19,3 @@ case class Request(id: UUID,
   def client(ctx: AppContext[Request]) = ctx.ctx.member.find(clientId)
 
 }
-
-object Request extends GraphqlUtil {
-
-  lazy val Type: CustomType[Request] = deriveObjectType()
-
-}
