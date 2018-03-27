@@ -23,6 +23,10 @@ trait GraphqlUtil {
 
 object GraphqlUtil {
 
+  type PartialContext = BaseContext
+  type AppContext[A] = Context[PartialContext, A]
+  type Type[A] = ObjectType[PartialContext, A]
+
   def parseVariables(variables: String): Option[Json] = variables.trim match {
     case "" | "null" => Some(Json.obj())
     case _ => parse(variables).toOption
