@@ -9,7 +9,7 @@ import play.api.routing.Router
 import play.api.{BuiltInComponentsFromContext, LoggerConfigurator}
 import router.Routes
 import schemas.BaseContext
-import spec.persists.{MockMemberPersist, MockRequestPersist, MockSpacePersist}
+import spec.mockpersists.{MockMemberPersist, MockRequestPersist, MockSpacePersist}
 
 import scala.concurrent.ExecutionContext
 

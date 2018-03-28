@@ -1,4 +1,4 @@
-package spec.persists
+package spec.mockpersists
 
 import java.util.UUID
 

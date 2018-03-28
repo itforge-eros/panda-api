@@ -1,7 +1,7 @@
 package spec.configs
 
 import persists.{MemberPersist, RequestPersist, SpacePersist}
-import spec.persists.{MockMemberPersist, MockRequestPersist, MockSpacePersist}
+import spec.mockpersists.{MockMemberPersist, MockRequestPersist, MockSpacePersist}
 
 trait MockDatabaseModule {
 

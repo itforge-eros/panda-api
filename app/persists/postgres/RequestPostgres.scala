@@ -10,6 +10,10 @@ import play.api.db.Database
 
 class RequestPostgres(db: Database) extends RequestPersist {
 
+  override def find(id: UUID): Option[Request] = db.withConnection { implicit connection =>
+    SQL"SELECT * FROM request WHERE id=$id::uuid" as rowParser.singleOpt
+  }
+
   override def findBySpaceId(spaceId: UUID): List[Request] = db.withConnection { implicit connection =>
     SQL"SELECT * FROM request WHERE space_id=$spaceId::uuid" as rowParser.*
   }

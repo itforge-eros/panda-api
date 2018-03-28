@@ -7,7 +7,7 @@ import org.scalatest._
 import org.scalatest.time.SpanSugar
 import org.scalatestplus.play.FakeApplicationFactory
 import play.api.inject.DefaultApplicationLifecycle
-import play.api.libs.json.{JsValue, Json => ScalaJson}
+import play.api.libs.json.JsValue
 import play.api.{Application, ApplicationLoader, Configuration, Environment}
 import play.core.DefaultWebCommands
 import sangria.marshalling.MarshallingUtil._
