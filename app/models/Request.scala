@@ -18,4 +18,7 @@ case class Request(id: UUID,
   @GraphQLField
   def client(ctx: AppContext[Request]) = ctx.ctx.member.find(clientId)
 
+  @GraphQLField
+  def approvals(ctx: AppContext[Request]) = ctx.ctx.approval.findByRequestId(id)
+
 }
