@@ -1,18 +1,14 @@
 package utils
 
 import java.text.SimpleDateFormat
+import java.util.Date
 
-import definitions.Violations.InvalidDateViolation
-
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
 object DateUtil {
 
   val dateFormat = new SimpleDateFormat("yyyy-MM-dd")
 
-  def parseDate(s: String) = Try(dateFormat.parse(s)) match {
-    case Success(d) ⇒ Right(d)
-    case Failure(_) ⇒ Left(InvalidDateViolation)
-  }
+  def parseDate(s: String): Option[Date] = Try(dateFormat.parse(s)) toOption
 
 }

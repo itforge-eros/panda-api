@@ -10,4 +10,6 @@ object Violations {
 
   case object InvalidDateViolation extends ValueCoercionViolation("Invalid date")
 
+  case object InvalidRangeViolation extends ValueCoercionViolation("Invalid range")
+
 }

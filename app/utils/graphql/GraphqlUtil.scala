@@ -17,7 +17,7 @@ trait GraphqlUtil {
 
   implicit val UuidType: ScalarAlias[UUID, String] = Scalar.UuidType
   implicit val InstantType: ScalarAlias[Instant, Long] = Scalar.InstantType
-  implicit val RangeType: ScalarAlias[Range, Int] = Scalar.RangeType
+  implicit val RangeType: ScalarType[Range] = Scalar.RangeType
   implicit val DateType: ScalarType[Date] = Scalar.DateType
 
 }
