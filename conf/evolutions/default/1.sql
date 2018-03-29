@@ -4,13 +4,13 @@ CREATE DOMAIN positive_int AS INT
   CHECK(VALUE >= 0);
 
 CREATE TABLE space (
-  id                    UUID PRIMARY KEY,
-  name                  VARCHAR(64) NOT NULL,
-  description           TEXT,
+  id                    uuid PRIMARY KEY,
+  name                  varchar(64) NOT NULL,
+  description           text,
   capacity              positive_int NOT NULL,
   required_approval     positive_int NOT NULL,
-  is_reservable         BOOLEAN NOT NULL,
-  created_at            TIMESTAMP NOT NULL
+  is_available          boolean NOT NULL,
+  created_at            timestamp NOT NULL
 );
 
 # ---!Downs

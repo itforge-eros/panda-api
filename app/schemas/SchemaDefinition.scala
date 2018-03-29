@@ -3,7 +3,7 @@ package schemas
 import models._
 import sangria.macros.derive._
 import sangria.schema._
-import utils.GraphqlUtil
+import utils.graphql.GraphqlUtil
 
 object SchemaDefinition extends GraphqlUtil {
 

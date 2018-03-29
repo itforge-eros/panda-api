@@ -1,4 +1,4 @@
-package models
+package utils.graphql
 
 import io.circe.Json
 

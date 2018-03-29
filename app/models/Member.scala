@@ -3,7 +3,7 @@ package models
 import java.util.UUID
 
 import sangria.macros.derive._
-import utils.GraphqlUtil.AppContext
+import utils.graphql.GraphqlUtil.AppContext
 
 case class Member(id: UUID,
                   firstName: String,

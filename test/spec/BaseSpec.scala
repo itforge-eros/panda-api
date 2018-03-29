@@ -2,7 +2,6 @@ package spec
 
 import io.circe.Json
 import io.circe.syntax._
-import models.GraphqlQuery
 import org.scalatest._
 import org.scalatest.time.SpanSugar
 import org.scalatestplus.play.FakeApplicationFactory
@@ -16,6 +15,7 @@ import sangria.marshalling.playJson._
 import sangria.marshalling.{InputUnmarshaller, ResultMarshaller}
 import spec.configs.MockApplicationLoader
 import spec.helpers.ControllerSpecHelper
+import utils.graphql.GraphqlQuery
 
 import scala.language.{implicitConversions, postfixOps}
 

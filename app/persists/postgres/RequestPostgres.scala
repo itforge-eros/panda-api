@@ -2,6 +2,7 @@ package persists.postgres
 
 import java.util.UUID
 
+import anorm.Column.nonNull
 import anorm.Macro.ColumnNaming
 import anorm._
 import models.Request
@@ -24,5 +25,9 @@ class RequestPostgres(db: Database) extends RequestPersist {
 
   private lazy val rowParser: RowParser[Request] =
     Macro.namedParser[Request](ColumnNaming.SnakeCase)
+
+  implicit val columnToRange: Column[Range] = nonNull { (value, meta) =>
+    Right(Range(1, 2))
+  }
 
 }

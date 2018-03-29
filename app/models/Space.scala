@@ -4,14 +4,14 @@ import java.time.Instant
 import java.util.UUID
 
 import sangria.macros.derive._
-import utils.GraphqlUtil.AppContext
+import utils.graphql.GraphqlUtil.AppContext
 
 case class Space(id: UUID,
                  name: String,
                  description: Option[String],
                  capacity: Int,
                  requiredApproval: Int,
-                 isReservable: Boolean,
+                 isAvailable: Boolean,
                  createdAt: Instant) {
 
   @GraphQLField

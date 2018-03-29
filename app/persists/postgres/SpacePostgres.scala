@@ -26,7 +26,7 @@ class SpacePostgres(db: Database) extends SpacePersist {
            ${space.description},
            ${space.capacity},
            ${space.requiredApproval},
-           ${space.isReservable},
+           ${space.isAvailable},
            ${space.createdAt}
          )
        """ executeInsert rowParser.singleOpt

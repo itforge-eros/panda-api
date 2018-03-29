@@ -2,17 +2,14 @@ package facades
 
 import definitions.Handlers
 import io.circe.Json
-import models.GraphqlQuery
-import persists.SpacePersist
 import sangria.ast.Document
 import sangria.execution.Executor
-import sangria.marshalling.circe.CirceInputUnmarshaller
-import sangria.marshalling.circe.CirceResultMarshaller
+import sangria.marshalling.circe.{CirceInputUnmarshaller, CirceResultMarshaller}
 import sangria.parser.QueryParser
 import schemas.{BaseContext, SchemaDefinition}
 import utils.Functional.TryHelpers
-import utils.GraphqlUtil
-import utils.GraphqlUtil.forceStringToObject
+import utils.graphql.GraphqlQuery
+import utils.graphql.GraphqlUtil.forceStringToObject
 
 import scala.concurrent.{ExecutionContext, Future}
 

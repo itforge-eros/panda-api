@@ -1,9 +1,9 @@
-package models
+package schemas
 
 import java.util.UUID
 
 import sangria.macros.derive.GraphQLField
-import utils.GraphqlUtil.AppContext
+import utils.graphql.GraphqlUtil.AppContext
 
 class Query {
 

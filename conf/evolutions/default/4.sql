@@ -1,13 +1,15 @@
 # --- !Ups
 
-CREATE TABLE approval (
-  request_id            UUID REFERENCES request (id),
-  approver_id           UUID REFERENCES member (id),
-  created_at            TIMESTAMP NOT NULL,
+CREATE TABLE request_review (
+  request_id            uuid REFERENCES request (id),
+  reviewer_id           uuid REFERENCES member (id),
+  description           text,
+  is_approval           boolean NOT NULL,
+  created_at            timestamp NOT NULL,
 
-  PRIMARY KEY (request_id, approver_id)
+  PRIMARY KEY (request_id, reviewer_id)
 );
 
 # ---!Downs
 
-DROP TABLE approval
+DROP TABLE request_review

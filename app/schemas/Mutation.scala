@@ -1,10 +1,11 @@
-package models
+package schemas
 
 import java.time.Instant
 import java.util.UUID.randomUUID
 
+import models.Space
 import sangria.macros.derive.GraphQLField
-import utils.GraphqlUtil.AppContext
+import utils.graphql.GraphqlUtil.AppContext
 
 class Mutation {
 
@@ -13,7 +14,7 @@ class Mutation {
                   description: Option[String],
                   capacity: Int,
                   requiredApproval: Int,
-                  isReservable: Boolean)
+                  isAvailable: Boolean)
                  (ctx: AppContext[Unit]) = {
     val space = Space(
       randomUUID(),
@@ -21,7 +22,7 @@ class Mutation {
       description,
       capacity,
       requiredApproval,
-      isReservable,
+      isAvailable,
       Instant.now()
     )
 

@@ -9,5 +9,5 @@ class MockApprovalPersist extends ApprovalPersist {
   override def findByRequestId(requestId: UUID) = ???
 
   override def findByApproverId(approverId: UUID) = ???
-
+      
 }

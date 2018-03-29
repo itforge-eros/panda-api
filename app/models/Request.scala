@@ -1,13 +1,15 @@
 package models
 
 import java.time.Instant
-import java.util.UUID
+import java.util.{Date, UUID}
 
 import sangria.macros.derive._
-import utils.GraphqlUtil.AppContext
+import utils.graphql.GraphqlUtil.AppContext
 
 case class Request(id: UUID,
                    proposal: String,
+                   date: List[Date],
+                   interval: Range,
                    createdAt: Instant,
                    @GraphQLExclude spaceId: UUID,
                    @GraphQLExclude clientId: UUID) {

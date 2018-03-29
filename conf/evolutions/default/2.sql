@@ -1,10 +1,10 @@
 # --- !Ups
 
 CREATE TABLE member (
-  id                    UUID PRIMARY KEY,
-  first_name            VARCHAR(64) NOT NULL,
-  last_name             VARCHAR(64) NOT NULL,
-  email                 VARCHAR(40) NOT NULL
+  id                    uuid PRIMARY KEY,
+  first_name            varchar(64) NOT NULL,
+  last_name             varchar(64) NOT NULL,
+  email                 varchar(64) NOT NULL
 );
 
 # ---!Downs
