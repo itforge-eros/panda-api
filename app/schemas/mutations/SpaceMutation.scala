@@ -5,6 +5,7 @@ import java.util.UUID.randomUUID
 
 import models.Space
 import sangria.macros.derive.GraphQLField
+import schemas.inputs.SpaceInput
 import utils.graphql.GraphqlUtil.AppContext
 
 trait SpaceMutation {
@@ -14,15 +15,16 @@ trait SpaceMutation {
                   description: Option[String],
                   capacity: Int,
                   requiredApproval: Int,
-                  isAvailable: Boolean)
-                 (ctx: AppContext[Unit]) = {
+                  isAvailable: Boolean)(ctx: AppContext[Unit]) = {
+    val input = SpaceInput(name, description, capacity, requiredApproval, isAvailable)
+
     val space = Space(
       randomUUID(),
-      name,
-      description,
-      capacity,
-      requiredApproval,
-      isAvailable,
+      input.name,
+      input.description,
+      input.capacity,
+      input.requiredApproval,
+      input.isAvailable,
       Instant.now()
     )
 

@@ -15,7 +15,7 @@ class PandaComponent(context: Context) extends BuiltInComponentsFromContext(cont
   with PandaModule
   with DatabaseModule {
 
-  LoggerConfigurator(context.environment.classLoader).foreach {
+  LoggerConfigurator(context.environment.classLoader) foreach {
     _.configure(context.environment, context.initialConfiguration, Map.empty)
   }
 

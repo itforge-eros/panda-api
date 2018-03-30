@@ -7,22 +7,18 @@ import play.api.data.Form
 
 object AppException extends LazyLogging {
 
-  class GraphqlSyntaxError
-    extends Exception("GraphQL syntax error.")
+  class GraphqlSyntaxError extends Exception("GraphQL syntax error.")
 
-  case object TooComplexQueryError
-    extends Exception("Query is too expensive.")
+  case object TooComplexQueryError extends Exception("Query is too expensive.")
 
-  class UnexpectedError(other: Throwable)
-    extends Exception("Something went wrong. Please try again.") {
+  class UnexpectedError(other: Throwable) extends Exception("Something went wrong.") {
 
     val stringWriter = new StringWriter
     other.printStackTrace(new PrintWriter(stringWriter))
     logger.error(stringWriter.toString)
   }
 
-  case class FormException(message: String)
-    extends Exception("Input error." + description(message)) {
+  case class FormException(message: String) extends Exception("Input error." + description(message)) {
 
     def this(form: Form[_]) = {
       this(
@@ -35,6 +31,7 @@ object AppException extends LazyLogging {
         } }.mkString(", ")
       )
     }
+
   }
 
 

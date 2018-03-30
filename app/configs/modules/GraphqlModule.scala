@@ -1,7 +1,7 @@
 package configs.modules
 
 import com.softwaremill.macwire.wire
-import schemas.{Mutation, Query}
+import schemas.roots.{Mutation, Query}
 
 trait GraphqlModule {
 

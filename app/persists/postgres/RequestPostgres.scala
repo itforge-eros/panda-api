@@ -27,6 +27,7 @@ class RequestPostgres(db: Database) extends RequestPersist {
     Macro.namedParser[Request](ColumnNaming.SnakeCase)
 
   implicit val columnToRange: Column[Range] = nonNull { (value, meta) =>
+    print(value)
     Right(Range(1, 2))
   }
 

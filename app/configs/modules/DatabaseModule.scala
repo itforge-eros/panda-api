@@ -1,8 +1,8 @@
 package configs.modules
 
 import com.softwaremill.macwire.wire
-import persists.{ApprovalPersist, MemberPersist, RequestPersist, SpacePersist}
 import persists.postgres.{ApprovalPostgres, MemberPostgres, RequestPostgres, SpacePostgres}
+import persists.{ApprovalPersist, MemberPersist, RequestPersist, SpacePersist}
 import play.api.db.evolutions.EvolutionsComponents
 import play.api.db.{DBComponents, Database, HikariCPComponents}
 

@@ -14,11 +14,12 @@ trait GraphqlUtil {
   type PartialContext = BaseContext
   type AppContext[A] = Context[PartialContext, A]
   type Type[A] = ObjectType[PartialContext, A]
+  type Input[A] = InputType[A]
 
-  implicit val UuidType: ScalarAlias[UUID, String] = Scalar.UuidType
-  implicit val InstantType: ScalarAlias[Instant, Long] = Scalar.InstantType
-  implicit val RangeType: ScalarType[Range] = Scalar.RangeType
-  implicit val DateType: ScalarType[Date] = Scalar.DateType
+  implicit val uuidType: ScalarAlias[UUID, String] = Scalar.uuidType
+  implicit val instantType: ScalarAlias[Instant, Long] = Scalar.instantType
+  implicit val rangeType: ObjectType[Unit, Range] = Scalar.rangeType
+  implicit val dateType: ScalarType[Date] = Scalar.dateType
 
 }
 

@@ -1,5 +1,5 @@
 name := "panda-api"
-organization := "io.nyancode"
+organization := "io.itforge"
 version := "0.1.0"
 scalaVersion := "2.12.3"
 
