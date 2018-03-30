@@ -2,9 +2,7 @@
 
 Online Space Reservation System GraphQL API
 
-Develop Branch[![Build Status](https://travis-ci.com/itforge-eros/panda-api.svg?token=hxfRmfpCpbnunWcyMpkC&branch=develop)](https://travis-ci.com/itforge-eros/panda-api)
-
-# Installation
+## Installation
 
 Install sbt
 ```shell
@@ -21,9 +19,18 @@ Create local development database
 $ ./script/setup-database development
 ```
 
-# Running the service
+## Tasks
+
+Start the application
 ```shell
-sbt
-test
+$ sbt run
 ```
-This will local host the service. A port of the localhost will be given.
+
+Run tests
+```shell
+$ sbt test
+```
+
+## Travis CI
+
+[![Build Status](https://travis-ci.com/itforge-eros/panda-api.svg?token=hxfRmfpCpbnunWcyMpkC&branch=develop)](https://travis-ci.com/itforge-eros/panda-api)
