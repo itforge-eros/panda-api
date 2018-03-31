@@ -2,7 +2,7 @@
 
 Online Space Reservation System GraphQL API
 
-# Installation
+## Installation
 
 Install sbt
 ```shell
@@ -18,3 +18,19 @@ Create local development database
 ```shell
 $ ./script/setup-database development
 ```
+
+## Tasks
+
+Start the application
+```shell
+$ sbt run
+```
+
+Run tests
+```shell
+$ sbt test
+```
+
+## Travis CI
+
+[![Build Status](https://travis-ci.com/itforge-eros/panda-api.svg?token=hxfRmfpCpbnunWcyMpkC&branch=develop)](https://travis-ci.com/itforge-eros/panda-api)
