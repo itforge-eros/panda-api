@@ -21,7 +21,7 @@ trait SpaceMutation {
       Instant.now()
     )
 
-    ctx.ctx.space.insert(space).get
+    ctx.ctx.space.insert(space)
   }
 
 }
