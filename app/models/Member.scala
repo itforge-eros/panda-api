@@ -14,6 +14,6 @@ case class Member(id: UUID,
   def requests(ctx: AppContext[Member]) = ctx.ctx.request.findByClientId(id)
 
   @GraphQLField
-  def approvals(ctx: AppContext[Member]) = ctx.ctx.approval.findByApproverId(id)
+  def reviews(ctx: AppContext[Member]) = ctx.ctx.review.findByReviewerId(id)
 
 }

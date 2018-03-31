@@ -1,6 +1,6 @@
 # --- !Ups
 
-CREATE TABLE request_review (
+CREATE TABLE review (
   request_id            uuid REFERENCES request (id),
   reviewer_id           uuid REFERENCES member (id),
   description           text,
@@ -12,4 +12,4 @@ CREATE TABLE request_review (
 
 # ---!Downs
 
-DROP TABLE request_review
+DROP TABLE review

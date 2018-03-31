@@ -8,4 +8,4 @@ case class BaseContext(query: Query,
                        space: SpacePersist,
                        request: RequestPersist,
                        member: MemberPersist,
-                       approval: ApprovalPersist)
+                       review: ReviewPersist)

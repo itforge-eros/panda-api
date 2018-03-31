@@ -10,7 +10,6 @@ case class Space(id: UUID,
                  name: String,
                  description: Option[String],
                  capacity: Int,
-                 requiredApproval: Int,
                  isAvailable: Boolean,
                  createdAt: Instant) {
 

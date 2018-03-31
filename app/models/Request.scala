@@ -9,7 +9,7 @@ import utils.graphql.GraphqlUtil.AppContext
 case class Request(id: UUID,
                    proposal: String,
                    date: List[Date],
-                   interval: Range,
+                   period: Range,
                    createdAt: Instant,
                    @GraphQLExclude spaceId: UUID,
                    @GraphQLExclude clientId: UUID) {
@@ -21,6 +21,6 @@ case class Request(id: UUID,
   def client(ctx: AppContext[Request]) = ctx.ctx.member.find(clientId)
 
   @GraphQLField
-  def approvals(ctx: AppContext[Request]) = ctx.ctx.approval.findByRequestId(id)
+  def reviews(ctx: AppContext[Request]) = ctx.ctx.review.findByRequestId(id)
 
 }

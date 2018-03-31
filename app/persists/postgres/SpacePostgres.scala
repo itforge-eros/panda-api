@@ -25,7 +25,6 @@ class SpacePostgres(db: Database) extends SpacePersist {
            ${space.name},
            ${space.description},
            ${space.capacity},
-           ${space.requiredApproval},
            ${space.isAvailable},
            ${space.createdAt}
          )

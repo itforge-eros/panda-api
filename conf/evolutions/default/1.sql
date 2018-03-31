@@ -8,7 +8,6 @@ CREATE TABLE space (
   name                  varchar(64) NOT NULL,
   description           text,
   capacity              positive_int NOT NULL,
-  required_approval     positive_int NOT NULL,
   is_available          boolean NOT NULL,
   created_at            timestamp NOT NULL
 );

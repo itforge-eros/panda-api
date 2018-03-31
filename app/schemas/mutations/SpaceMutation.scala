@@ -17,7 +17,6 @@ trait SpaceMutation {
       input.name,
       input.description,
       input.capacity,
-      input.requiredApproval,
       input.isAvailable,
       Instant.now()
     )
