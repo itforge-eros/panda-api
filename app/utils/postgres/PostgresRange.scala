@@ -34,6 +34,8 @@ object PostgresRange {
     } yield Range(a1.toInt, b1.toInt)
   }
 
+  def fromScalaRange(range: Range): PostgresRange = new PostgresRange(range.start, range.end)
+
 
   private def removeBrackets: String => String = _.replaceAll("[()\\[\\]]", "")
 

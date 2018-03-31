@@ -1,5 +1,6 @@
 package persists.postgres
 
+import java.sql.PreparedStatement
 import java.util.{Date, UUID}
 
 import anorm.Column.nonNull
@@ -9,9 +10,10 @@ import models.Request
 import org.postgresql.util.PGobject
 import persists.RequestPersist
 import play.api.db.Database
-import utils.postgres.PostgresRange
+import utils.postgres.{PostgresRange, PostgresUtil}
 
-class RequestPostgres(db: Database) extends RequestPersist {
+class RequestPostgres(db: Database) extends RequestPersist
+  with PostgresUtil {
 
   override def find(id: UUID): Option[Request] = db.withConnection { implicit connection =>
     SQL"SELECT * FROM request WHERE id=$id::uuid" as rowParser.singleOpt
@@ -31,7 +33,7 @@ class RequestPostgres(db: Database) extends RequestPersist {
            ${request.id}::uuid,
            ${request.proposal},
            ARRAY[${request.dates}]::date[],
-           '[1, 10)',
+           ${request.period}::int4range,
            ${request.createdAt},
            ${request.spaceId}::uuid,
            ${request.clientId}::uuid
@@ -41,11 +43,5 @@ class RequestPostgres(db: Database) extends RequestPersist {
 
   private lazy val rowParser: RowParser[Request] =
     Macro.namedParser[Request](ColumnNaming.SnakeCase)
-
-  implicit val columnToRange: Column[Range] = nonNull { (value, meta) =>
-    value match {
-      case obj: PGobject => Right(PostgresRange.toRange(obj.toString).get)
-    }
-  }
 
 }
