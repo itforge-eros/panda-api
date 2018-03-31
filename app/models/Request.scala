@@ -7,7 +7,7 @@ import sangria.macros.derive._
 import utils.graphql.GraphqlUtil.AppContext
 
 case class Request(id: UUID,
-                   proposal: String,
+                   proposal: Option[String],
                    date: List[Date],
                    period: Range,
                    createdAt: Instant,

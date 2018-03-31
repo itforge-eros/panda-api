@@ -12,4 +12,6 @@ trait RequestPersist {
 
   def findByClientId(clientId: UUID): List[Request]
 
+  def insert(request: Request): Option[Request]
+
 }

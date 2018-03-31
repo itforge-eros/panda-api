@@ -13,4 +13,6 @@ class MockRequestPersist extends RequestPersist {
 
   override def findByClientId(clientId: UUID) = ???
 
+  override def insert(request: Request) = ???
+
 }

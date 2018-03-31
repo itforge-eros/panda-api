@@ -25,6 +25,20 @@ class RequestPostgres(db: Database) extends RequestPersist {
     SQL"SELECT * FROM request WHERE client_id=$clientId::uuid" as rowParser.*
   }
 
+  override def insert(request: Request): Option[Request] = db.withConnection { implicit connection =>
+    SQL"""
+         INSERT INTO request VALUES (
+           ${request.id},
+           ${request.proposal},
+           ${request.date},
+           "[1, 10)",
+           ${request.createdAt},
+           ${request.spaceId},
+           ${request.clientId}
+         )
+       """ as rowParser.singleOpt
+  }
+
   private lazy val rowParser: RowParser[Request] =
     Macro.namedParser[Request](ColumnNaming.SnakeCase)
 
