@@ -6,8 +6,10 @@ import anorm.Column.nonNull
 import anorm.Macro.ColumnNaming
 import anorm._
 import models.Request
+import org.postgresql.util.PGobject
 import persists.RequestPersist
 import play.api.db.Database
+import utils.postgres.PostgresRange
 
 class RequestPostgres(db: Database) extends RequestPersist {
 
@@ -27,8 +29,9 @@ class RequestPostgres(db: Database) extends RequestPersist {
     Macro.namedParser[Request](ColumnNaming.SnakeCase)
 
   implicit val columnToRange: Column[Range] = nonNull { (value, meta) =>
-    print(value)
-    Right(Range(1, 2))
+    value match {
+      case obj: PGobject => Right(PostgresRange.toRange(obj.toString).get)
+    }
   }
 
 }

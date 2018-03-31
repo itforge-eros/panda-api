@@ -12,7 +12,6 @@ object AppException extends LazyLogging {
   case object TooComplexQueryError extends Exception("Query is too expensive.")
 
   class UnexpectedError(other: Throwable) extends Exception("Something went wrong.") {
-
     val stringWriter = new StringWriter
     other.printStackTrace(new PrintWriter(stringWriter))
     logger.error(stringWriter.toString)
