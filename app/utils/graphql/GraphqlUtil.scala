@@ -11,6 +11,8 @@ import sangria.schema._
 import schemas.BaseContext
 import utils.Functional._
 
+import scala.language.implicitConversions
+
 trait GraphqlUtil {
 
   type PartialContext = BaseContext

@@ -1,6 +1,6 @@
 package persists.postgres
 
-import java.util.UUID
+import java.util.{Date, UUID}
 
 import anorm.Column.nonNull
 import anorm.Macro.ColumnNaming
@@ -25,18 +25,18 @@ class RequestPostgres(db: Database) extends RequestPersist {
     SQL"SELECT * FROM request WHERE client_id=$clientId::uuid" as rowParser.*
   }
 
-  override def insert(request: Request): Option[Request] = db.withConnection { implicit connection =>
+  override def insert(request: Request): Option[Request] = db.withTransaction { implicit connection =>
     SQL"""
          INSERT INTO request VALUES (
-           ${request.id},
+           ${request.id}::uuid,
            ${request.proposal},
-           ${request.date},
-           "[1, 10)",
+           ARRAY[${request.dates}]::date[],
+           '[1, 10)',
            ${request.createdAt},
-           ${request.spaceId},
-           ${request.clientId}
+           ${request.spaceId}::uuid,
+           ${request.clientId}::uuid
          )
-       """ as rowParser.singleOpt
+       """ executeInsert rowParser.singleOpt
   }
 
   private lazy val rowParser: RowParser[Request] =

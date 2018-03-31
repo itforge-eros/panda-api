@@ -8,7 +8,7 @@ import utils.graphql.GraphqlUtil.AppContext
 
 case class Request(id: UUID,
                    proposal: Option[String],
-                   date: List[Date],
+                   dates: List[Date],
                    period: Range,
                    createdAt: Instant,
                    @GraphQLExclude spaceId: UUID,
