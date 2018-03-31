@@ -4,7 +4,7 @@ import definitions.Handlers
 import io.circe.Json
 import sangria.ast.Document
 import sangria.execution.Executor
-import sangria.marshalling.circe.{CirceInputUnmarshaller, CirceResultMarshaller}
+import sangria.marshalling.circe.{CirceInputUnmarshaller, CirceResultMarshaller, circeFromInput}
 import sangria.parser.QueryParser
 import schemas.{BaseContext, SchemaDefinition}
 import utils.Functional.TryHelpers

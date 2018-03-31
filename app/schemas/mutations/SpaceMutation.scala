@@ -11,13 +11,7 @@ import utils.graphql.GraphqlUtil.AppContext
 trait SpaceMutation {
 
   @GraphQLField
-  def createSpace(name: String,
-                  description: Option[String],
-                  capacity: Int,
-                  requiredApproval: Int,
-                  isAvailable: Boolean)(ctx: AppContext[Unit]) = {
-    val input = SpaceInput(name, description, capacity, requiredApproval, isAvailable)
-
+  def createSpace(input: SpaceInput)(ctx: AppContext[Unit]) = {
     val space = Space(
       randomUUID(),
       input.name,

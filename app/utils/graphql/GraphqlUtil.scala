@@ -4,10 +4,12 @@ import java.time.Instant
 import java.util.{Date, UUID}
 
 import io.circe.parser._
-import io.circe.{Json, parser}
+import io.circe.{Decoder, Json, parser}
+import sangria.marshalling.FromInput
 import sangria.schema._
 import schemas.BaseContext
 import utils.Functional._
+import sangria.marshalling.circe.circeDecoderFromInput
 
 trait GraphqlUtil {
 
@@ -15,6 +17,8 @@ trait GraphqlUtil {
   type AppContext[A] = Context[PartialContext, A]
   type Type[A] = ObjectType[PartialContext, A]
   type Input[A] = InputType[A]
+
+  implicit def implicitFromInput[A: Decoder]: FromInput[A] = circeDecoderFromInput[A]
 
   implicit val uuidType: ScalarAlias[UUID, String] = Scalar.uuidType
   implicit val instantType: ScalarAlias[Instant, Long] = Scalar.instantType

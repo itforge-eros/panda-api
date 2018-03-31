@@ -1,11 +1,12 @@
 package schemas
 
+import io.circe.Decoder
+import io.circe.generic.semiauto._
 import models.{Approval, Member, Request, Space}
 import sangria.macros.derive.{deriveContextObjectType, deriveInputObjectType, deriveObjectType}
 import sangria.schema.{InputType, Schema}
 import schemas.inputs.SpaceInput
 import utils.graphql.GraphqlUtil
-import sangria.marshalling.circe.circeFromInput
 
 object SchemaDefinition extends GraphqlUtil {
 
@@ -15,6 +16,7 @@ object SchemaDefinition extends GraphqlUtil {
   implicit val approvalType: Type[Approval] = deriveObjectType()
 
   implicit val spaceInputType: InputType[SpaceInput] = deriveInputObjectType[SpaceInput]()
+  implicit val spaceInputJson: Decoder[SpaceInput] = deriveDecoder
 
   val queryType: Type[Unit] = deriveContextObjectType(_.query)
   val mutationType: Type[Unit] = deriveContextObjectType(_.mutation)
