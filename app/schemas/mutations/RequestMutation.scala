@@ -17,7 +17,7 @@ trait RequestMutation {
       randomUUID(),
       input.proposal,
       input.date,
-      input.period,
+      Range(input.period.start, input.period.end),
       Instant.now(),
       input.spaceId,
       input.clientId

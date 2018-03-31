@@ -1,7 +1,7 @@
 name := "panda-api"
 organization := "io.itforge"
 version := "0.1.0"
-scalaVersion := "2.12.3"
+scalaVersion := "2.12.5"
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
@@ -21,6 +21,7 @@ val playCirceVersion = "2609.1"
 val anormVersion = "2.6.0-M1"
 val scalaLoggingVersion = "3.8.0"
 val monocleVersion = "1.5.0"
+val circeVersion = "0.9.1"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
@@ -42,9 +43,12 @@ libraryDependencies ++= Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % scalaTestVersion % Test,
   "org.scalamock" %% "scalamock-scalatest-support" % scalaMockVersion % Test,
   "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion,
-  "com.github.julien-truffaut" %%  "monocle-core"  % monocleVersion,
-  "com.github.julien-truffaut" %%  "monocle-macro" % monocleVersion,
-  "com.github.julien-truffaut" %%  "monocle-law"   % monocleVersion % "test",
+  "com.github.julien-truffaut" %% "monocle-core" % monocleVersion,
+  "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion,
+  "com.github.julien-truffaut" %% "monocle-law" % monocleVersion % "test",
+  "io.circe" %% "circe-core" % circeVersion,
+  "io.circe" %% "circe-generic" % circeVersion,
+  "io.circe" %% "circe-parser" % circeVersion
 )
 
 packageName in Docker := "panda-api"

@@ -3,6 +3,7 @@ package utils
 import java.text.SimpleDateFormat
 import java.util.Date
 
+import scala.language.postfixOps
 import scala.util.Try
 
 object DateUtil {
