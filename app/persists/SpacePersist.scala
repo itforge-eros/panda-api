@@ -2,14 +2,14 @@ package persists
 
 import java.util.UUID
 
-import models.Space
+import entities.SpaceEntity
 
 trait SpacePersist {
 
-  def find(id: UUID): Option[Space]
+  def find(id: UUID): Option[SpaceEntity]
 
-  def findAll: List[Space]
+  def findAll: List[SpaceEntity]
 
-  def insert(space: Space): Option[Space]
+  def insert(space: SpaceEntity): Option[SpaceEntity]
 
 }
