@@ -2,12 +2,12 @@ package persists
 
 import java.util.UUID
 
-import models.Review
+import entities.ReviewEntity
 
 trait ReviewPersist {
 
-  def findByRequestId(requestId: UUID): List[Review]
+  def findByRequestId(requestId: UUID): List[ReviewEntity]
 
-  def findByReviewerId(reviewerId: UUID): List[Review]
+  def findByReviewerId(reviewerId: UUID): List[ReviewEntity]
 
 }

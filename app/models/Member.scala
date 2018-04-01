@@ -16,7 +16,7 @@ case class Member(id: UUID,
   def requests(ctx: AppContext[Member]): List[Request] = ctx.ctx.requestPersist.findByClientId(id) map Request.of
 
   @GraphQLField
-  def reviews(ctx: AppContext[Member]): List[Review] = ctx.ctx.reviewPersist.findByReviewerId(id)
+  def reviews(ctx: AppContext[Member]): List[Review] = ctx.ctx.reviewPersist.findByReviewerId(id) map Review.of
 
 }
 
