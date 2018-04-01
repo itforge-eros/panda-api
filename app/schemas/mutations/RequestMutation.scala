@@ -23,7 +23,7 @@ trait RequestMutation {
       input.clientId
     )
 
-    ctx.ctx.request.insert(request)
+    ctx.ctx.requestPersist.insert(request)
   }
 
 }

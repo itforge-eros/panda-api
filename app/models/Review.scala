@@ -8,6 +8,8 @@ import henkan.convert.Syntax._
 import sangria.macros.derive.{GraphQLExclude, GraphQLField}
 import utils.graphql.GraphqlUtil.AppContext
 
+import scala.language.postfixOps
+
 case class Review(@GraphQLExclude requestId: UUID,
                   @GraphQLExclude reviewerId: UUID,
                   description: Option[String],
@@ -15,10 +17,10 @@ case class Review(@GraphQLExclude requestId: UUID,
                   createdAt: Instant) {
 
   @GraphQLField
-  def request(ctx: AppContext[Review]): Request = ctx.ctx.request.find(requestId).get
+  def request(ctx: AppContext[Review]): Request = ctx.ctx.requestPersist.find(requestId).get
 
   @GraphQLField
-  def reviewer(ctx: AppContext[Review]): Member = ctx.ctx.member.find(reviewerId).get
+  def reviewer(ctx: AppContext[Review]): Member = ctx.ctx.memberPersist.find(reviewerId) map Member.of get
 
 }
 

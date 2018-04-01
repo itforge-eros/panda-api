@@ -8,6 +8,6 @@ import utils.graphql.GraphqlUtil.AppContext
 trait RequestQuery {
 
   @GraphQLField
-  def request(id: UUID)(ctx: AppContext[Unit]) = ctx.ctx.request.find(id)
+  def request(id: UUID)(ctx: AppContext[Unit]) = ctx.ctx.requestPersist.find(id)
 
 }

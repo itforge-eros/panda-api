@@ -8,6 +8,8 @@ import henkan.convert.Syntax._
 import sangria.macros.derive._
 import utils.graphql.GraphqlUtil.AppContext
 
+import scala.language.postfixOps
+
 case class Request(id: UUID,
                    proposal: Option[String],
                    dates: List[Date],
@@ -17,13 +19,13 @@ case class Request(id: UUID,
                    @GraphQLExclude clientId: UUID) {
 
   @GraphQLField
-  def space(ctx: AppContext[Request]): Space = ctx.ctx.space.find(spaceId).get
+  def space(ctx: AppContext[Request]): Space = ctx.ctx.spacePersist.find(spaceId).get
 
   @GraphQLField
-  def client(ctx: AppContext[Request]): Member = ctx.ctx.member.find(clientId).get
+  def client(ctx: AppContext[Request]): Member = ctx.ctx.memberPersist.find(clientId) map Member.of get
 
   @GraphQLField
-  def reviews(ctx: AppContext[Request]): List[Review] = ctx.ctx.review.findByRequestId(id)
+  def reviews(ctx: AppContext[Request]): List[Review] = ctx.ctx.reviewPersist.findByRequestId(id)
 
 }
 
