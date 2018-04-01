@@ -4,7 +4,7 @@ import java.time.{DateTimeException, Instant}
 import java.util.{Date, UUID}
 
 import definitions.Violations._
-import io.circe.generic.semiauto.deriveDecoder
+import io.circe.generic.AutoDerivation
 import io.circe.{Decoder, Encoder, HCursor}
 import sangria.ast
 import sangria.macros.derive.deriveInputObjectType
@@ -12,16 +12,16 @@ import sangria.schema._
 import sangria.validation.Violation
 import utils.datatypes.DateUtil.{dateFormat, parseDate}
 
-object Scalar {
+trait Scalar extends AutoDerivation {
 
-  val uuidType: ScalarAlias[UUID, String] = ScalarAlias(StringType,
+  implicit val uuidType: ScalarAlias[UUID, String] = ScalarAlias(StringType,
     toScalar = _.toString,
     fromScalar = idString => try Right(UUID.fromString(idString)) catch {
       case _: IllegalArgumentException => Left(InvalidIdViolation)
     }
   )
 
-  val instantType: ScalarAlias[Instant, Long] = ScalarAlias(LongType,
+  implicit val instantType: ScalarAlias[Instant, Long] = ScalarAlias(LongType,
     toScalar = _.getEpochSecond,
     fromScalar = instantLong => try Right(Instant.ofEpochSecond(instantLong)) catch {
       case _: DateTimeException => Left(InvalidInstantViolation)
@@ -30,7 +30,7 @@ object Scalar {
 
   case class RangeInput(start: Int, end: Int)
 
-  val rangeType: ObjectType[Unit, Range] = ObjectType("Range",
+  implicit val rangeType: ObjectType[Unit, Range] = ObjectType("Range",
     fields = fields[Unit, Range](
       Field("start", IntType, resolve = _.value.start),
       Field("end", IntType, resolve = _.value.end)
@@ -38,9 +38,8 @@ object Scalar {
   )
 
   implicit val rangeInputType: InputType[RangeInput] = deriveInputObjectType[RangeInput]()
-  implicit val rangeInputDecoder: Decoder[RangeInput] = deriveDecoder
 
-  val dateType: ScalarType[Date] = ScalarType("Date",
+  implicit val dateType: ScalarType[Date] = ScalarType("Date",
     coerceOutput = (d, _) => dateFormat.format(d),
     coerceUserInput = {
       case s: String => tryParseDate(s)
@@ -62,3 +61,5 @@ object Scalar {
   }
 
 }
+
+object Scalar extends Scalar

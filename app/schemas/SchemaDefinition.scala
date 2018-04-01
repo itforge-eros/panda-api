@@ -2,6 +2,7 @@ package schemas
 
 import inputs.{RequestInput, SpaceInput}
 import io.circe.Decoder
+import io.circe.generic.AutoDerivation
 import io.circe.generic.semiauto._
 import models.{Member, Request, Review, Space}
 import sangria.macros.derive.{deriveContextObjectType, deriveInputObjectType, deriveObjectType}
@@ -16,9 +17,7 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val reviewType: Type[Review] = deriveObjectType()
 
   implicit val spaceInputType: InputType[SpaceInput] = deriveInputObjectType()
-  implicit val spaceInputDecoder: Decoder[SpaceInput] = deriveDecoder
   implicit val requestInputType: InputType[RequestInput] = deriveInputObjectType()
-  implicit val requestInputDecoder: Decoder[RequestInput] = deriveDecoder
 
   val queryType: Type[Unit] = deriveContextObjectType(_.query)
   val mutationType: Type[Unit] = deriveContextObjectType(_.mutation)
