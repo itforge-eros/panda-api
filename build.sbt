@@ -30,7 +30,7 @@ libraryDependencies ++= Seq(
   jdbc,
   evolutions,
   "com.typesafe.play" %% "anorm" % anormVersion,
-  "org.postgresql" %% "postgresql" % postgresqlVersion,
+  "org.postgresql" % "postgresql" % postgresqlVersion,
   "org.sangria-graphql" %% "sangria" % sangriaVersion,
   "org.sangria-graphql" %% "sangria-play-json" % sangriaJsonVersion,
   "org.sangria-graphql" %% "sangria-circe" % sangriaCirceVersion,

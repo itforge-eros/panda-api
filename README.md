@@ -2,6 +2,8 @@
 
 Online Space Reservation System GraphQL API
 
+[![Build Status](https://travis-ci.com/itforge-eros/panda-api.svg?token=hxfRmfpCpbnunWcyMpkC&branch=develop)](https://travis-ci.com/itforge-eros/panda-api)
+
 ## Installation
 
 Install sbt
@@ -31,6 +33,3 @@ Run tests
 $ sbt test
 ```
 
-## Travis CI
-
-[![Build Status](https://travis-ci.com/itforge-eros/panda-api.svg?token=hxfRmfpCpbnunWcyMpkC&branch=develop)](https://travis-ci.com/itforge-eros/panda-api)
