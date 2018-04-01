@@ -7,7 +7,7 @@ import io.circe._
 import io.circe.parser._
 import sangria.marshalling.FromInput
 import sangria.marshalling.circe.circeDecoderFromInput
-import sangria.schema._
+import sangria.schema.{Context, InputObjectType, ObjectType, ScalarAlias, ScalarType}
 import schemas.PandaContext
 import utils.Functional._
 
@@ -17,7 +17,7 @@ trait GraphqlUtil[PartialContext] {
 
   type AppContext[A] = Context[PartialContext, A]
   type Type[A] = ObjectType[PartialContext, A]
-  type Input[A] = InputObjectType[A]
+  type InputType[A] = InputObjectType[A]
 
   implicit def implicitFromInput[A: Decoder]: FromInput[A] = circeDecoderFromInput[A]
   implicit val dateDecoder: Decoder[Date] = Scalar.dateDecoder

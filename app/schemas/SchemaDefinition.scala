@@ -15,9 +15,9 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val memberType: Type[Member] = deriveObjectType()
   implicit val reviewType: Type[Review] = deriveObjectType()
 
-  implicit val spaceInputType: Input[SpaceInput] = deriveInputObjectType()
+  implicit val spaceInputType: InputType[SpaceInput] = deriveInputObjectType()
   implicit val spaceInputDecoder: Decoder[SpaceInput] = deriveDecoder
-  implicit val requestInputType: Input[RequestInput] = deriveInputObjectType()
+  implicit val requestInputType: InputType[RequestInput] = deriveInputObjectType()
   implicit val requestInputDecoder: Decoder[RequestInput] = deriveDecoder
 
   val queryType: Type[Unit] = deriveContextObjectType(_.query)
