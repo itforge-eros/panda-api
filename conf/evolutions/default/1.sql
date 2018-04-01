@@ -7,7 +7,7 @@ CREATE TABLE space (
   id                    uuid PRIMARY KEY,
   name                  varchar(64) NOT NULL,
   description           text,
-  capacity              positive_int NOT NULL,
+  capacity              positive_int,
   is_available          boolean NOT NULL,
   created_at            timestamp NOT NULL
 );

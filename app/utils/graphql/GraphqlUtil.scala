@@ -13,9 +13,8 @@ import utils.Functional._
 
 import scala.language.implicitConversions
 
-trait GraphqlUtil {
+trait GraphqlUtil[PartialContext] {
 
-  type PartialContext = BaseContext
   type AppContext[A] = Context[PartialContext, A]
   type Type[A] = ObjectType[PartialContext, A]
   type Input[A] = InputType[A]
@@ -30,11 +29,7 @@ trait GraphqlUtil {
 
 }
 
-object GraphqlUtil {
-
-  type PartialContext = BaseContext
-  type AppContext[A] = Context[PartialContext, A]
-  type Type[A] = ObjectType[PartialContext, A]
+object GraphqlUtil extends GraphqlUtil[BaseContext] {
 
   def parseVariables(variables: String): Option[Json] = variables.trim match {
     case "" | "null" => Some(Json.obj())

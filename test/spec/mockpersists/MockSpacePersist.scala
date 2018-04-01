@@ -2,7 +2,7 @@ package spec.mockpersists
 
 import java.util.UUID
 
-import models.Space
+import entities.SpaceEntity
 import persists.SpacePersist
 import spec.data.SpaceData
 
@@ -12,6 +12,6 @@ class MockSpacePersist extends SpacePersist {
 
   override def findAll = SpaceData.spaces
 
-  override def insert(space: Space) = SpaceData.spaces.headOption
+  override def insert(space: SpaceEntity) = SpaceData.spaces.headOption
 
 }

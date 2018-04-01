@@ -11,12 +11,12 @@ import utils.graphql.GraphqlUtil.AppContext
 case class Space(id: UUID,
                  name: String,
                  description: Option[String],
-                 capacity: Int,
+                 capacity: Option[Int],
                  isAvailable: Boolean,
                  createdAt: Instant) {
 
   @GraphQLField
-  def requests(ctx: AppContext[Space]): List[Request] = ctx.ctx.request.findBySpaceId(id)
+  def requests(ctx: AppContext[Space]): List[Request] = ctx.ctx.requestPersist.findBySpaceId(id) map Request.of
 
 }
 

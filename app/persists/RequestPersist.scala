@@ -2,16 +2,16 @@ package persists
 
 import java.util.UUID
 
-import models.{Member, Request}
+import entities.RequestEntity
 
 trait RequestPersist {
 
-  def find(id: UUID): Option[Request]
+  def find(id: UUID): Option[RequestEntity]
 
-  def findBySpaceId(spaceId: UUID): List[Request]
+  def findBySpaceId(spaceId: UUID): List[RequestEntity]
 
-  def findByClientId(clientId: UUID): List[Request]
+  def findByClientId(clientId: UUID): List[RequestEntity]
 
-  def insert(request: Request): Option[Request]
+  def insert(request: RequestEntity): Option[RequestEntity]
 
 }

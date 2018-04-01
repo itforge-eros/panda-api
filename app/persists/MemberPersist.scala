@@ -2,10 +2,10 @@ package persists
 
 import java.util.UUID
 
-import models.Member
+import entities.MemberEntity
 
 trait MemberPersist {
 
-  def find(id: UUID): Option[Member]
+  def find(id: UUID): Option[MemberEntity]
 
 }

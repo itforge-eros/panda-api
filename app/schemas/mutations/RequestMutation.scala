@@ -4,16 +4,17 @@ import java.time.Instant
 import java.util.UUID
 import java.util.UUID.randomUUID
 
+import entities.RequestEntity
 import models.Request
 import sangria.macros.derive.GraphQLField
-import schemas.inputs.RequestInput
+import inputs.RequestInput
 import utils.graphql.GraphqlUtil.AppContext
 
 trait RequestMutation {
 
   @GraphQLField
-  def createRequest(input: RequestInput)(ctx: AppContext[Unit]) = {
-    val request = Request(
+  def createRequest(input: RequestInput)(ctx: AppContext[Unit]): Option[Request] = {
+    val request = RequestEntity(
       randomUUID(),
       input.proposal,
       input.date,
@@ -23,7 +24,7 @@ trait RequestMutation {
       input.clientId
     )
 
-    ctx.ctx.request.insert(request)
+    ctx.ctx.requestPersist.insert(request) map Request.of
   }
 
 }
