@@ -4,15 +4,13 @@ import java.time.{DateTimeException, Instant}
 import java.util.{Date, UUID}
 
 import definitions.Violations._
-import io.circe.{Decoder, Encoder, HCursor, Json}
-import io.circe.Decoder.Result
 import io.circe.generic.semiauto.deriveDecoder
+import io.circe.{Decoder, Encoder, HCursor}
 import sangria.ast
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema._
 import sangria.validation.Violation
-import utils.DateUtil.{dateFormat, parseDate}
-import utils.datatypes.DateUtil
+import utils.datatypes.DateUtil.{dateFormat, parseDate}
 
 object Scalar {
 
