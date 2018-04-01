@@ -6,7 +6,7 @@ import java.util.UUID.randomUUID
 import entities.SpaceEntity
 import models.Space
 import sangria.macros.derive.GraphQLField
-import schemas.inputs.SpaceInput
+import inputs.SpaceInput
 import utils.graphql.GraphqlUtil.AppContext
 
 trait SpaceMutation {

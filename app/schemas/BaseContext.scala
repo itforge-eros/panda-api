@@ -1,7 +1,8 @@
 package schemas
 
 import persists._
-import schemas.roots.{Mutation, Query}
+import schemas.mutations.Mutation
+import schemas.queries.Query
 
 case class BaseContext(query: Query,
                        mutation: Mutation,

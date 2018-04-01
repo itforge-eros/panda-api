@@ -1,6 +1,6 @@
-package schemas.inputs
+package inputs
 
 case class SpaceInput(name: String,
                       description: Option[String],
-                      capacity: Int,
+                      capacity: Option[Int],
                       isAvailable: Boolean)

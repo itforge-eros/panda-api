@@ -13,7 +13,7 @@ case class Member(id: UUID,
                   email: String) {
 
   @GraphQLField
-  def requests(ctx: AppContext[Member]): List[Request] = ctx.ctx.requestPersist.findByClientId(id)
+  def requests(ctx: AppContext[Member]): List[Request] = ctx.ctx.requestPersist.findByClientId(id) map Request.of
 
   @GraphQLField
   def reviews(ctx: AppContext[Member]): List[Review] = ctx.ctx.reviewPersist.findByReviewerId(id)

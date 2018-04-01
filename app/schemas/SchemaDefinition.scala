@@ -5,10 +5,10 @@ import io.circe.generic.semiauto._
 import models.{Member, Request, Review, Space}
 import sangria.macros.derive.{deriveContextObjectType, deriveInputObjectType, deriveObjectType}
 import sangria.schema.{InputType, Schema}
-import schemas.inputs.{RequestInput, SpaceInput}
+import inputs.{RequestInput, SpaceInput}
 import utils.graphql.GraphqlUtil
 
-object SchemaDefinition extends GraphqlUtil {
+object SchemaDefinition extends GraphqlUtil[BaseContext] {
 
   implicit val spaceType: Type[Space] = deriveObjectType()
   implicit val requestType: Type[Request] = deriveObjectType()
