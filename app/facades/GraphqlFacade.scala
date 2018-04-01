@@ -6,27 +6,24 @@ import sangria.ast.Document
 import sangria.execution.Executor
 import sangria.marshalling.circe.{CirceInputUnmarshaller, CirceResultMarshaller, circeFromInput}
 import sangria.parser.QueryParser
-import schemas.{BaseContext, SchemaDefinition}
+import schemas.{PandaContext, SchemaDefinition}
 import utils.Functional.TryHelpers
 import utils.graphql.GraphqlQuery
 import utils.graphql.GraphqlUtil.forceStringToObject
 
 import scala.concurrent.{ExecutionContext, Future}
 
-object GraphqlFacade {
+class GraphqlFacade(context: PandaContext)
+                   (implicit execution: ExecutionContext) {
 
-  def executeQuery(form: GraphqlQuery)
-                  (implicit ec: ExecutionContext,
-                   context: BaseContext): Future[Json] =
-    QueryParser.parse(form.query).toFuture flatMap (
+  def executeQuery(form: GraphqlQuery): Future[Json] =
+    QueryParser parse form.query flatMapFuture {
       executeQuery(_, form.operationName, form.variables map forceStringToObject)
-    )
+    }
 
   def executeQuery(document: Document,
                    operationName: Option[String],
-                   variables: Option[Json])
-                  (implicit executionContext: ExecutionContext,
-                   context: BaseContext): Future[Json] = {
+                   variables: Option[Json]): Future[Json] =
     Executor.execute(
       schema = SchemaDefinition.schema,
       queryAst = document,
@@ -35,6 +32,5 @@ object GraphqlFacade {
       variables = variables getOrElse Json.obj(),
       exceptionHandler = Handlers.exceptionHandler
     )
-  }
 
 }
