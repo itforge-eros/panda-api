@@ -1,4 +1,4 @@
-package utils
+package utils.datatypes
 
 import scala.util.Try
 

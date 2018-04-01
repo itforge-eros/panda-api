@@ -2,7 +2,7 @@ package controllers.api
 
 import play.api.mvc.{Result, Results}
 import presenters.ResponsePresenter
-import utils.JsonUtil
+import utils.datatypes.JsonUtil
 
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}

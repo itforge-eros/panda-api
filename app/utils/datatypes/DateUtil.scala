@@ -1,4 +1,4 @@
-package utils
+package utils.datatypes
 
 import java.text.SimpleDateFormat
 import java.util.Date

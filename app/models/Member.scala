@@ -11,9 +11,9 @@ case class Member(id: UUID,
                   email: String) {
 
   @GraphQLField
-  def requests(ctx: AppContext[Member]) = ctx.ctx.request.findByClientId(id)
+  def requests(ctx: AppContext[Member]): List[Request] = ctx.ctx.request.findByClientId(id)
 
   @GraphQLField
-  def reviews(ctx: AppContext[Member]) = ctx.ctx.review.findByReviewerId(id)
+  def reviews(ctx: AppContext[Member]): List[Review] = ctx.ctx.review.findByReviewerId(id)
 
 }

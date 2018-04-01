@@ -2,7 +2,7 @@ package controllers.api
 
 import play.api.mvc.{Result, Results}
 import presenters.ResponsePresenter.FailResponsePresenter
-import utils.JsonUtil
+import utils.datatypes.JsonUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps

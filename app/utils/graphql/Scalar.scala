@@ -11,8 +11,8 @@ import sangria.ast
 import sangria.macros.derive.deriveInputObjectType
 import sangria.schema._
 import sangria.validation.Violation
-import utils.DateUtil
 import utils.DateUtil.{dateFormat, parseDate}
+import utils.datatypes.DateUtil
 
 object Scalar {
 

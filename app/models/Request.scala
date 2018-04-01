@@ -15,12 +15,12 @@ case class Request(id: UUID,
                    @GraphQLExclude clientId: UUID) {
 
   @GraphQLField
-  def space(ctx: AppContext[Request]) = ctx.ctx.space.find(spaceId).get
+  def space(ctx: AppContext[Request]): Space = ctx.ctx.space.find(spaceId).get
 
   @GraphQLField
-  def client(ctx: AppContext[Request]) = ctx.ctx.member.find(clientId).get
+  def client(ctx: AppContext[Request]): Member = ctx.ctx.member.find(clientId).get
 
   @GraphQLField
-  def reviews(ctx: AppContext[Request]) = ctx.ctx.review.findByRequestId(id)
+  def reviews(ctx: AppContext[Request]): List[Review] = ctx.ctx.review.findByRequestId(id)
 
 }

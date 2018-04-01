@@ -22,6 +22,7 @@ val anormVersion = "2.6.0-M1"
 val scalaLoggingVersion = "3.8.0"
 val monocleVersion = "1.5.0"
 val circeVersion = "0.9.1"
+val postgresqlVersion = "9.4.1208"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
@@ -29,26 +30,26 @@ libraryDependencies ++= Seq(
   jdbc,
   evolutions,
   "com.typesafe.play" %% "anorm" % anormVersion,
+  "org.postgresql" %% "postgresql" % postgresqlVersion,
+  "org.sangria-graphql" %% "sangria" % sangriaVersion,
+  "org.sangria-graphql" %% "sangria-play-json" % sangriaJsonVersion,
+  "org.sangria-graphql" %% "sangria-circe" % sangriaCirceVersion,
   "com.softwaremill.macwire" %% "macros" % macWireVersion % "provided",
   "com.softwaremill.macwire" %% "macrosakka" % macWireVersion % "provided",
   "com.softwaremill.macwire" %% "util" % macWireVersion,
   "com.softwaremill.macwire" %% "proxy" % macWireVersion,
-  "org.postgresql" % "postgresql" % "9.4.1208",
-  "org.sangria-graphql" %% "sangria" % sangriaVersion,
-  "org.sangria-graphql" %% "sangria-play-json" % sangriaJsonVersion,
-  "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonVersion,
-  "org.sangria-graphql" %% "sangria-circe" % sangriaCirceVersion,
-  "com.dripower" %% "play-circe" % playCirceVersion,
-  "io.circe" %% "circe-jackson29" % circeJacksonVersion,
-  "org.scalatestplus.play" %% "scalatestplus-play" % scalaTestVersion % Test,
-  "org.scalamock" %% "scalamock-scalatest-support" % scalaMockVersion % Test,
-  "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion,
   "com.github.julien-truffaut" %% "monocle-core" % monocleVersion,
   "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion,
   "com.github.julien-truffaut" %% "monocle-law" % monocleVersion % "test",
   "io.circe" %% "circe-core" % circeVersion,
   "io.circe" %% "circe-generic" % circeVersion,
-  "io.circe" %% "circe-parser" % circeVersion
+  "io.circe" %% "circe-parser" % circeVersion,
+  "io.circe" %% "circe-jackson29" % circeJacksonVersion,
+  "com.dripower" %% "play-circe" % playCirceVersion,
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonVersion,
+  "org.scalatestplus.play" %% "scalatestplus-play" % scalaTestVersion % Test,
+  "org.scalamock" %% "scalamock-scalatest-support" % scalaMockVersion % Test,
+  "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion
 )
 
 packageName in Docker := "panda-api"

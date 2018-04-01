@@ -1,7 +1,7 @@
 package utils.postgres
 
 import org.postgresql.util._
-import utils.StringUtil.splitWith
+import utils.datatypes.StringUtil.splitWith
 import utils.postgres.PostgresRange._
 
 class PostgresRange(var start: Int, var end: Int) extends PGobject {

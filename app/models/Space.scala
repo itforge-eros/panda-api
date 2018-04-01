@@ -14,7 +14,6 @@ case class Space(id: UUID,
                  createdAt: Instant) {
 
   @GraphQLField
-  def requests(ctx: AppContext[Space]) =
-    ctx.ctx.request.findBySpaceId(id)
+  def requests(ctx: AppContext[Space]): List[Request] = ctx.ctx.request.findBySpaceId(id)
 
 }
