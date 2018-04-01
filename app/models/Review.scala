@@ -3,6 +3,8 @@ package models
 import java.time.Instant
 import java.util.UUID
 
+import entities.ReviewEntity
+import henkan.convert.Syntax._
 import sangria.macros.derive.{GraphQLExclude, GraphQLField}
 import utils.graphql.GraphqlUtil.AppContext
 
@@ -17,5 +19,11 @@ case class Review(@GraphQLExclude requestId: UUID,
 
   @GraphQLField
   def reviewer(ctx: AppContext[Review]): Member = ctx.ctx.member.find(reviewerId).get
+
+}
+
+object Review {
+
+  def of(reviewEntity: ReviewEntity): Review = reviewEntity.to[Review]()
 
 }

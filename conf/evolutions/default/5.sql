@@ -14,4 +14,4 @@ CREATE TABLE reservation (
 
 # ---!Downs
 
-DROP TABLE reservation
+DROP TABLE reservation;

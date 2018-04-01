@@ -9,4 +9,4 @@ CREATE TABLE member (
 
 # ---!Downs
 
-DROP TABLE member
+DROP TABLE member;

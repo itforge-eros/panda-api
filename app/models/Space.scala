@@ -3,6 +3,8 @@ package models
 import java.time.Instant
 import java.util.UUID
 
+import entities.SpaceEntity
+import henkan.convert.Syntax._
 import sangria.macros.derive._
 import utils.graphql.GraphqlUtil.AppContext
 
@@ -15,5 +17,11 @@ case class Space(id: UUID,
 
   @GraphQLField
   def requests(ctx: AppContext[Space]): List[Request] = ctx.ctx.request.findBySpaceId(id)
+
+}
+
+object Space {
+
+  def of(spaceEntity: SpaceEntity): Space = spaceEntity.to[Space]()
 
 }

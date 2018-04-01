@@ -2,6 +2,8 @@ package models
 
 import java.util.UUID
 
+import entities.MemberEntity
+import henkan.convert.Syntax._
 import sangria.macros.derive._
 import utils.graphql.GraphqlUtil.AppContext
 
@@ -15,5 +17,11 @@ case class Member(id: UUID,
 
   @GraphQLField
   def reviews(ctx: AppContext[Member]): List[Review] = ctx.ctx.review.findByReviewerId(id)
+
+}
+
+object Member {
+
+  def of(memberEntity: MemberEntity): Member = memberEntity.to[Member]()
 
 }

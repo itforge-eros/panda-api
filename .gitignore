@@ -1,8 +1,9 @@
 # Generated File
-logs
-target
+logs/
+target/
 
 # Package File
+*.jar
 *.zip
 *.rar
 *.tar.gz
@@ -17,9 +18,9 @@ target
 *.swp
 
 # macOS
-.DS_STORE
+.DS_Store
 
 # Elastic Beanstalk
-.elasticbeanstalk/*
+.elasticbeanstalk/
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml

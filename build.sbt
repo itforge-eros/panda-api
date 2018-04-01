@@ -23,6 +23,7 @@ val scalaLoggingVersion = "3.8.0"
 val monocleVersion = "1.5.0"
 val circeVersion = "0.9.1"
 val postgresqlVersion = "9.4.1208"
+val henkanVersion = "0.6.1"
 
 resolvers += Resolver.sonatypeRepo("releases")
 
@@ -49,7 +50,9 @@ libraryDependencies ++= Seq(
   "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonVersion,
   "org.scalatestplus.play" %% "scalatestplus-play" % scalaTestVersion % Test,
   "org.scalamock" %% "scalamock-scalatest-support" % scalaMockVersion % Test,
-  "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion
+  "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion,
+  "com.kailuowang" %% "henkan-convert" % henkanVersion,
+  "com.kailuowang" %% "henkan-optional" % henkanVersion
 )
 
 packageName in Docker := "panda-api"

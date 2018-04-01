@@ -12,4 +12,4 @@ CREATE TABLE request (
 
 # ---!Downs
 
-DROP TABLE request
+DROP TABLE request;

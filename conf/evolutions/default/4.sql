@@ -12,4 +12,4 @@ CREATE TABLE review (
 
 # ---!Downs
 
-DROP TABLE review
+DROP TABLE review;

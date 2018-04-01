@@ -3,6 +3,8 @@ package models
 import java.time.Instant
 import java.util.{Date, UUID}
 
+import entities.RequestEntity
+import henkan.convert.Syntax._
 import sangria.macros.derive._
 import utils.graphql.GraphqlUtil.AppContext
 
@@ -22,5 +24,11 @@ case class Request(id: UUID,
 
   @GraphQLField
   def reviews(ctx: AppContext[Request]): List[Review] = ctx.ctx.review.findByRequestId(id)
+
+}
+
+object Request {
+
+  def of(requestEntity: RequestEntity): Request = requestEntity.to[Request]()
 
 }
