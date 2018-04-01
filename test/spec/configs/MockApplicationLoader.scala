@@ -5,6 +5,6 @@ import play.api._
 
 class MockApplicationLoader extends ApplicationLoader {
 
-  def load(context: Context): Application = new MockComponent(context).application
+  def load(context: Context): Application = new MockPandaComponents(context).application
 
 }

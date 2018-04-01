@@ -9,6 +9,11 @@ object Functional {
 
     def toFuture: Future[A] = Future.fromTry(t)
 
+    def flatMapFuture[B](f: A => Future[B]): Future[B] = t match {
+      case Success(value) => f(value)
+      case Failure(exception) => Future.failed(exception)
+    }
+
   }
 
   implicit class OptionHelpers[A](option: Option[A]) {

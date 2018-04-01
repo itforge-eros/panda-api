@@ -61,4 +61,5 @@ dockerUsername := Some("kavinvin")
 dockerUpdateLatest := true
 dockerExposedPorts := Seq(9000)
 
+fork in run := true
 parallelExecution in Test := true
