@@ -1,8 +1,8 @@
 package config.components
 
 import com.softwaremill.macwire.wire
-import persists.postgres.{ReviewPostgres, MemberPostgres, RequestPostgres, SpacePostgres}
-import persists.{ReviewPersist, MemberPersist, RequestPersist, SpacePersist}
+import persists.postgres._
+import persists._
 import play.api.db.evolutions.EvolutionsComponents
 import play.api.db.{DBComponents, Database, HikariCPComponents}
 
@@ -16,6 +16,7 @@ trait DatabaseComponents extends DBComponents
   lazy val requestPersist: RequestPersist = wire[RequestPostgres]
   lazy val memberPersist: MemberPersist = wire[MemberPostgres]
   lazy val reviewPersist: ReviewPersist = wire[ReviewPostgres]
+  lazy val reservationPersist: ReservationPersist = wire[ReservationPostgres]
 
   applicationEvolutions
 

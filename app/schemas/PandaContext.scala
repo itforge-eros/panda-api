@@ -9,4 +9,5 @@ case class PandaContext(query: Query,
                         spacePersist: SpacePersist,
                         requestPersist: RequestPersist,
                         memberPersist: MemberPersist,
-                        reviewPersist: ReviewPersist)
+                        reviewPersist: ReviewPersist,
+                        reservationPersist: ReservationPersist)

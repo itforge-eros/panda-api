@@ -1,8 +1,8 @@
 package spec.configs
 
 import com.softwaremill.macwire.wire
-import persists.{MemberPersist, RequestPersist, ReviewPersist, SpacePersist}
-import spec.mockpersists.{MockMemberPersist, MockRequestPersist, MockReviewPersist, MockSpacePersist}
+import persists._
+import spec.mockpersists._
 
 trait MockDatabaseComponents {
 
@@ -10,5 +10,6 @@ trait MockDatabaseComponents {
   lazy val requestPersist: RequestPersist = wire[MockRequestPersist]
   lazy val memberPersist: MemberPersist = wire[MockMemberPersist]
   lazy val reviewPersist: ReviewPersist = wire[MockReviewPersist]
+  lazy val reservationPersist: ReservationPersist = wire[MockReservationPersist]
 
 }
