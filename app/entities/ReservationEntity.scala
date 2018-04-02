@@ -6,4 +6,5 @@ case class ReservationEntity(id: UUID,
                              date: Date,
                              period: Range,
                              isAttended: Boolean,
-                             spaceId: UUID)
+                             spaceId: UUID,
+                             clientId: UUID)

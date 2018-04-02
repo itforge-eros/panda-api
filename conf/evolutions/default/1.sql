@@ -15,3 +15,5 @@ CREATE TABLE space (
 # ---!Downs
 
 DROP TABLE space;
+
+DROP DOMAIN positive_int;

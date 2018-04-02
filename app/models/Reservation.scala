@@ -10,7 +10,8 @@ case class Reservation(id: UUID,
                        date: Date,
                        period: Range,
                        isAttended: Boolean,
-                       @GraphQLExclude spaceId: UUID)
+                       @GraphQLExclude spaceId: UUID,
+                       @GraphQLExclude clientId: UUID)
 
 object Reservation {
 
