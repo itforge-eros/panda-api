@@ -2,7 +2,7 @@
 
 Online Space Reservation System GraphQL API
 
-[![Build Status](https://travis-ci.com/itforge-eros/panda-api.svg?token=hxfRmfpCpbnunWcyMpkC&branch=develop)](https://travis-ci.com/itforge-eros/panda-api)
+[![Build Status](https://travis-ci.org/itforge-eros/panda-api.svg?branch=develop)](https://travis-ci.org/itforge-eros/panda-api)
 
 ## Installation
 

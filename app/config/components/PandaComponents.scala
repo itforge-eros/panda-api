@@ -12,6 +12,7 @@ import schemas.PandaContext
 
 class PandaComponents(context: Context) extends BuiltInComponentsWithLogging(context)
   with DatabaseComponents
+  with ServiceComponents
   with GraphqlComponents
   with AssetsComponents
   with I18nComponents

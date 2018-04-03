@@ -9,4 +9,6 @@ class MockMemberPersist extends MemberPersist {
 
   override def find(id: UUID): Option[MemberEntity] = ???
 
+  override def findByUsername(username: String) = ???
+
 }

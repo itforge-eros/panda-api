@@ -1,7 +1,7 @@
 package schemas
 
 import inputs.{RequestInput, SpaceInput}
-import models.{Member, Request, Review, Space}
+import models._
 import sangria.macros.derive._
 import sangria.schema.Schema
 import utils.graphql.GraphqlUtil
@@ -12,6 +12,7 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val requestType: Type[Request] = deriveObjectType()
   implicit val memberType: Type[Member] = deriveObjectType()
   implicit val reviewType: Type[Review] = deriveObjectType()
+  implicit val memberWithToken: Type[MemberWithToken] = deriveObjectType()
 
   implicit val spaceInputType: InputType[SpaceInput] = deriveInputObjectType()
   implicit val requestInputType: InputType[RequestInput] = deriveInputObjectType()

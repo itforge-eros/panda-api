@@ -1,7 +1,7 @@
 package spec.configs
 
 import com.softwaremill.macwire.wire
-import config.components.{BuiltInComponentsWithLogging, GraphqlComponents}
+import config.components.{BuiltInComponentsWithLogging, GraphqlComponents, ServiceComponents}
 import controllers.{AssetsComponents, GraphqlController}
 import facades.GraphqlFacade
 import play.api.ApplicationLoader.Context
@@ -13,6 +13,7 @@ import schemas.PandaContext
 
 class MockPandaComponents(context: Context) extends BuiltInComponentsWithLogging(context)
   with MockDatabaseComponents
+  with ServiceComponents
   with GraphqlComponents
   with AssetsComponents
   with I18nComponents

@@ -8,6 +8,7 @@ import sangria.macros.derive._
 import utils.graphql.GraphqlUtil.AppContext
 
 case class Member(id: UUID,
+                  username: String,
                   firstName: String,
                   lastName: String,
                   email: String) {

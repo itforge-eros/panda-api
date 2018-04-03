@@ -14,6 +14,10 @@ class MemberPostgres(db: Database) extends MemberPersist {
     SQL"SELECT * FROM member WHERE id=$id::uuid" as rowParser.singleOpt
   }
 
+  override def findByUsername(username: String): Option[MemberEntity] = db.withConnection { implicit connection =>
+    SQL"SELECT * FROM member WHERE username=$username" as rowParser.singleOpt
+  }
+
   private lazy val rowParser: RowParser[MemberEntity] =
     Macro.namedParser[MemberEntity](ColumnNaming.SnakeCase)
 
