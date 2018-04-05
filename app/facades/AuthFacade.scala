@@ -22,6 +22,7 @@ class AuthFacade(memberPersist: MemberPersist, authService: AuthService) {
       .map(member => (member, createToken(member.id)))
       .toTry
 
+
   private def findOrElseCreateMember(existingMember: ExistingMember): MemberEntity =
     memberPersist.findByUsername(existingMember.username)
      .getOrElse(memberPersist.insert(MemberEntity.of(existingMember)).get)
