@@ -33,3 +33,7 @@ Run tests
 $ sbt test
 ```
 
+## Documentations
+
+Read http://pandoc.nyancode.io
+

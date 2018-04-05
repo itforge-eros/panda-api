@@ -11,4 +11,6 @@ class MockMemberPersist extends MemberPersist {
 
   override def findByUsername(username: String) = ???
 
+  override def insert(member: MemberEntity) = ???
+
 }

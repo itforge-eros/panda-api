@@ -11,6 +11,10 @@ object AppException extends LazyLogging {
 
   case object TooComplexQueryError extends Exception("Query is too expensive.")
 
+  case object WrongUsernameOrPasswordException extends Exception("Wrong username or password.")
+
+  case object MemberFirstLoginException extends Exception("First login.")
+
   class UnexpectedError(other: Throwable) extends Exception("Something went wrong.") {
     val stringWriter = new StringWriter
     other.printStackTrace(new PrintWriter(stringWriter))

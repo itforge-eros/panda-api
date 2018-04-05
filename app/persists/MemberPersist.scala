@@ -10,4 +10,6 @@ trait MemberPersist {
 
   def findByUsername(username: String): Option[MemberEntity]
 
+  def insert(member: MemberEntity): Option[MemberEntity]
+
 }

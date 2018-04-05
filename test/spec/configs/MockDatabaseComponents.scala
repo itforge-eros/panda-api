@@ -1,10 +1,11 @@
 package spec.configs
 
 import com.softwaremill.macwire.wire
+import org.scalamock.scalatest.MockFactory
 import persists._
 import spec.mockpersists._
 
-trait MockDatabaseComponents {
+trait MockDatabaseComponents extends MockFactory {
 
   lazy val spacePersist: SpacePersist = wire[MockSpacePersist]
   lazy val requestPersist: RequestPersist = wire[MockRequestPersist]

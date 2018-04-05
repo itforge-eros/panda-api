@@ -1,7 +1,9 @@
 package services
 
+import entities.ExistingMember
+
 trait AuthService {
 
-  def verify(username: String, password: String): Boolean
+  def login(username: String, password: String): Option[ExistingMember]
 
 }

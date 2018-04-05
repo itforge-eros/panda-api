@@ -18,6 +18,18 @@ class MemberPostgres(db: Database) extends MemberPersist {
     SQL"SELECT * FROM member WHERE username=$username" as rowParser.singleOpt
   }
 
+  override def insert(member: MemberEntity) = db.withConnection { implicit connection =>
+    SQL"""
+          INSERT INTO member VALUES (
+            ${member.id}::uuid,
+            ${member.username},
+            ${member.firstName},
+            ${member.lastName},
+            ${member.email}
+          )
+       """ executeInsert rowParser.singleOpt
+  }
+
   private lazy val rowParser: RowParser[MemberEntity] =
     Macro.namedParser[MemberEntity](ColumnNaming.SnakeCase)
 
