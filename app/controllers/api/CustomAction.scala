@@ -2,7 +2,7 @@ package controllers.api
 
 import definitions.AppException.{GraphqlVariablesParseError, UnauthorizedException}
 import definitions.AppSecurity
-import facades.AuthFacade
+import facades.AuthenticationFacade
 import models.Member
 import pdi.jwt.{JwtCirce, JwtClaim}
 import play.api.libs.circe.Circe
@@ -52,7 +52,7 @@ trait CustomAction extends TryResults
   case class GraphqlRequest[A](request: Request[A],
                                member: Member) extends WrappedRequest[A](request)
 
-  protected val authentication: AuthFacade
+  protected val authentication: AuthenticationFacade
 
   implicit protected val ec: ExecutionContext
 

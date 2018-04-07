@@ -11,6 +11,6 @@ trait AuthQuery {
 
   @GraphQLField
   def login(username: String, password: String)(ctx: AppContext[Unit]): Try[MemberWithToken] =
-    ctx.ctx.authFacade.authenticate(username, password) map MemberWithToken.tupled
+    ctx.ctx.authFacade.login(username, password) map MemberWithToken.tupled
 
 }

@@ -3,3 +3,6 @@ GET     /graphql        controllers.GraphqlController.graphql(query: String, ope
 POST    /graphql        controllers.GraphqlController.graphqlBody
 GET     /schema         controllers.GraphqlController.schema
 GET     /               controllers.GraphqlController.schema
+
+# Authentication
+POST    /login          controllers.AuthenticationController.login
