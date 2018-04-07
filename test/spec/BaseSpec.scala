@@ -74,6 +74,6 @@ abstract class BaseSpec extends AsyncWordSpec
 
   private lazy val token = JwtCirce.encode(claim, AppSecurity.key, AppSecurity.algorithm)
 
-  implicit protected val headers: List[(String, String)] = List(("Authorization", token))
+  implicit protected val headers: List[(String, String)] = List(("Authorization", s"bearer $token"))
 
 }
