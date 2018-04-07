@@ -2,6 +2,8 @@ package utils
 
 import definitions.AppException.UnexpectedError
 
+import scala.concurrent.{ExecutionContext, Future}
+import scala.language.postfixOps
 import scala.util.{Failure, Try}
 
 trait Validation {

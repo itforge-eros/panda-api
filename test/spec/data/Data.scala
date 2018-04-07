@@ -10,6 +10,7 @@ object Data {
   val uuid3: UUID = UUID.fromString("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a13")
   val uuid4: UUID = UUID.fromString("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a14")
   val uuid5: UUID = UUID.fromString("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a15")
+  val uuid6: UUID = UUID.fromString("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a16")
 
   lazy val INITIAL_DATA =
     """

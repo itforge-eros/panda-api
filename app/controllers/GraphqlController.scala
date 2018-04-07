@@ -1,32 +1,46 @@
 package controllers
 
 import controllers.api.ApiController
-import facades.GraphqlFacade
-import io.circe.generic.auto.exportDecoder
+import definitions.AppException.GraphqlVariablesParseError
+import facades.{AuthFacade, GraphqlFacade}
+import io.circe.Json
+import io.circe.generic.auto._
+import persists.MemberPersist
 import play.api.mvc._
 import sangria.renderer.SchemaRenderer.renderSchema
-import schemas.{PandaContext, SchemaDefinition}
-import utils.graphql.GraphqlUtil.parseVariables
-import utils.graphql.GraphqlQuery
+import schemas.SchemaDefinition
+import utils.graphql.{GraphqlQuery, GraphqlUtil}
 
 import scala.concurrent.ExecutionContext
 import scala.language.postfixOps
 
 class GraphqlController(components: ControllerComponents,
-                        graphqlFacade: GraphqlFacade) extends ApiController(components) {
+                        graphqlFacade: GraphqlFacade,
+                        authFacade: AuthFacade,
+                        memberPersist: MemberPersist)
+                       (implicit ec: ExecutionContext) extends ApiController(components) {
 
-  def graphql(query: String, operation: Option[String], variables: Option[String]) = Action.async {
-    val form = GraphqlQuery(query, operation, variables flatMap parseVariables)
+  def graphql(query: String,
+              operation: Option[String],
+              variables: Option[String]) = GraphqlAction.async { request =>
+    val form = GraphqlQuery(query, operation, variables map parseVariables)
 
-    graphqlFacade.executeQuery(form) toResult
+    graphqlFacade.executeQuery(form)(request.member) toResult
   }
 
-  def graphqlBody = Action.async(circe.json[GraphqlQuery]) { request =>
-    graphqlFacade.executeQuery(request.body) toResult
+  def graphqlBody = GraphqlAction.async(circe.json[GraphqlQuery]) { request =>
+    graphqlFacade.executeQuery(request.body)(request.member) toResult
   }
 
   def schema = Action {
     Ok(renderSchema(SchemaDefinition.schema))
   }
+
+
+  private def parseVariables(s: String): Json = {
+    GraphqlUtil.parseVariables(s).getOrElse(throw GraphqlVariablesParseError)
+  }
+
+  override val authentication = authFacade
 
 }

@@ -13,8 +13,8 @@ trait DatabaseComponents extends DBComponents
   lazy val database: Database = dbApi.database("default")
 
   lazy val spacePersist: SpacePersist = wire[SpacePostgres]
-  lazy val requestPersist: RequestPersist = wire[RequestPostgres]
   lazy val memberPersist: MemberPersist = wire[MemberPostgres]
+  lazy val requestPersist: RequestPersist = wire[RequestPostgres]
   lazy val reviewPersist: ReviewPersist = wire[ReviewPostgres]
   lazy val reservationPersist: ReservationPersist = wire[ReservationPostgres]
 

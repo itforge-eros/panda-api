@@ -23,6 +23,16 @@ object Functional {
       case None => None
     }
 
+    def toFuture(e: Throwable): Future[A] = option match {
+      case Some(value) => Future.successful(value)
+      case None => Future.failed(e)
+    }
+
+    def toTry(e: Throwable): Try[A] = option match {
+      case Some(value) => Success(value)
+      case None => Failure(e)
+    }
+
   }
 
 }

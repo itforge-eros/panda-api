@@ -35,6 +35,7 @@ trait TryResults extends Results
   }
 
   protected implicit class FailureTry(failure: Failure[Exception]) {
+    def badRequest: Result = BadRequest(ResponsePresenter(failure) toJson) as APPLICATION_JSON
     def unauthorized: Result = Unauthorized(ResponsePresenter(failure) toJson) as APPLICATION_JSON
   }
 

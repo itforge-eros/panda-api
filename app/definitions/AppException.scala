@@ -9,11 +9,19 @@ object AppException extends LazyLogging {
 
   class GraphqlSyntaxError extends Exception("GraphQL syntax error.")
 
+  case object GraphqlVariablesParseError extends Exception("Cannot parse GraphQL variables.")
+
   case object TooComplexQueryError extends Exception("Query is too expensive.")
+
+  case object UnauthorizedException extends Exception("Unauthorized.")
 
   case object WrongUsernameOrPasswordException extends Exception("Wrong username or password.")
 
   case object MemberFirstLoginException extends Exception("First login.")
+
+  case object MemberNotFoundException extends Exception("Member not found exception.")
+
+  case object WrongUuidFormatException extends Exception("Wrong UUID format")
 
   class UnexpectedError(other: Throwable) extends Exception("Something went wrong.") {
     val stringWriter = new StringWriter

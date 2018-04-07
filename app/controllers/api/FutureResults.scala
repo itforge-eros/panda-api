@@ -1,7 +1,7 @@
 package controllers.api
 
 import play.api.mvc.{Result, Results}
-import presenters.ResponsePresenter.FailResponsePresenter
+import presenters.ResponsePresenter.FailResponse
 import utils.datatypes.JsonUtil
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -14,7 +14,7 @@ trait FutureResults extends Results
     def toResult(implicit ec: ExecutionContext): Future[Result] = result map {
       value => Ok(value toJson) as APPLICATION_JSON
     } recover {
-      case throwable => BadRequest(FailResponsePresenter(throwable.getMessage) toJson) as APPLICATION_JSON
+      case throwable => BadRequest(FailResponse(throwable.getMessage) toJson) as APPLICATION_JSON
     }
   }
 

@@ -1,10 +1,14 @@
 package spec
 
+import java.time.Instant
+
+import definitions.AppSecurity
 import io.circe.Json
 import io.circe.syntax._
 import org.scalatest._
 import org.scalatest.time.SpanSugar
 import org.scalatestplus.play.FakeApplicationFactory
+import pdi.jwt.{JwtCirce, JwtClaim}
 import play.api.inject.DefaultApplicationLifecycle
 import play.api.libs.json.JsValue
 import play.api.{Application, ApplicationLoader, Configuration, Environment}
@@ -14,6 +18,7 @@ import sangria.marshalling.circe.{CirceInputUnmarshaller, CirceResultMarshaller}
 import sangria.marshalling.playJson._
 import sangria.marshalling.{InputUnmarshaller, ResultMarshaller}
 import spec.configs.MockApplicationLoader
+import spec.data.MemberData
 import spec.helpers.ControllerSpecHelper
 import utils.graphql.GraphqlQuery
 
@@ -60,5 +65,15 @@ abstract class BaseSpec extends AsyncWordSpec
     operationName = Some("findSpace"),
     variables = Some(Map("id" -> "001") asJson)
   )
+
+  private lazy val claim = JwtClaim(
+    subject = MemberData.members.headOption map (_.id.toString),
+    issuedAt = Some(Instant.now.getEpochSecond),
+    expiration = Some(Instant.now().plusSeconds(31536000).getEpochSecond)
+  )
+
+  private lazy val token = JwtCirce.encode(claim, AppSecurity.key, AppSecurity.algorithm)
+
+  implicit protected val headers: List[(String, String)] = List(("Authorization", token))
 
 }

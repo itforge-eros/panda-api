@@ -9,6 +9,7 @@ import schemas.PandaContext
 import utils.Functional._
 
 import scala.language.implicitConversions
+import scala.util.{Success, Try}
 
 trait GraphqlUtil[PartialContext] extends Scalar {
 
@@ -18,9 +19,9 @@ trait GraphqlUtil[PartialContext] extends Scalar {
 
   implicit def implicitFromInput[A: Decoder]: FromInput[A] = circeDecoderFromInput[A]
 
-  def parseVariables(variables: String): Option[Json] = variables.trim match {
-    case "" | "null" => Some(Json.obj())
-    case _ => parse(variables).toOption
+  def parseVariables(variables: String): Try[Json] = variables.trim match {
+    case "" | "null" => Success(Json.obj())
+    case _ => parse(variables).toTry
   }
 
   def forceStringToObject(json: Json): Json = {
