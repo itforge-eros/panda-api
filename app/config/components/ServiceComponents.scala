@@ -1,11 +1,11 @@
 package config.components
 
 import entities.ExistingMember
-import services.AuthService
+import services.AuthenticationService
 
 trait ServiceComponents {
 
-  lazy val authService: AuthService = (_, _) => Some(ExistingMember(
+  lazy val authService: AuthenticationService = (_, _) => Some(ExistingMember(
     "59070009",
     "Kavin",
     "Ruengprateepsang",

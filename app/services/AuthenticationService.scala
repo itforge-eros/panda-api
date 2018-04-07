@@ -2,7 +2,7 @@ package services
 
 import entities.ExistingMember
 
-trait AuthService {
+trait AuthenticationService {
 
   def login(username: String, password: String): Option[ExistingMember]
 

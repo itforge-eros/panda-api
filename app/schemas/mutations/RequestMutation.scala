@@ -7,7 +7,7 @@ import java.util.UUID.randomUUID
 import entities.RequestEntity
 import models.Request
 import sangria.macros.derive.GraphQLField
-import inputs.RequestInput
+import schemas.inputs.RequestInput
 import utils.graphql.GraphqlUtil.AppContext
 
 trait RequestMutation {

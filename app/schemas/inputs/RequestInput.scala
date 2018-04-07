@@ -1,4 +1,4 @@
-package inputs
+package schemas.inputs
 
 import java.util.{Date, UUID}
 

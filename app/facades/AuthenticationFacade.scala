@@ -9,11 +9,11 @@ import entities.{ExistingMember, MemberEntity}
 import models.Member
 import pdi.jwt.{JwtAlgorithm, JwtCirce, JwtClaim}
 import persists.MemberPersist
-import services.AuthService
+import services.AuthenticationService
 
 import scala.util.Try
 
-class AuthenticationFacade(memberPersist: MemberPersist, authService: AuthService) {
+class AuthenticationFacade(memberPersist: MemberPersist, authService: AuthenticationService) {
 
   def findById(id: UUID): Option[Member] =
     memberPersist.find(id) map Member.of

@@ -36,7 +36,7 @@ object JsonUtil {
   mapper.registerModule(PlayJsonModule)
   mapper.registerModule(CirceJsonModule)
   mapper.setSerializationInclusion(Include.NON_NULL)
-  mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+//  mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
 
   private lazy val noneString = "N/A"
   private lazy val noneJson = mapper.writeValueAsString(None)
