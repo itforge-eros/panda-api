@@ -15,7 +15,7 @@ import scala.language.postfixOps
 
 class GraphqlController(components: ControllerComponents,
                         graphqlFacade: GraphqlFacade,
-                        authFacade: AuthenticationFacade)
+                        override val authenticationFacade: AuthenticationFacade)
                        (implicit ec: ExecutionContext) extends ApiController(components) {
 
   def graphql(query: String,
@@ -40,7 +40,5 @@ class GraphqlController(components: ControllerComponents,
   }
 
   private val parser: BodyParser[GraphqlQuery] = circe.json[GraphqlQuery]
-
-  override val authentication = authFacade
 
 }

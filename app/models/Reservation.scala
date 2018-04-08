@@ -17,10 +17,12 @@ case class Reservation(id: UUID,
                        @GraphQLExclude clientId: UUID) {
 
   @GraphQLField
-  def space(ctx: AppContext[Request]): Space = ctx.ctx.spacePersist.find(spaceId) map Space.of get
+  def space(ctx: AppContext[Request]): Space =
+    ctx.ctx.spacePersist.find(spaceId) map Space.of get
 
   @GraphQLField
-  def client(ctx: AppContext[Request]): Member = ctx.ctx.memberPersist.find(clientId) map Member.of get
+  def client(ctx: AppContext[Request]): Member =
+    ctx.ctx.memberPersist.find(clientId) map Member.of get
 
 }
 

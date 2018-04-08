@@ -20,7 +20,7 @@ class PandaComponents(context: Context) extends BuiltInComponentsWithLogging(con
   with NoHttpFiltersComponents {
 
   lazy val routePrefix: String = "/"
-  lazy val pandaContext: Member => PandaContext = (_: Member) => wire[PandaContext]
+  lazy val pandaContext: Option[Member] => PandaContext = (_: Option[Member]) => wire[PandaContext]
 
   lazy val authenticationFacade: AuthenticationFacade = wire[AuthenticationFacade]
   lazy val graphqlFacade: GraphqlFacade = wire[GraphqlFacade]

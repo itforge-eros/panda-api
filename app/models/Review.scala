@@ -17,10 +17,12 @@ case class Review(@GraphQLExclude requestId: UUID,
                   createdAt: Instant) {
 
   @GraphQLField
-  def request(ctx: AppContext[Review]): Request = ctx.ctx.requestPersist.find(requestId) map Request.of get
+  def request(ctx: AppContext[Review]): Request =
+    ctx.ctx.requestPersist.find(requestId) map Request.of get
 
   @GraphQLField
-  def reviewer(ctx: AppContext[Review]): Member = ctx.ctx.memberPersist.find(reviewerId) map Member.of get
+  def reviewer(ctx: AppContext[Review]): Member =
+    ctx.ctx.memberPersist.find(reviewerId) map Member.of get
 
 }
 

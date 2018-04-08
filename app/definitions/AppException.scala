@@ -7,29 +7,49 @@ import play.api.data.Form
 
 object AppException extends LazyLogging {
 
-  class GraphqlSyntaxError extends Exception("GraphQL syntax error.")
+  class GraphqlSyntaxError
+    extends Exception("GraphQL syntax error.")
 
-  case object GraphqlVariablesParseError extends Exception("Cannot parse GraphQL variables.")
+  case object GraphqlVariablesParseError
+    extends Exception("Cannot parse GraphQL variables.")
 
-  case object TooComplexQueryError extends Exception("Query is too expensive.")
+  case object TooComplexQueryError
+    extends Exception("Query is too expensive.")
 
-  case object UnauthorizedException extends Exception("Unauthorized.")
+  case object UnauthorizedException
+    extends Exception("Unauthorized.")
 
-  case object WrongUsernameOrPasswordException extends Exception("Wrong username or password.")
+  case object WrongUsernameOrPasswordException
+    extends Exception("Wrong username or password.")
 
-  case object MemberFirstLoginException extends Exception("First login.")
+  class WrongBearerHeaderFormatException(actual: String)
+    extends BadRequestException(s"Wrong bearer header format. Expect: Bearer [token] Actual: $actual")
 
-  case object MemberNotFoundException extends Exception("Member not found exception.")
+  class BadRequestException(message: String)
+    extends Exception(message)
 
-  case object WrongUuidFormatException extends Exception("Wrong UUID format")
+  case object MemberFirstLoginException
+    extends Exception("First login.")
 
-  class UnexpectedError(other: Throwable) extends Exception("Something went wrong.") {
+  case object MemberNotFoundException
+    extends Exception("Member not found exception.")
+
+  case object WrongUuidFormatException
+    extends Exception("Wrong UUID format.")
+
+  object MalformedJwtTokenException
+    extends Exception("Malformed JWT token.")
+
+  class UnexpectedError(other: Throwable)
+    extends Exception("Something went wrong.") {
+
     val stringWriter = new StringWriter
     other.printStackTrace(new PrintWriter(stringWriter))
     logger.error(stringWriter.toString)
   }
 
-  case class FormException(message: String) extends Exception("Input error." + description(message)) {
+  case class FormException(message: String)
+    extends Exception("Input error." + description(message)) {
 
     def this(form: Form[_]) = {
       this(

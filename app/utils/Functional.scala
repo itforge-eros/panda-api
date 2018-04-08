@@ -28,11 +28,27 @@ object Functional {
       case None => Future.failed(e)
     }
 
-    def toTry(e: Throwable): Try[A] = option match {
-      case Some(value) => Success(value)
-      case None => Failure(e)
+    def toTry(e: => Throwable): Try[A] =
+      option.fold[Try[A]](Failure(e))(Success(_))
+
+    def peek(f: A => Unit): Option[A] = {
+      option.foreach(tap(f))
+      option
     }
 
+  }
+
+  def swap[A](optionTry: Option[Try[A]]): Try[Option[A]] = {
+    optionTry match {
+      case Some(Success(t)) => Success(Some(t))
+      case Some(Failure(e)) => Failure(e)
+      case None => Success(None)
+    }
+  }
+
+  def tap[A](f: A => Unit)(obj: A): A = {
+    f(obj)
+    obj
   }
 
 }

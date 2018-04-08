@@ -9,8 +9,8 @@ import services.AuthenticationService
 
 case class PandaContext(query: Query,
                         mutation: Mutation,
+                        member: Option[Member],
                         authFacade: AuthenticationFacade,
-                        member: Member,
                         spacePersist: SpacePersist,
                         requestPersist: RequestPersist,
                         memberPersist: MemberPersist,

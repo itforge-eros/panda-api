@@ -21,7 +21,7 @@ class MockPandaComponents(context: Context) extends BuiltInComponentsWithLogging
   with NoHttpFiltersComponents {
 
   lazy val routePrefix: String = "/"
-  lazy val pandaContext: Member => PandaContext = (_: Member) => wire[PandaContext]
+  lazy val pandaContext: Option[Member] => PandaContext = (_: Option[Member]) => wire[PandaContext]
 
   lazy val authFacade: AuthenticationFacade = wire[AuthenticationFacade]
   lazy val graphqlFacade: GraphqlFacade = wire[GraphqlFacade]

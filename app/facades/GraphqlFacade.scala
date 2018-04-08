@@ -14,11 +14,11 @@ import utils.graphql.GraphqlUtil.forceStringToObject
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class GraphqlFacade(context: Member => PandaContext)
+class GraphqlFacade(context: Option[Member] => PandaContext)
                    (implicit execution: ExecutionContext) {
 
   def executeQuery(form: GraphqlQuery)
-                  (implicit member: Member): Future[Json] =
+                  (implicit member: Option[Member]): Future[Json] =
     QueryParser parse form.query flatMapFuture {
       executeQuery(_, form.operationName, form.variables map forceStringToObject)
     }
@@ -26,7 +26,7 @@ class GraphqlFacade(context: Member => PandaContext)
   def executeQuery(document: Document,
                    operationName: Option[String],
                    variables: Option[Json])
-                  (implicit member: Member): Future[Json] =
+                  (implicit member: Option[Member]): Future[Json] =
     Executor.execute(
       schema = SchemaDefinition.schema,
       queryAst = document,
