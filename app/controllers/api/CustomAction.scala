@@ -34,11 +34,10 @@ trait CustomAction extends TryResults
   }
 
 
-  private def findMember(request: Request[_]): Try[Option[Member]] =
-    swap(
-      getToken(request)
-        .map(_.flatMap(findMemberFromToken))
-    )
+  private def findMember(request: Request[_]): Try[Option[Member]] = swapTryOption(
+    getToken(request)
+      .map(_.flatMap(findMemberFromToken))
+  )
 
   private def getToken(request: Request[_]): Option[Try[String]] =
     request.headers.get(AUTHORIZATION_KEY) map { value =>
@@ -49,11 +48,8 @@ trait CustomAction extends TryResults
     }
 
   private def findMemberFromToken(token: String): Try[Member] =
-    decodeToken(token)
-      .flatMap(authorize(_).toTry(new UnexpectedError(MalformedJwtTokenException)))
-
-  private def decodeToken(token: String): Try[JwtClaim] =
     JwtCirce.decode(token, AppSecurity.key, Seq(AppSecurity.algorithm))
+      .flatMap(authorize(_).toTry(new UnexpectedError(MalformedJwtTokenException)))
 
   private def authorize(claim: JwtClaim): Option[Member] =
     claim.subject

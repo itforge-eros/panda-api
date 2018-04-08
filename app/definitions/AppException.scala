@@ -10,16 +10,16 @@ object AppException extends LazyLogging {
   class GraphqlSyntaxError
     extends Exception("GraphQL syntax error.")
 
-  case object GraphqlVariablesParseError
+  object GraphqlVariablesParseError
     extends Exception("Cannot parse GraphQL variables.")
 
-  case object TooComplexQueryError
+  object TooComplexQueryError
     extends Exception("Query is too expensive.")
 
-  case object UnauthorizedException
+  object UnauthorizedException
     extends Exception("Unauthorized.")
 
-  case object WrongUsernameOrPasswordException
+  object WrongUsernameOrPasswordException
     extends Exception("Wrong username or password.")
 
   class WrongBearerHeaderFormatException(actual: String)
@@ -28,13 +28,13 @@ object AppException extends LazyLogging {
   class BadRequestException(message: String)
     extends Exception(message)
 
-  case object MemberFirstLoginException
+  object MemberFirstLoginException
     extends Exception("First login.")
 
-  case object MemberNotFoundException
+  object MemberNotFoundException
     extends Exception("Member not found exception.")
 
-  case object WrongUuidFormatException
+  object WrongUuidFormatException
     extends Exception("Wrong UUID format.")
 
   object MalformedJwtTokenException

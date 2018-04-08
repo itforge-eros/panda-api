@@ -38,7 +38,7 @@ object Functional {
 
   }
 
-  def swap[A](optionTry: Option[Try[A]]): Try[Option[A]] = {
+  def swapTryOption[A](optionTry: Option[Try[A]]): Try[Option[A]] = {
     optionTry match {
       case Some(Success(t)) => Success(Some(t))
       case Some(Failure(e)) => Failure(e)
