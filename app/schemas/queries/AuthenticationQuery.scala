@@ -7,7 +7,7 @@ import utils.graphql.GraphqlUtil.AppContext
 import scala.language.postfixOps
 import scala.util.Try
 
-trait AuthQuery {
+trait AuthenticationQuery {
 
   @GraphQLField
   def login(username: String, password: String)(ctx: AppContext[Unit]): Try[MemberWithToken] =

@@ -1,15 +1,9 @@
 package config.components
 
-import entities.ExistingMember
-import services.AuthenticationService
+import services.{AuthenticationService, MockAuthenticationService}
 
 trait ServiceComponents {
 
-  lazy val authService: AuthenticationService = (_, _) => Some(ExistingMember(
-    "59070009",
-    "Kavin",
-    "Ruengprateepsang",
-    "email@email.com"
-  ))
+  lazy val authenticationService: AuthenticationService = new MockAuthenticationService
 
 }

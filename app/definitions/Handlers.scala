@@ -1,6 +1,6 @@
 package definitions
 
-import definitions.AppException.TooComplexQueryError
+import definitions.AppException.{TooComplexQueryError, WrongUsernameOrPasswordException}
 import sangria.execution.{ExceptionHandler, HandledException, MaxQueryDepthReachedError}
 
 object Handlers {
@@ -8,6 +8,7 @@ object Handlers {
   lazy val exceptionHandler = ExceptionHandler {
     case (_, error @ TooComplexQueryError) ⇒ HandledException(error.getMessage)
     case (_, error @ MaxQueryDepthReachedError(_)) ⇒ HandledException(error.getMessage)
+    case (_, error @ WrongUsernameOrPasswordException) ⇒ HandledException(error.getMessage)
   }
 
 }

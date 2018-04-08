@@ -13,13 +13,14 @@ import services.AuthenticationService
 
 import scala.util.Try
 
-class AuthenticationFacade(memberPersist: MemberPersist, authService: AuthenticationService) {
+class AuthenticationFacade(memberPersist: MemberPersist,
+                           authenticationService: AuthenticationService) {
 
   def findById(id: UUID): Option[Member] =
     memberPersist.find(id) map Member.of
 
   def login(username: String, password: String): Try[(Member, String)] =
-    authService.login(username, password)
+    authenticationService.login(username, password)
       .toRight(WrongUsernameOrPasswordException)
       .map(findOrElseCreateMember)
       .map(Member.of)
