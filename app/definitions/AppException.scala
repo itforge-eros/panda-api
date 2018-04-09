@@ -22,6 +22,9 @@ object AppException extends LazyLogging {
   object WrongUsernameOrPasswordException
     extends Exception("Wrong username or password.")
 
+  class JwtDecodingException(message: String)
+   extends Exception(s"Cannot decode JWT. $message")
+
   class WrongBearerHeaderFormatException(actual: String)
     extends BadRequestException(s"Wrong bearer header format. Expect: Bearer [token] Actual: $actual")
 

@@ -16,4 +16,4 @@ case class PandaContext(query: Query,
                         memberPersist: MemberPersist,
                         reviewPersist: ReviewPersist,
                         reservationPersist: ReservationPersist,
-                        authService: AuthenticationService)
+                        authorizationService: AuthenticationService)

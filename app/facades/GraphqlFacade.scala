@@ -7,7 +7,7 @@ import sangria.ast.Document
 import sangria.execution.Executor
 import sangria.marshalling.circe.{CirceInputUnmarshaller, CirceResultMarshaller, circeFromInput}
 import sangria.parser.QueryParser
-import schemas.{PandaContext, SchemaDefinition}
+import schemas.{PandaContext, SchemaDefinition, SecurityMiddleware}
 import utils.Functional.TryHelpers
 import utils.graphql.GraphqlQuery
 import utils.graphql.GraphqlUtil.forceStringToObject
@@ -33,7 +33,8 @@ class GraphqlFacade(context: Option[Member] => PandaContext)
       userContext = context(member),
       operationName = operationName,
       variables = variables getOrElse Json.obj(),
-      exceptionHandler = Handlers.exceptionHandler
+      exceptionHandler = Handlers.exceptionHandler,
+      middleware = List(new SecurityMiddleware)
     )
 
 }

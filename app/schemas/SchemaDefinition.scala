@@ -2,6 +2,7 @@ package schemas
 
 import inputs.{RequestInput, SpaceInput}
 import models._
+import sangria.execution.FieldTag
 import sangria.macros.derive._
 import sangria.schema.Schema
 import utils.graphql.GraphqlUtil
@@ -23,3 +24,5 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   val schema = Schema(queryType, Some(mutationType))
 
 }
+
+case object Authorized extends FieldTag

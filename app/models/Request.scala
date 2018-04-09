@@ -6,6 +6,7 @@ import java.util.{Date, UUID}
 import entities.RequestEntity
 import henkan.convert.Syntax._
 import sangria.macros.derive._
+import schemas.Authorized
 import utils.graphql.GraphqlUtil.AppContext
 
 import scala.language.postfixOps

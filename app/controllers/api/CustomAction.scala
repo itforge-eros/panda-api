@@ -1,7 +1,8 @@
 package controllers.api
 
 import definitions.AppException._
-import definitions.AppSecurity
+import definitions.Handlers.response
+import definitions.{AppSecurity, Handlers}
 import facades.AuthenticationFacade
 import models.Member
 import pdi.jwt.{JwtCirce, JwtClaim}
@@ -24,15 +25,9 @@ trait CustomAction extends TryResults
     override def invokeBlock[A](request: Request[A], block: GraphqlRequest[A] => Future[Result]) = {
       findMember(request) flatMapFuture { member =>
         block(GraphqlRequest(request, member))
-      } recoverWith {
-        case GraphqlVariablesParseError => response(Failure(GraphqlVariablesParseError).badRequest)
-        case UnauthorizedException => response(Failure(UnauthorizedException).unauthorized)
-        case e: BadRequestException => response(Failure(e).badRequest)
-        case e: UnexpectedError => response(Failure(e).unauthorized)
-      }
+      } recoverWith Handlers.graphqlAction
     }
   }
-
 
   private def findMember(request: Request[_]): Try[Option[Member]] = swapTryOption(
     getToken(request)
@@ -49,6 +44,7 @@ trait CustomAction extends TryResults
 
   private def findMemberFromToken(token: String): Try[Member] =
     JwtCirce.decode(token, AppSecurity.key, Seq(AppSecurity.algorithm))
+      .recoverWith { case e => Failure(new JwtDecodingException(e.getMessage))}
       .flatMap(authorize(_).toTry(new UnexpectedError(MalformedJwtTokenException)))
 
   private def authorize(claim: JwtClaim): Option[Member] =
