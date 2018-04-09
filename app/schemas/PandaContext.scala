@@ -1,6 +1,6 @@
 package schemas
 
-import facades.AuthenticationFacade
+import facades.{AuthenticationFacade, SpaceFacade}
 import models.Member
 import persists._
 import schemas.mutations.Mutation
@@ -10,7 +10,8 @@ import services.AuthenticationService
 case class PandaContext(query: Query,
                         mutation: Mutation,
                         member: Option[Member],
-                        authFacade: AuthenticationFacade,
+                        authenticationFacade: AuthenticationFacade,
+                        spaceFacade: SpaceFacade,
                         spacePersist: SpacePersist,
                         requestPersist: RequestPersist,
                         memberPersist: MemberPersist,

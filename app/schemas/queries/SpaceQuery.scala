@@ -6,10 +6,12 @@ import models.Space
 import sangria.macros.derive.GraphQLField
 import utils.graphql.GraphqlUtil.AppContext
 
+import scala.util.Try
+
 trait SpaceQuery {
 
   @GraphQLField
-  def space(id: UUID)(ctx: AppContext[Unit]): Option[Space] = ctx.ctx.spacePersist.find(id) map Space.of
+  def space(id: UUID)(ctx: AppContext[Unit]): Try[Space] = ctx.ctx.spaceFacade.find(id)
 
   @GraphQLField
   def spaces(ctx: AppContext[Unit]): List[Space] = ctx.ctx.spacePersist.findAll map Space.of

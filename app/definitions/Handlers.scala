@@ -2,19 +2,24 @@ package definitions
 
 import controllers.api.TryResults
 import definitions.AppException._
+import definitions.Violations.InvalidDateViolation
 import play.api.mvc.Result
 import sangria.execution.{ExceptionHandler, HandledException, MaxQueryDepthReachedError}
+import sangria.marshalling.ResultMarshaller
 
 import scala.concurrent.Future
 import scala.util.Failure
 
 object Handlers extends TryResults {
 
+  type ExceptionHandler = PartialFunction[(ResultMarshaller, Throwable), HandledException]
+
   lazy val exceptionHandler = ExceptionHandler {
     case (_, error @ TooComplexQueryError) ⇒ HandledException(error.getMessage)
     case (_, error @ MaxQueryDepthReachedError(_)) ⇒ HandledException(error.getMessage)
     case (_, error @ WrongUsernameOrPasswordException) ⇒ HandledException(error.getMessage)
     case (_, error @ UnauthorizedException) ⇒ HandledException(error.getMessage)
+    case (_, error @ SpaceNotFoundException) => HandledException(error.getMessage)
   }
 
   def graphqlAction: PartialFunction[Throwable, Future[Result]] = {

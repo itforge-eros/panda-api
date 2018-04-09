@@ -3,7 +3,7 @@ package spec.configs
 import com.softwaremill.macwire.wire
 import config.components.{BuiltInComponentsWithLogging, GraphqlComponents, ServiceComponents}
 import controllers.{AssetsComponents, AuthenticationController, GraphqlController}
-import facades.{AuthenticationFacade, GraphqlFacade}
+import facades.{AuthenticationFacade, GraphqlFacade, SpaceFacade}
 import models.Member
 import play.api.ApplicationLoader.Context
 import play.api.NoHttpFiltersComponents
@@ -25,6 +25,7 @@ class MockPandaComponents(context: Context) extends BuiltInComponentsWithLogging
 
   lazy val authFacade: AuthenticationFacade = wire[AuthenticationFacade]
   lazy val graphqlFacade: GraphqlFacade = wire[GraphqlFacade]
+  lazy val spaceFacade: SpaceFacade = wire[SpaceFacade]
 
   lazy val graphqlController: GraphqlController = wire[GraphqlController]
   lazy val authenticationController: AuthenticationController = wire[AuthenticationController]
