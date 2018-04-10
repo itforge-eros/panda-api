@@ -9,6 +9,8 @@ import persists.RequestPersist
 import play.api.db.Database
 import utils.postgres.PostgresUtil
 
+import scala.language.postfixOps
+
 class RequestPostgres(db: Database) extends RequestPersist
   with PostgresUtil {
 
@@ -24,7 +26,7 @@ class RequestPostgres(db: Database) extends RequestPersist
     SQL"SELECT * FROM request WHERE client_id=$clientId::uuid" as rowParser.*
   }
 
-  override def insert(request: RequestEntity): Option[RequestEntity] = db.withTransaction { implicit connection =>
+  override def insert(request: RequestEntity): Boolean = db.withTransaction { implicit connection =>
     SQL"""
          INSERT INTO request VALUES (
            ${request.id}::uuid,
@@ -35,10 +37,10 @@ class RequestPostgres(db: Database) extends RequestPersist
            ${request.spaceId}::uuid,
            ${request.clientId}::uuid
          )
-       """ executeInsert rowParser.singleOpt
+       """ executeInsert rowParser.singleOpt isDefined
   }
 
-  private lazy val rowParser: RowParser[RequestEntity] =
+  private lazy val rowParser =
     Macro.namedParser[RequestEntity](ColumnNaming.SnakeCase)
 
 }

@@ -8,21 +8,22 @@ import henkan.convert.Syntax._
 import utils.graphql.GraphqlUtil.AppContext
 
 import scala.language.postfixOps
+import scala.util.Try
 
 case class Reservation(id: UUID,
                        date: Date,
                        period: Range,
                        isAttended: Boolean,
                        @GraphQLExclude spaceId: UUID,
-                       @GraphQLExclude clientId: UUID) {
+                       @GraphQLExclude clientId: UUID) extends BaseModel {
 
   @GraphQLField
-  def space(ctx: AppContext[Request]): Space =
-    ctx.ctx.spacePersist.find(spaceId) map Space.of get
+  def space(ctx: AppContext[Request]): Try[Space] =
+    ctx.ctx.spaceFacade.find(spaceId)
 
   @GraphQLField
-  def client(ctx: AppContext[Request]): Member =
-    ctx.ctx.memberPersist.find(clientId) map Member.of get
+  def client(ctx: AppContext[Request]): Try[Member] =
+    ctx.ctx.memberFacade.find(clientId)
 
 }
 

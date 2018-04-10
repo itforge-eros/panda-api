@@ -12,6 +12,6 @@ trait RequestPersist {
 
   def findByClientId(clientId: UUID): List[RequestEntity]
 
-  def insert(request: RequestEntity): Option[RequestEntity]
+  def insert(request: RequestEntity): Boolean
 
 }

@@ -1,4 +1,4 @@
 package models
 
 case class MemberWithToken(member: Member,
-                           token: String)
+                           token: String) extends BaseModel

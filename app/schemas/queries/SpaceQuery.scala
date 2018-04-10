@@ -14,6 +14,6 @@ trait SpaceQuery {
   def space(id: UUID)(ctx: AppContext[Unit]): Try[Space] = ctx.ctx.spaceFacade.find(id)
 
   @GraphQLField
-  def spaces(ctx: AppContext[Unit]): List[Space] = ctx.ctx.spacePersist.findAll map Space.of
+  def spaces(ctx: AppContext[Unit]): Try[List[Space]] = ctx.ctx.spaceFacade.findAll
 
 }

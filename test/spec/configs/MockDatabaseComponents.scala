@@ -10,15 +10,15 @@ import spec.data.{MemberData, SpaceData}
 trait MockDatabaseComponents extends MockFactory {
 
   lazy val spacePersist: SpacePersist = new SpacePersist {
-    override def insert(space: SpaceEntity) = SpaceData.spaces.headOption
-    override def findAll = SpaceData.spaces
-    override def find(id: UUID) = SpaceData.spaces find (_.id == id)
+    override def insert(space: SpaceEntity): Option[SpaceEntity] = SpaceData.spaces.headOption
+    override def findAll: List[SpaceEntity] = SpaceData.spaces
+    override def find(id: UUID): Option[SpaceEntity] = SpaceData.spaces find (_.id == id)
   }
 
   lazy val memberPersist: MemberPersist = new MemberPersist {
-    override def insert(member: MemberEntity) = ???
-    override def findByUsername(username: String) = ???
-    override def find(id: UUID) = MemberData.members find (_.id == id)
+    override def insert(member: MemberEntity): Option[MemberEntity] = ???
+    override def findByUsername(username: String): Option[MemberEntity] = ???
+    override def find(id: UUID): Option[MemberEntity] = MemberData.members find (_.id == id)
   }
 
   lazy val requestPersist: RequestPersist = mock[RequestPersist]

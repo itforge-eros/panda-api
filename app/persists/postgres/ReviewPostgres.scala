@@ -18,7 +18,7 @@ class ReviewPostgres(db: Database) extends ReviewPersist {
     SQL"SELECT * FROM review WHERE reviewer_id=$reviewerId::uuid" as rowParser.*
   }
 
-  private lazy val rowParser: RowParser[ReviewEntity] =
+  private lazy val rowParser =
     Macro.namedParser[ReviewEntity](ColumnNaming.SnakeCase)
 
 }

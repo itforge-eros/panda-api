@@ -3,7 +3,7 @@ package facades
 import java.time.Instant
 import java.util.UUID
 
-import definitions.AppException.WrongUsernameOrPasswordException
+import definitions.exceptions.AppException.WrongUsernameOrPasswordException
 import definitions.AppSecurity
 import entities.{ExistingMember, MemberEntity}
 import models.Member

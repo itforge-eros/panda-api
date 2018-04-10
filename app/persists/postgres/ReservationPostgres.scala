@@ -20,7 +20,7 @@ class ReservationPostgres(db: Database) extends ReservationPersist
     SQL"SELECT * FROM member WHERE member_id=$clientId::uuid" as rowParser.*
   }
 
-  private lazy val rowParser: RowParser[ReservationEntity] =
+  private lazy val rowParser =
     Macro.namedParser[ReservationEntity](ColumnNaming.SnakeCase)
 
 }

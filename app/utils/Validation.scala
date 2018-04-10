@@ -1,6 +1,6 @@
 package utils
 
-import definitions.AppException.UnexpectedError
+import definitions.exceptions.AppException.UnexpectedError
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps

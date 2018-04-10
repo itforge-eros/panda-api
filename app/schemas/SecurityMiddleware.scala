@@ -1,6 +1,6 @@
 package schemas
 
-import definitions.AppException.UnauthorizedException
+import definitions.exceptions.AppException.UnauthorizedException
 import sangria.execution.{BeforeFieldResult, Middleware, MiddlewareBeforeField, MiddlewareQueryContext}
 import sangria.schema.Context
 

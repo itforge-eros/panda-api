@@ -1,12 +1,10 @@
 package controllers.api
 
-import definitions.AppException._
-import definitions.Handlers.response
+import definitions.exceptions.AppException._
 import definitions.{AppSecurity, Handlers}
 import facades.AuthenticationFacade
 import models.Member
 import pdi.jwt.{JwtCirce, JwtClaim}
-import play.api.UnexpectedException
 import play.api.libs.circe.Circe
 import play.api.mvc._
 import utils.Functional._

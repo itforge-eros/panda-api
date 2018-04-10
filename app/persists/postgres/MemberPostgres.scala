@@ -18,7 +18,7 @@ class MemberPostgres(db: Database) extends MemberPersist {
     SQL"SELECT * FROM member WHERE username=$username" as rowParser.singleOpt
   }
 
-  override def insert(member: MemberEntity) = db.withConnection { implicit connection =>
+  override def insert(member: MemberEntity): Option[MemberEntity] = db.withConnection { implicit connection =>
     SQL"""
           INSERT INTO member VALUES (
             ${member.id}::uuid,
@@ -30,7 +30,7 @@ class MemberPostgres(db: Database) extends MemberPersist {
        """ executeInsert rowParser.singleOpt
   }
 
-  private lazy val rowParser: RowParser[MemberEntity] =
+  private lazy val rowParser =
     Macro.namedParser[MemberEntity](ColumnNaming.SnakeCase)
 
 }

@@ -2,15 +2,14 @@ package facades
 
 import java.util.UUID
 
-import definitions.AppException.SpaceNotFoundException
-import models.Space
-import persists.SpacePersist
-import utils.Validation
+import models.{Member, Request, Space}
+import persists.{RequestPersist, SpacePersist}
 
 import scala.language.postfixOps
 import scala.util.Try
 
-class SpaceFacade(spacePersist: SpacePersist) extends Validation {
+class SpaceFacade(spacePersist: SpacePersist,
+                  requestPersist: RequestPersist) extends BaseFacade {
 
   def find(id: UUID): Try[Space] = {
     lazy val maybeSpace = spacePersist.find(id)
@@ -24,6 +23,11 @@ class SpaceFacade(spacePersist: SpacePersist) extends Validation {
 
   def findAll: Try[List[Space]] = TryWith() {
     spacePersist.findAll map Space.of
+  }
+
+  def incomingRequests(id: UUID)
+                      (implicit member: Member): Try[List[Request]] = Try {
+    requestPersist.findBySpaceId(id) map Request.of
   }
 
 }

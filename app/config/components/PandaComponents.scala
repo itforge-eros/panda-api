@@ -2,7 +2,7 @@ package config.components
 
 import com.softwaremill.macwire.wire
 import controllers.{AssetsComponents, AuthenticationController, GraphqlController}
-import facades.{AuthenticationFacade, GraphqlFacade, SpaceFacade}
+import facades._
 import models.{Member, Space}
 import play.api.ApplicationLoader.Context
 import play.api.NoHttpFiltersComponents
@@ -25,6 +25,9 @@ class PandaComponents(context: Context) extends BuiltInComponentsWithLogging(con
   lazy val authenticationFacade: AuthenticationFacade = wire[AuthenticationFacade]
   lazy val graphqlFacade: GraphqlFacade = wire[GraphqlFacade]
   lazy val spaceFacade: SpaceFacade = wire[SpaceFacade]
+  lazy val memberFacade: MemberFacade = wire[MemberFacade]
+  lazy val requestFacade: RequestFacade = wire[RequestFacade]
+  lazy val reviewFacade: ReviewFacade = wire[ReviewFacade]
 
   lazy val graphqlController: GraphqlController = wire[GraphqlController]
   lazy val authenticationController: AuthenticationController = wire[AuthenticationController]
