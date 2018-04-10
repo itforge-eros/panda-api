@@ -6,7 +6,6 @@ import java.util.UUID
 import entities.ReviewEntity
 import henkan.convert.Syntax._
 import sangria.macros.derive.{GraphQLExclude, GraphQLField}
-import utils.graphql.GraphqlUtil.AppContext
 
 import scala.language.postfixOps
 import scala.util.Try
@@ -18,8 +17,10 @@ case class Review(@GraphQLExclude requestId: UUID,
                   createdAt: Instant) extends BaseModel {
 
   @GraphQLField
-  def request(ctx: AppContext[Review]): Request =
-    ctx.ctx.requestPersist.find(requestId) map Request.of get
+  def request(ctx: AppContext[Review]): Try[Request] =
+    authorize(ctx) { implicit member =>
+      ctx.ctx.requestFacade.find(requestId)
+    }
 
   @GraphQLField
   def reviewer(ctx: AppContext[Review]): Try[Member] =

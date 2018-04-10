@@ -21,13 +21,13 @@ case class Member(id: UUID,
   @GraphQLField
   def requests(ctx: AppContext[Member]): Try[List[Request]] =
     authorize(ctx) { implicit member =>
-      ctx.ctx.memberFacade.requests
+      ctx.ctx.memberFacade.requests(id)
     }
 
   @GraphQLField
   def reviews(ctx: AppContext[Member]): Try[List[Review]] =
     authorize(ctx) { implicit member =>
-      ctx.ctx.memberFacade.reviews
+      ctx.ctx.memberFacade.reviews(id)
     }
 
 }

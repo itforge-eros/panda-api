@@ -10,6 +10,6 @@ trait SpacePersist {
 
   def findAll: List[SpaceEntity]
 
-  def insert(space: SpaceEntity): Option[SpaceEntity]
+  def insert(space: SpaceEntity): Boolean
 
 }

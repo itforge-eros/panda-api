@@ -11,6 +11,7 @@ import scala.util.Try
 trait MemberQuery {
 
   @GraphQLField
-  def member(id: UUID)(ctx: AppContext[Unit]): Try[Member] = ctx.ctx.memberFacade.find(id)
+  def member(id: UUID)(ctx: AppContext[Unit]): Try[Member] =
+    ctx.ctx.memberFacade.find(id)
 
 }

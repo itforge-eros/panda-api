@@ -24,5 +24,3 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   val schema = Schema(queryType, Some(mutationType))
 
 }
-
-case object Authorized extends FieldTag

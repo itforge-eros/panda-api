@@ -2,13 +2,17 @@ package schemas.queries
 
 import java.util.UUID
 
-import models.Request
+import models.{BaseModel, Request}
 import sangria.macros.derive.GraphQLField
-import utils.graphql.GraphqlUtil.AppContext
 
-trait RequestQuery {
+import scala.util.Try
+
+trait RequestQuery extends BaseModel {
 
   @GraphQLField
-  def request(id: UUID)(ctx: AppContext[Unit]): Option[Request] = ctx.ctx.requestPersist.find(id) map Request.of
+  def request(id: UUID)(ctx: AppContext[Unit]): Try[Request] =
+    authorize(ctx) { implicit member =>
+      ctx.ctx.requestFacade.find(id)
+    }
 
 }

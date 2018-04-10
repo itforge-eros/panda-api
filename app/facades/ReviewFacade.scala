@@ -9,8 +9,8 @@ import scala.util.Try
 
 class ReviewFacade(reviewPersist: ReviewPersist) extends BaseFacade {
 
-  def findByReviewerId(id: UUID): Try[List[Review]] = Try {
-    reviewPersist.findByReviewerId(id) map Review.of
-  }
+  def findByReviewerId(id: UUID): Try[List[Review]] =
+    Try(reviewPersist.findByReviewerId(id))
+      .map(_.map(Review.of))
 
 }

@@ -10,7 +10,7 @@ import spec.data.{MemberData, SpaceData}
 trait MockDatabaseComponents extends MockFactory {
 
   lazy val spacePersist: SpacePersist = new SpacePersist {
-    override def insert(space: SpaceEntity): Option[SpaceEntity] = SpaceData.spaces.headOption
+    override def insert(space: SpaceEntity): Boolean = true
     override def findAll: List[SpaceEntity] = SpaceData.spaces
     override def find(id: UUID): Option[SpaceEntity] = SpaceData.spaces find (_.id == id)
   }

@@ -3,7 +3,7 @@ package utils
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 
-object Functional {
+trait Functional {
 
   implicit class TryHelpers[A](t: Try[A]) {
 
@@ -12,6 +12,11 @@ object Functional {
     def flatMapFuture[B](f: A => Future[B]): Future[B] = t match {
       case Success(value) => f(value)
       case Failure(exception) => Future.failed(exception)
+    }
+
+    def filterElse(p: A => Boolean)(exception: Throwable): Try[A] = t match {
+      case Success(value) => if (p(value)) t else Failure(exception)
+      case Failure(failure) => Failure(failure)
     }
 
   }
@@ -52,3 +57,5 @@ object Functional {
   }
 
 }
+
+object Functional extends Functional

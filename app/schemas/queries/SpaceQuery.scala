@@ -11,9 +11,11 @@ import scala.util.Try
 trait SpaceQuery {
 
   @GraphQLField
-  def space(id: UUID)(ctx: AppContext[Unit]): Try[Space] = ctx.ctx.spaceFacade.find(id)
+  def space(id: UUID)(ctx: AppContext[Unit]): Try[Space] =
+    ctx.ctx.spaceFacade.find(id)
 
   @GraphQLField
-  def spaces(ctx: AppContext[Unit]): Try[List[Space]] = ctx.ctx.spaceFacade.findAll
+  def spaces(ctx: AppContext[Unit]): Try[List[Space]] =
+    ctx.ctx.spaceFacade.findAll
 
 }

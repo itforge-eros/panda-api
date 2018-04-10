@@ -12,6 +12,6 @@ class MockSpacePersist extends SpacePersist {
 
   override def findAll = SpaceData.spaces
 
-  override def insert(space: SpaceEntity) = SpaceData.spaces.headOption
+  override def insert(space: SpaceEntity) = true
 
 }

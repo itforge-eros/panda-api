@@ -1,6 +1,6 @@
 package definitions.exceptions
 
-trait Authorizationexception extends HttpException {
+trait AuthorizationException extends HttpException {
 
   object UnauthorizedException
     extends Exception("Unauthorized.")
@@ -10,6 +10,9 @@ trait Authorizationexception extends HttpException {
 
   object MalformedJwtTokenException
     extends Exception("Malformed JWT token.")
+
+  object NoPermissionException
+    extends AccessDeniedException("You have no permission to access the resource.")
 
   class AccessDeniedException(message: String)
     extends Exception(s"Access denied. $message")

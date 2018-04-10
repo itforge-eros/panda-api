@@ -9,8 +9,9 @@ import scala.util.Try
 
 trait AuthorizationValidator extends AppException {
 
-  def authorize[A](ctx: AppContext[_])(f: Member => Try[A]): Try[A] =
+  def authorize[A](ctx: AppContext[_])(f: Member => Try[A]): Try[A] = {
     (ctx.ctx.member map f toRight UnauthorizedException toTry) flatten
+  }
 
 }
 

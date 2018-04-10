@@ -8,6 +8,8 @@ import entities.SpaceEntity
 import persists.SpacePersist
 import play.api.db.Database
 
+import scala.language.postfixOps
+
 class SpacePostgres(db: Database) extends SpacePersist {
 
   override def find(id: UUID): Option[SpaceEntity] = db.withConnection { implicit connection =>
@@ -18,7 +20,7 @@ class SpacePostgres(db: Database) extends SpacePersist {
     SQL"SELECT * FROM space" as rowParser.*
   }
 
-  override def insert(space: SpaceEntity): Option[SpaceEntity] = db.withConnection { implicit connection =>
+  override def insert(space: SpaceEntity): Boolean = db.withConnection { implicit connection =>
     SQL"""
          INSERT INTO space VALUES (
            ${space.id}::uuid,
@@ -28,7 +30,7 @@ class SpacePostgres(db: Database) extends SpacePersist {
            ${space.isAvailable},
            ${space.createdAt}
          )
-       """ executeInsert rowParser.singleOpt
+       """ executeInsert rowParser.singleOpt isDefined
   }
 
   private lazy val rowParser =

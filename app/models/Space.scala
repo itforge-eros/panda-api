@@ -5,9 +5,7 @@ import java.util.UUID
 
 import entities.SpaceEntity
 import henkan.convert.Syntax._
-import sangria.macros.derive.{GraphQLFieldTags, _}
-import schemas.Authorized
-import utils.graphql.GraphqlUtil.AppContext
+import sangria.macros.derive._
 
 import scala.util.Try
 
