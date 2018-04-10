@@ -30,6 +30,10 @@ case class Member(id: UUID,
       ctx.ctx.memberFacade.reviews(id)
     }
 
+  @GraphQLField
+  def reservations(ctx: AppContext[Member]): Try[List[Reservation]] =
+    ctx.ctx.memberFacade.reservations(id)
+
 }
 
 object Member {

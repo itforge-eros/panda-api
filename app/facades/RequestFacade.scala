@@ -15,16 +15,17 @@ class RequestFacade(requestPersist: RequestPersist,
                     reviewPersist: ReviewPersist) extends BaseFacade {
 
   def find(id: UUID)
-          (implicit member: Member): Try[Request] =
+          (implicit member: Member): Try[Request] = {
     Try(requestPersist.find(id))
       .flatMap(_.toTry(RequestNotFoundException))
       .map(Request.of)
       .filterElse(_.clientId == member.id)(NoPermissionException)
+  }
 
   def reviews(id: UUID)
-             (implicit member: Member): Try[List[Review]] =
-    Try(reviewPersist.findByRequestId(id))
-      .map(_.map(Review.of))
+             (implicit member: Member): Try[List[Review]] = {
+    Try(reviewPersist.findByRequestId(id) map Review.of)
+  }
 
   def insert(input: RequestInput)
             (implicit member: Member): Try[Request] = {

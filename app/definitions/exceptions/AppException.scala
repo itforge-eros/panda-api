@@ -6,5 +6,6 @@ trait AppException extends GraphqlException
   with SpaceException
   with MemberException
   with RequestException
+  with ReservationException
 
 object AppException extends AppException

@@ -19,8 +19,12 @@ case class Space(id: UUID,
   @GraphQLField
   def requests(ctx: AppContext[Space]): Try[List[Request]] =
     authorize(ctx) { implicit member =>
-      ctx.ctx.spaceFacade.incomingRequests(id)
+      ctx.ctx.spaceFacade.requests(id)
     }
+
+  @GraphQLField
+  def reservations(ctx: AppContext[Space]): Try[List[Reservation]] =
+    ctx.ctx.spaceFacade.reservations(id)
 
 }
 
