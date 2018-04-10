@@ -31,6 +31,8 @@ object Handlers extends TryResults {
 
     case (_, error @ RequestNotFoundException) => HandledException(error.getMessage)
     case (_, error @ CannotCreateRequestException) => HandledException(error.getMessage)
+
+    case (_, error @ ReservationNotFoundException) => HandledException(error.getMessage)
   }
 
   lazy val onViolation: PartialFunction[(ResultMarshaller, Violation), HandledException] = {

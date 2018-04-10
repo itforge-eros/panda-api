@@ -10,4 +10,6 @@ trait ReviewPersist {
 
   def findByReviewerId(reviewerId: UUID): List[ReviewEntity]
 
+  def insert(reviewEntity: ReviewEntity): Boolean
+
 }

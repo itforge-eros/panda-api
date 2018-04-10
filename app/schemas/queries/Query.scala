@@ -1,7 +1,6 @@
 package schemas.queries
 
-class Query extends MeQuery
-  with SpaceQuery
+class Query extends SpaceQuery
   with MemberQuery
   with RequestQuery
   with AuthenticationQuery

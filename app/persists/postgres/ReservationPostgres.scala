@@ -9,12 +9,10 @@ import persists.ReservationPersist
 import play.api.db.Database
 import utils.postgres.PostgresUtil
 
-import scala.util.Try
-
 class ReservationPostgres(db: Database) extends ReservationPersist
   with PostgresUtil {
 
-  override def find(id: UUID): Try[Option[ReservationEntity]] = tryConnection(db) { implicit connection =>
+  override def find(id: UUID): Option[ReservationEntity] = db.withConnection { implicit connection =>
     SQL"SELECT * FROM reservation WHERE id=$id::uuid" as rowParser.singleOpt
   }
 
