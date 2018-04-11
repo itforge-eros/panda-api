@@ -40,15 +40,17 @@ trait CustomAction extends TryResults
       }
     }
 
-  private def findMemberFromToken(token: String): Try[Member] =
+  private def findMemberFromToken(token: String): Try[Member] = {
     JwtCirce.decode(token, AppSecurity.key, Seq(AppSecurity.algorithm))
-      .recoverWith { case e => Failure(new JwtDecodingException(e.getMessage))}
+      .recoverWith { case e => Failure(new JwtDecodingException(e.getMessage)) }
       .flatMap(authorize(_).toTry(new UnexpectedError(MalformedJwtTokenException)))
+  }
 
-  private def authorize(claim: JwtClaim): Option[Member] =
+  private def authorize(claim: JwtClaim): Option[Member] = {
     claim.subject
       .flatMap(maybeUuid)
-      .flatMap(authenticationFacade.findById)
+      .flatMap(authenticationFacade.findById(_).toOption)
+  }
 
   private def response(result: Result): Future[Result] =
     Future.successful(result)
