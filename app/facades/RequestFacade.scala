@@ -28,7 +28,7 @@ class RequestFacade(requestPersist: RequestPersist,
     Try(reviewPersist.findByRequestId(id) map Review.of)
   }
 
-  def insert(input: RequestInput)
+  def create(input: RequestInput)
             (implicit member: Member): Try[Request] = {
     lazy val requestEntity = RequestEntity(
       UUID.randomUUID(),

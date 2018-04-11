@@ -17,4 +17,7 @@ trait SpaceQuery extends BaseModel {
     ctx.ctx.spaceFacade.findAll
   }
 
+//  @GraphQLField
+//  def searchSpaces(name: Option[String])(ctx: AppContext[Unit])
+
 }

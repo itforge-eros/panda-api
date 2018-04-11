@@ -3,11 +3,11 @@ package facades
 import java.time.Instant
 import java.util.UUID
 
-import definitions.exceptions.AppException.WrongUsernameOrPasswordException
 import definitions.AppSecurity
+import definitions.exceptions.AppException.WrongUsernameOrPasswordException
 import entities.{ExistingMember, MemberEntity}
 import models.{Member, MemberWithToken}
-import pdi.jwt.{JwtAlgorithm, JwtCirce, JwtClaim}
+import pdi.jwt.{JwtCirce, JwtClaim}
 import persists.MemberPersist
 import services.AuthenticationService
 

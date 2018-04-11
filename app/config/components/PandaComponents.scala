@@ -3,11 +3,11 @@ package config.components
 import com.softwaremill.macwire.wire
 import controllers.{AssetsComponents, AuthenticationController, GraphqlController}
 import facades._
-import models.{Member, Space}
+import models.Member
 import play.api.ApplicationLoader.Context
-import play.api.NoHttpFiltersComponents
 import play.api.i18n.I18nComponents
 import play.api.routing.Router
+import play.filters.HttpFiltersComponents
 import router.Routes
 import schemas.PandaContext
 
@@ -17,7 +17,7 @@ class PandaComponents(context: Context) extends BuiltInComponentsWithLogging(con
   with GraphqlComponents
   with AssetsComponents
   with I18nComponents
-  with NoHttpFiltersComponents {
+  with HttpFiltersComponents {
 
   lazy val routePrefix: String = "/"
   lazy val pandaContext: Option[Member] => PandaContext = (_: Option[Member]) => wire[PandaContext]

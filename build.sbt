@@ -25,7 +25,7 @@ val circeVersion = "0.9.1"
 val postgresqlVersion = "9.4.1208"
 val henkanVersion = "0.6.1"
 val jwtScalaVersion = "0.16.0"
-val doobieVersion = ""
+val doobieVersion = "0.5.2"
 
 resolvers += Resolver.sonatypeRepo("releases")
 

@@ -12,7 +12,7 @@ trait RequestMutation extends BaseModel {
   @GraphQLField
   def createRequest(input: RequestInput)(ctx: AppContext[Unit]) =
     authorize(ctx) { implicit member =>
-      ctx.ctx.requestFacade.insert(input)
+      ctx.ctx.requestFacade.create(input)
     }
 
 }
