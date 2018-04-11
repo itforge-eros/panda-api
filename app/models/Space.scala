@@ -3,11 +3,12 @@ package models
 import java.time.Instant
 import java.util.UUID
 
+import definitions.exceptions.AppException._
 import entities.SpaceEntity
 import henkan.convert.Syntax._
 import sangria.macros.derive._
 
-import scala.util.Try
+import scala.util.{Failure, Try}
 
 case class Space(id: UUID,
                  name: String,
@@ -17,14 +18,14 @@ case class Space(id: UUID,
                  createdAt: Instant) extends BaseModel {
 
   @GraphQLField
-  def requests(ctx: AppContext[Space]): Try[List[Request]] =
-    authorize(ctx) { implicit member =>
-      ctx.ctx.spaceFacade.requests(id)
-    }
+  def requests(ctx: AppContext[Space]) = authorize(ctx) { implicit member =>
+    ctx.ctx.spaceFacade.requests(id)
+  }
 
   @GraphQLField
-  def reservations(ctx: AppContext[Space]): Try[List[Reservation]] =
+  def reservations(ctx: AppContext[Space]) = resolve {
     ctx.ctx.spaceFacade.reservations(id)
+  }
 
 }
 

@@ -10,7 +10,7 @@ import scala.util.Try
 trait RequestMutation extends BaseModel {
 
   @GraphQLField
-  def createRequest(input: RequestInput)(ctx: AppContext[Unit]): Try[Request] =
+  def createRequest(input: RequestInput)(ctx: AppContext[Unit]) =
     authorize(ctx) { implicit member =>
       ctx.ctx.requestFacade.insert(input)
     }

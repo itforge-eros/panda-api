@@ -25,6 +25,7 @@ val circeVersion = "0.9.1"
 val postgresqlVersion = "9.4.1208"
 val henkanVersion = "0.6.1"
 val jwtScalaVersion = "0.16.0"
+val doobieVersion = ""
 
 resolvers += Resolver.sonatypeRepo("releases")
 
@@ -55,7 +56,10 @@ libraryDependencies ++= Seq(
   "com.kailuowang" %% "henkan-convert" % henkanVersion,
   "com.kailuowang" %% "henkan-optional" % henkanVersion,
   "com.pauldijou" %% "jwt-core" % jwtScalaVersion,
-  "com.pauldijou" %% "jwt-circe" % jwtScalaVersion
+  "com.pauldijou" %% "jwt-circe" % jwtScalaVersion,
+  "org.tpolecat" %% "doobie-core" % doobieVersion,
+  "org.tpolecat" %% "doobie-postgres" % doobieVersion,
+  "org.tpolecat" %% "doobie-specs2" % doobieVersion
 )
 
 packageName in Docker := "panda-api"

@@ -1,15 +1,13 @@
 package schemas.mutations
 
-import models.{BaseModel, Space}
+import models.BaseModel
 import sangria.macros.derive.GraphQLField
 import schemas.inputs.SpaceInput
-
-import scala.util.Try
 
 trait SpaceMutation extends BaseModel {
 
   @GraphQLField
-  def createSpace(input: SpaceInput)(ctx: AppContext[Unit]): Try[Space] =
+  def createSpace(input: SpaceInput)(ctx: AppContext[Unit]) =
     authorize(ctx) { implicit member =>
       ctx.ctx.spaceFacade.create(input)
     }

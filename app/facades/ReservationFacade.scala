@@ -2,6 +2,7 @@ package facades
 
 import java.util.UUID
 
+import definitions.exceptions.AppException._
 import models.Reservation
 import persists.ReservationPersist
 

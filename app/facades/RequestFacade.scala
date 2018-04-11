@@ -3,6 +3,7 @@ package facades
 import java.time.Instant
 import java.util.UUID
 
+import definitions.exceptions.AppException._
 import entities.RequestEntity
 import models.{Member, Request, Review}
 import persists.{RequestPersist, ReviewPersist}

@@ -18,9 +18,9 @@ trait CustomAction extends TryResults
   with Circe {
 
   protected def GraphqlAction = new ActionBuilder[GraphqlRequest, AnyContent] {
-    override def parser = BodyParsers.utils.ignore(AnyContentAsEmpty: AnyContent)
-    override protected def executionContext = ec
-    override def invokeBlock[A](request: Request[A], block: GraphqlRequest[A] => Future[Result]) = {
+    override def parser: BodyParser[AnyContent] = BodyParsers.utils.ignore(AnyContentAsEmpty: AnyContent)
+    override protected def executionContext: ExecutionContext = ec
+    override def invokeBlock[A](request: Request[A], block: GraphqlRequest[A] => Future[Result]): Future[Result] = {
       findMember(request) flatMapFuture { member =>
         block(GraphqlRequest(request, member))
       } recoverWith Handlers.graphqlAction

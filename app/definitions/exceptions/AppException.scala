@@ -1,6 +1,6 @@
 package definitions.exceptions
 
-trait AppException extends GraphqlException
+protected trait AppException extends GraphqlException
   with AuthorizationException
   with HttpException
   with SpaceException

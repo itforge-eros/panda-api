@@ -20,19 +20,19 @@ case class Request(id: UUID,
                    @GraphQLExclude clientId: UUID) extends BaseModel {
 
   @GraphQLField
-  def space(ctx: AppContext[Request]): Try[Space] = {
+  def space(ctx: AppContext[Request]) = resolve {
     ctx.ctx.spaceFacade.find(spaceId)
   }
 
   @GraphQLField
-  def client(ctx: AppContext[Request]): Try[Member] =
+  def client(ctx: AppContext[Request]) = resolve {
     ctx.ctx.memberFacade.find(clientId)
+  }
 
   @GraphQLField
-  def reviews(ctx: AppContext[Request]): Try[List[Review]] =
-    authorize(ctx) { implicit member =>
-      ctx.ctx.requestFacade.reviews(id)
-    }
+  def reviews(ctx: AppContext[Request]) = authorize(ctx) { implicit member =>
+    ctx.ctx.requestFacade.reviews(id)
+  }
 
 }
 

@@ -4,6 +4,7 @@ import java.util.UUID
 
 import models.{Member, Request, Reservation, Review}
 import persists.{MemberPersist, RequestPersist, ReservationPersist, ReviewPersist}
+import definitions.exceptions.AppException._
 
 import scala.language.postfixOps
 import scala.util.{Failure, Try}

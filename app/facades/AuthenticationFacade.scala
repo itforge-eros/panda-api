@@ -6,7 +6,7 @@ import java.util.UUID
 import definitions.exceptions.AppException.WrongUsernameOrPasswordException
 import definitions.AppSecurity
 import entities.{ExistingMember, MemberEntity}
-import models.Member
+import models.{Member, MemberWithToken}
 import pdi.jwt.{JwtAlgorithm, JwtCirce, JwtClaim}
 import persists.MemberPersist
 import services.AuthenticationService
@@ -19,12 +19,13 @@ class AuthenticationFacade(memberPersist: MemberPersist,
   def findById(id: UUID): Option[Member] =
     memberPersist.find(id) map Member.of
 
-  def login(username: String, password: String): Try[(Member, String)] =
+  def login(username: String, password: String): Try[MemberWithToken] =
     authenticationService.login(username, password)
       .toRight(WrongUsernameOrPasswordException)
       .map(findOrElseCreateMember)
       .map(Member.of)
       .map(member => (member, createToken(member.id)))
+      .map(MemberWithToken.tupled)
       .toTry
 
 

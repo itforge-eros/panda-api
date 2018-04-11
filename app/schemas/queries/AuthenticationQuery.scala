@@ -1,17 +1,15 @@
 package schemas.queries
 
-import models.MemberWithToken
+import models.BaseModel
 import sangria.macros.derive.GraphQLField
-import utils.graphql.GraphqlUtil.AppContext
 
 import scala.language.postfixOps
-import scala.util.Try
 
-trait AuthenticationQuery {
+trait AuthenticationQuery extends BaseModel {
 
   @GraphQLField
-  def login(username: String, password: String)(ctx: AppContext[Unit]): Try[MemberWithToken] =
+  def login(username: String, password: String)(ctx: AppContext[Unit]) = resolve {
     ctx.ctx.authenticationFacade.login(username, password)
-      .map(MemberWithToken.tupled)
+  }
 
 }

@@ -1,9 +1,9 @@
 package facades
 
-import java.io
 import java.time.Instant
 import java.util.UUID
 
+import definitions.exceptions.AppException._
 import entities.SpaceEntity
 import models.{Member, Request, Reservation, Space}
 import persists.{RequestPersist, ReservationPersist, SpacePersist}

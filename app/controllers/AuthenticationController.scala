@@ -14,7 +14,6 @@ class AuthenticationController(cc: ControllerComponents,
 
   def login = Action(loginParser) { request =>
     authenticationFacade.login(request.body.username, request.body.password)
-      .map(MemberWithToken.tupled)
       .toResult
   }
 
