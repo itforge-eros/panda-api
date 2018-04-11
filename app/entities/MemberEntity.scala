@@ -10,7 +10,7 @@ case class MemberEntity(id: UUID,
 
 object MemberEntity {
 
-  def of(existingMember: ExistingMember) = new MemberEntity(
+  def of(existingMember: ExistingMemberEntity) = new MemberEntity(
     UUID.randomUUID(),
     existingMember.username,
     existingMember.firstName,

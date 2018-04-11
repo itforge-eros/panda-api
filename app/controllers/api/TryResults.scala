@@ -1,7 +1,6 @@
 package controllers.api
 
 import play.api.mvc.{Result, Results}
-import presenters.ResponsePresenter
 import utils.datatypes.JsonUtil
 
 import scala.language.postfixOps

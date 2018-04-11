@@ -1,41 +1,41 @@
 package services
 
-import entities.ExistingMember
+import entities.ExistingMemberEntity
 
 import scala.util.{Success, Try}
 
 class MockAuthenticationService extends AuthenticationService {
 
-  override def login(username: String, password: String): Try[Option[ExistingMember]] = {
+  override def login(username: String, password: String): Try[Option[ExistingMemberEntity]] = {
     Success(existingMembers.find(_.username == username))
   }
 
   private val existingMembers = List(
-    ExistingMember(
+    ExistingMemberEntity(
       "59070009",
       "Kavin",
       "Ruengprateepsang",
       "kavinvin@mail.com"
     ),
-    ExistingMember(
+    ExistingMemberEntity(
       "59070022",
       "Kunanon",
       "Srisuntiroj",
       "sagelga@mail.com"
     ),
-    ExistingMember(
+    ExistingMemberEntity(
       "59070043",
       "Thitipat",
       "Worrarat",
       "ynhof6@mail.com"
     ),
-    ExistingMember(
+    ExistingMemberEntity(
       "59070087",
       "Nathan",
       "Yiangsupapaanontr",
       "dobakung@mail.com"
     ),
-    ExistingMember(
+    ExistingMemberEntity(
       "59070113",
       "Pornprom",
       "Kiawjak",

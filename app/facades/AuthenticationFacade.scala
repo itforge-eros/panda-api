@@ -5,7 +5,7 @@ import java.util.UUID
 
 import definitions.AppSecurity
 import definitions.exceptions.AppException._
-import entities.{ExistingMember, MemberEntity}
+import entities.{ExistingMemberEntity, MemberEntity}
 import models.{Member, MemberWithToken}
 import pdi.jwt.{JwtCirce, JwtClaim}
 import persists.MemberPersist
@@ -32,7 +32,7 @@ class AuthenticationFacade(memberPersist: MemberPersist,
   }
 
 
-  private def findOrElseCreateMember(existingMember: ExistingMember): Try[MemberEntity] = Try {
+  private def findOrElseCreateMember(existingMember: ExistingMemberEntity): Try[MemberEntity] = Try {
     memberPersist.findByUsername(existingMember.username)
       .getOrElse(memberPersist.insert(MemberEntity.of(existingMember)).get)
   }

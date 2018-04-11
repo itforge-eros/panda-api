@@ -15,7 +15,7 @@ import utils.graphql.GraphqlUtil.forceStringToObject
 import scala.concurrent.{ExecutionContext, Future}
 
 class GraphqlFacade(context: Option[Member] => PandaContext)
-                   (implicit execution: ExecutionContext) {
+                   (implicit ec: ExecutionContext) {
 
   def executeQuery(form: GraphqlQuery)
                   (implicit member: Option[Member]): Future[Json] =
