@@ -22,7 +22,7 @@ trait CustomAction extends TryResults
     override protected def executionContext: ExecutionContext = ec
     override def invokeBlock[A](request: Request[A], block: GraphqlRequest[A] => Future[Result]): Future[Result] = {
       findMember(request) flatMapFuture { member =>
-        block(GraphqlRequest(request, member))
+        block(GraphqlRequest(request, member)) 
       } recoverWith Handlers.graphqlAction
     }
   }
@@ -56,6 +56,15 @@ trait CustomAction extends TryResults
     Future.successful(result)
 
   private val AUTHORIZATION_KEY = "Authorization"
+
+  private implicit class CustomResult (result: Result) {
+    def enableCors =  result.withHeaders(
+      "Access-Control-Allow-Origin" -> "localhost:9000",
+      "Access-Control-Allow-Methods" -> "OPTIONS, GET, POST",
+      "Access-Control-Allow-Headers" -> "Accept, Content-Type, Origin, Authorization",
+      "Access-Control-Allow-Credentials" -> "true"
+    )
+  }
 
 
   case class GraphqlRequest[A](request: Request[A],

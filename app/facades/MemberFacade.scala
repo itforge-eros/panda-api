@@ -26,18 +26,16 @@ class MemberFacade(memberPersist: MemberPersist,
       .map(Member.of)
   }
 
-  def requests(id: UUID)(implicit member: Member): Try[List[Request]] = {
-    member.id == id match {
-      case true => Try(requestPersist.findByClientId(member.id) map Request.of)
-      case false => Failure(NoPermissionException)
-    }
+  def requests(id: UUID)(implicit member: Member): Try[List[Request]] = Validate(
+    Guard(member.id == id, NoPermissionException)
+  ) {
+    requestPersist.findByClientId(member.id) map Request.of
   }
 
-  def reviews(id: UUID)(implicit member: Member): Try[List[Review]] = {
-    member.id == id match {
-      case true => Try(reviewPersist.findByReviewerId(member.id) map Review.of)
-      case false => Failure(NoPermissionException)
-    }
+  def reviews(id: UUID)(implicit member: Member): Try[List[Review]] = Validate(
+    Guard(member.id == id, NoPermissionException)
+  ) {
+    reviewPersist.findByReviewerId(member.id) map Review.of
   }
 
   def reservations(id: UUID): Try[List[Reservation]] = {

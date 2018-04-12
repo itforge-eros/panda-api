@@ -8,49 +8,32 @@ import scala.util.{Failure, Try}
 
 trait Validation {
 
-  type Guard = ExceptionGuard
-  val Guard = ExceptionGuard
-
-  val Validate = ExceptionValidate
-
-
-  def TryWith[T](guards: Guard*)(action: => T): Try[T] = Try {
-    guards foreach (_.execute())
-    action
-  } recoverWith {
-    case e: Exception if guards exists (_.isExpecting(e)) => Failure(e)
-    case other => Failure(new UnexpectedError(other))
+  class Guard(condition: => Boolean, exception: => Exception) {
+    def isViolate: Boolean = condition
+    def getException: Exception = exception
   }
 
-
-  protected class ExceptionGuard(condition: => Boolean, exception: => Exception) {
-
-    def execute(): Unit =
-      if (condition) throw exception
-
-    def expectedExceptionType: Class[_ <: Exception] =
-      exception.getClass
-
-    def isExpecting(exception: Exception): Boolean =
-      expectedExceptionType.isAssignableFrom(exception.getClass)
-
+  object Guard {
+    def apply(condition: => Boolean, exception: => Exception): Guard =
+      new Guard(condition, exception)
   }
 
-  protected object ExceptionGuard {
-
-    def apply(condition: => Boolean, exception: => Exception): ExceptionGuard =
-      new ExceptionGuard(condition, exception)
-
-    def apply(exception: => Exception): ExceptionGuard =
-      new ExceptionGuard(false, exception)
-
+  protected def TryWith[A](guards: Guard*)(action: => Try[A]): Try[A] = {
+    guards find (_.isViolate) map (_.getException) match {
+      case Some(error) => Failure(error)
+      case None => Try(action) recoverWith {
+        case e: Throwable => Failure(new UnexpectedError(e))
+      } flatten
+    }
   }
 
-  protected object ExceptionValidate {
-
-    def apply(condition: => Boolean, exception: => Exception): Unit =
-      new ExceptionGuard(condition, exception).execute()
-
+  protected def Validate[A](guards: Guard*)(action: => A): Try[A] = {
+    guards find (_.isViolate) map (_.getException) match {
+      case Some(error) => Failure(error)
+      case None => Try(action) recoverWith {
+        case e: Throwable => Failure(new UnexpectedError(e))
+      }
+    }
   }
 
 }

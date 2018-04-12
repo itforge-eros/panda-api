@@ -17,8 +17,8 @@ class SpaceFacade(spacePersist: SpacePersist,
                   reservationPersist: ReservationPersist) extends BaseFacade {
 
   def find(id: UUID): Try[Space] = {
-    Try(spacePersist.find(id))
-      .flatMap(_.toTry(SpaceNotFoundException))
+    spacePersist.find(id)
+      .toTry(SpaceNotFoundException)
       .map(Space.of)
   }
 
