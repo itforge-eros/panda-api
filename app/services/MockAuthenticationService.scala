@@ -6,8 +6,8 @@ import scala.util.{Success, Try}
 
 class MockAuthenticationService extends AuthenticationService {
 
-  override def login(username: String, password: String): Try[Option[ExistingMemberEntity]] = {
-    Success(existingMembers.find(_.username == username))
+  override def login(username: String, password: String): Option[ExistingMemberEntity] = {
+    existingMembers.find(_.username == username)
   }
 
   private val existingMembers = List(

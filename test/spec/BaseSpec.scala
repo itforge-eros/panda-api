@@ -72,7 +72,9 @@ abstract class BaseSpec extends AsyncWordSpec
     expiration = Some(Instant.now().plusSeconds(31536000).getEpochSecond)
   )
 
-  private lazy val token = JwtCirce.encode(claim, AppSecurity.key, AppSecurity.algorithm)
+  private lazy val token = JwtCirce.encode(claim, appSecretKey, AppSecurity.algorithm)
+
+  private lazy val appSecretKey = context.initialConfiguration.get[String]("play.http.secret.key")
 
   implicit protected val headers: List[(String, String)] = List(("Authorization", s"Bearer $token"))
 

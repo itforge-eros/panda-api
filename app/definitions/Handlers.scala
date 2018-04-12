@@ -7,6 +7,7 @@ import play.api.mvc.Result
 import sangria.execution.{ExceptionHandler, HandledException, MaxQueryDepthReachedError}
 import sangria.marshalling.ResultMarshaller
 import sangria.validation.Violation
+import utils.Functional._
 
 import scala.concurrent.Future
 import scala.util.Failure
@@ -18,21 +19,7 @@ object Handlers extends TryResults {
   lazy val onException: PartialFunction[(ResultMarshaller, Throwable), HandledException] = {
     case (_, error @ TooComplexQueryError) => HandledException(error.getMessage)
     case (_, error @ MaxQueryDepthReachedError(_)) => HandledException(error.getMessage)
-
-    case (_, error @ WrongUsernameOrPasswordException) => HandledException(error.getMessage)
-    case (_, error @ UnauthorizedException) => HandledException(error.getMessage)
-    case (_, error @ NoPermissionException) => HandledException(error.getMessage)
-    case (_, error: AccessDeniedException) => HandledException(error.getMessage)
-
-    case (_, error @ SpaceNotFoundException) => HandledException(error.getMessage)
-
-    case (_, error @ MemberNotFoundException) => HandledException(error.getMessage)
-    case (_, error @ CannotCreateSpaceException) => HandledException(error.getMessage)
-
-    case (_, error @ RequestNotFoundException) => HandledException(error.getMessage)
-    case (_, error @ CannotCreateRequestException) => HandledException(error.getMessage)
-
-    case (_, error @ ReservationNotFoundException) => HandledException(error.getMessage)
+    case (_, error: SafeException) => HandledException(error.getMessage)
   }
 
   lazy val onViolation: PartialFunction[(ResultMarshaller, Violation), HandledException] = {

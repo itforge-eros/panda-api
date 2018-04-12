@@ -1,14 +1,15 @@
 package definitions.exceptions
 
-trait GraphqlException {
+import definitions.exceptions.AppException.SafeException
 
-  class GraphqlSyntaxError
-    extends Exception("GraphQL syntax error.")
+trait GraphqlException {
 
   object GraphqlVariablesParseError
     extends Exception("Cannot parse GraphQL variables.")
+    with SafeException
 
   object TooComplexQueryError
     extends Exception("Query is too expensive.")
+    with SafeException
 
 }

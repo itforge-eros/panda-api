@@ -22,7 +22,7 @@ trait CustomAction extends TryResults
     override protected def executionContext: ExecutionContext = ec
     override def invokeBlock[A](request: Request[A], block: GraphqlRequest[A] => Future[Result]): Future[Result] = {
       findMember(request) flatMapFuture { member =>
-        block(GraphqlRequest(request, member)) 
+        block(GraphqlRequest(request, member))
       } recoverWith Handlers.graphqlAction
     }
   }
@@ -40,8 +40,8 @@ trait CustomAction extends TryResults
       }
     }
 
-  private def findMemberFromToken(token: String): Try[Member] = {
-    JwtCirce.decode(token, AppSecurity.key, Seq(AppSecurity.algorithm))
+  private def findMemberFromToken(token: String): Try[Member] =  {
+    JwtCirce.decode(token, authenticationFacade.appSecretKey, Seq(AppSecurity.algorithm))
       .recoverWith { case e => Failure(new JwtDecodingException(e.getMessage)) }
       .flatMap(authorize(_).toTry(new UnexpectedError(MalformedJwtTokenException)))
   }

@@ -16,32 +16,29 @@ class SpaceFacade(spacePersist: SpacePersist,
                   requestPersist: RequestPersist,
                   reservationPersist: ReservationPersist) extends BaseFacade {
 
-  def find(id: UUID): Try[Space] = {
-    spacePersist.find(id)
-      .toTry(SpaceNotFoundException)
-      .map(Space.of)
+  def find(id: UUID): Try[Space] = ValidateWith() {
+    spacePersist.find(id) toTry SpaceNotFoundException map Space.of
   }
 
   def findByName(name: String): Try[List[Space]] = Validate() {
-    spacePersist.findByName(name)
-      .map(Space.of)
+    spacePersist.findByName(name) map Space.of
   }
 
-  def findAll: Try[List[Space]] = {
-    Try(spacePersist.findAll map Space.of)
+  def findAll: Try[List[Space]] = Validate() {
+    spacePersist.findAll map Space.of
   }
 
   def requests(id: UUID)
-              (implicit member: Member): Try[List[Request]] = {
-    Try(requestPersist.findBySpaceId(id) map Request.of)
+              (implicit member: Member): Try[List[Request]] = Validate() {
+    requestPersist.findBySpaceId(id) map Request.of
   }
 
-  def reservations(id: UUID): Try[List[Reservation]] = {
-    Try(reservationPersist.findBySpaceId(id) map Reservation.of)
+  def reservations(id: UUID): Try[List[Reservation]] = Validate() {
+    reservationPersist.findBySpaceId(id) map Reservation.of
   }
 
   def create(input: SpaceInput)
-            (implicit member: Member): Try[Space] = {
+            (implicit member: Member): Try[Space] = ValidateWith() {
     lazy val spaceEntity = SpaceEntity(
       UUID.randomUUID(),
       input.name,
@@ -51,9 +48,10 @@ class SpaceFacade(spacePersist: SpacePersist,
       Instant.now()
     )
 
-    Try(spacePersist.insert(spaceEntity))
-      .flatMap(if (_) Success(spaceEntity) else Failure(CannotCreateSpaceException))
-      .map(Space.of)
+    spacePersist.insert(spaceEntity) match {
+      case true => Success(Space.of(spaceEntity))
+      case false => Failure(CannotCreateSpaceException)
+    }
   }
 
 }

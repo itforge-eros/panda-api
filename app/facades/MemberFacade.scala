@@ -14,16 +14,12 @@ class MemberFacade(memberPersist: MemberPersist,
                    reviewPersist: ReviewPersist,
                    reservationPersist: ReservationPersist) extends BaseFacade {
 
-  def find(id: UUID): Try[Member] = {
-    Try(memberPersist.find(id))
-      .flatMap(_.toTry(MemberNotFoundException))
-      .map(Member.of)
+  def find(id: UUID): Try[Member] = ValidateWith() {
+    memberPersist.find(id) toTry MemberNotFoundException map Member.of
   }
 
-  def findByUsername(username: String): Try[Member] = {
-    Try(memberPersist.findByUsername(username))
-      .flatMap(_.toTry(MemberNotFoundException))
-      .map(Member.of)
+  def findByUsername(username: String): Try[Member] = ValidateWith() {
+    memberPersist.findByUsername(username) toTry MemberNotFoundException map Member.of
   }
 
   def requests(id: UUID)(implicit member: Member): Try[List[Request]] = Validate(
@@ -38,8 +34,8 @@ class MemberFacade(memberPersist: MemberPersist,
     reviewPersist.findByReviewerId(member.id) map Review.of
   }
 
-  def reservations(id: UUID): Try[List[Reservation]] = {
-    Try(reservationPersist.findByClientId(id) map Reservation.of)
+  def reservations(id: UUID): Try[List[Reservation]] = Validate() {
+    reservationPersist.findByClientId(id) map Reservation.of
   }
 
 }

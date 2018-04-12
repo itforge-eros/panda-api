@@ -16,20 +16,20 @@ class RequestFacade(requestPersist: RequestPersist,
                     reviewPersist: ReviewPersist) extends BaseFacade {
 
   def find(id: UUID)
-          (implicit member: Member): Try[Request] = {
-    Try(requestPersist.find(id))
-      .flatMap(_.toTry(RequestNotFoundException))
-      .map(Request.of)
+          (implicit member: Member): Try[Request] = ValidateWith() {
+    requestPersist.find(id)
+      .toTry(RequestNotFoundException)
       .filterElse(_.clientId == member.id)(NoPermissionException)
+      .map(Request.of)
   }
 
   def reviews(id: UUID)
-             (implicit member: Member): Try[List[Review]] = {
-    Try(reviewPersist.findByRequestId(id) map Review.of)
+             (implicit member: Member): Try[List[Review]] = Validate() {
+    reviewPersist.findByRequestId(id) map Review.of
   }
 
   def create(input: RequestInput)
-            (implicit member: Member): Try[Request] = {
+            (implicit member: Member): Try[Request] = ValidateWith() {
     lazy val requestEntity = RequestEntity(
       UUID.randomUUID(),
       input.proposal,
@@ -40,9 +40,10 @@ class RequestFacade(requestPersist: RequestPersist,
       member.id
     )
 
-    Try(requestPersist.insert(requestEntity))
-      .flatMap(if (_) Success(requestEntity) else Failure(CannotCreateSpaceException))
-      .map(Request.of)
+    requestPersist.insert(requestEntity) match {
+      case true => Success(Request.of(requestEntity))
+      case false => Failure(CannotCreateSpaceException)
+    }
   }
 
 }

@@ -1,10 +1,10 @@
 package definitions
 
 import pdi.jwt.JwtAlgorithm
+import pdi.jwt.algorithms.JwtHmacAlgorithm
 
 object AppSecurity {
 
-  val key = "application-key"
-  val algorithm: JwtAlgorithm.HS256.type = JwtAlgorithm.HS256
+  val algorithm: JwtHmacAlgorithm = JwtAlgorithm.HS256
 
 }

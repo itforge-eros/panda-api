@@ -8,4 +8,8 @@ protected trait AppException extends GraphqlException
   with RequestException
   with ReservationException
 
-object AppException extends AppException
+object AppException extends AppException {
+
+  trait SafeException
+
+}

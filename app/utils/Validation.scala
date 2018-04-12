@@ -18,7 +18,7 @@ trait Validation {
       new Guard(condition, exception)
   }
 
-  protected def TryWith[A](guards: Guard*)(action: => Try[A]): Try[A] = {
+  protected def ValidateWith[A](guards: Guard*)(action: => Try[A]): Try[A] = {
     guards find (_.isViolate) map (_.getException) match {
       case Some(error) => Failure(error)
       case None => Try(action) recoverWith {
