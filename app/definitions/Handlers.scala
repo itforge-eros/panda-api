@@ -17,7 +17,6 @@ object Handlers extends TryResults {
   lazy val exceptionHandler = ExceptionHandler(onException, onViolation)
 
   lazy val onException: PartialFunction[(ResultMarshaller, Throwable), HandledException] = {
-    case (_, error @ TooComplexQueryError) => HandledException(error.getMessage)
     case (_, error @ MaxQueryDepthReachedError(_)) => HandledException(error.getMessage)
     case (_, error: SafeException) => HandledException(error.getMessage)
   }

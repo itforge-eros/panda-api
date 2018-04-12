@@ -10,7 +10,7 @@ trait HttpException extends LazyLogging {
 
   class BadRequestException(message: String)
     extends Exception(message)
-    with SafeException
+      with SafeException
 
   class UnexpectedError(other: Throwable)
     extends Exception("Something went wrong.") {
@@ -22,7 +22,7 @@ trait HttpException extends LazyLogging {
 
   case class FormException(message: String)
     extends Exception("Input error." + description(message))
-    with SafeException {
+      with SafeException {
 
     def this(form: Form[_]) = {
       this(

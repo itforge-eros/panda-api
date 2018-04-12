@@ -6,6 +6,6 @@ trait FormattingException {
 
   object WrongUuidFormatException
     extends Exception("Wrong UUID format.")
-    with SafeException
+      with SafeException
 
 }

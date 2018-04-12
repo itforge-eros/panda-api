@@ -6,10 +6,10 @@ trait GraphqlException {
 
   object GraphqlVariablesParseError
     extends Exception("Cannot parse GraphQL variables.")
-    with SafeException
+      with SafeException
 
   object TooComplexQueryError
     extends Exception("Query is too expensive.")
-    with SafeException
+      with SafeException
 
 }

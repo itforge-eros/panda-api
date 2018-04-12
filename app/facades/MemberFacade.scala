@@ -23,13 +23,13 @@ class MemberFacade(memberPersist: MemberPersist,
   }
 
   def requests(id: UUID)(implicit member: Member): Try[List[Request]] = Validate(
-    Guard(member.id == id, NoPermissionException)
+    Guard(member.id != id, NoPermissionException)
   ) {
     requestPersist.findByClientId(member.id) map Request.of
   }
 
   def reviews(id: UUID)(implicit member: Member): Try[List[Review]] = Validate(
-    Guard(member.id == id, NoPermissionException)
+    Guard(member.id != id, NoPermissionException)
   ) {
     reviewPersist.findByReviewerId(member.id) map Review.of
   }

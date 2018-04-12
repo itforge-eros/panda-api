@@ -6,10 +6,10 @@ trait MemberException {
 
   object MemberNotFoundException
     extends Exception("Member not found.")
-    with SafeException
+      with SafeException
 
   object MemberFirstLoginException
     extends Exception("First login.")
-    with SafeException
+      with SafeException
 
 }

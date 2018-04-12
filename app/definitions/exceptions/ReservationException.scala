@@ -6,6 +6,6 @@ trait ReservationException {
 
   object ReservationNotFoundException
     extends Exception("Reservation not found.")
-    with SafeException
+      with SafeException
 
 }

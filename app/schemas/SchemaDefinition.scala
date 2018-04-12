@@ -1,6 +1,6 @@
 package schemas
 
-import inputs.{RequestInput, SpaceInput}
+import inputs.{RequestInput, ReviewInput, SpaceInput}
 import models._
 import sangria.execution.FieldTag
 import sangria.macros.derive._
@@ -18,6 +18,7 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
 
   implicit val spaceInputType: InputType[SpaceInput] = deriveInputObjectType()
   implicit val requestInputType: InputType[RequestInput] = deriveInputObjectType()
+  implicit val reviewInputType: InputType[ReviewInput] = deriveInputObjectType()
 
   val queryType: Type[Unit] = deriveContextObjectType(_.query)
   val mutationType: Type[Unit] = deriveContextObjectType(_.mutation)

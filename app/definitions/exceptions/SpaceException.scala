@@ -6,10 +6,10 @@ trait SpaceException {
 
   object SpaceNotFoundException
     extends Exception("Space not found.")
-    with SafeException
+      with SafeException
 
   object CannotCreateSpaceException
     extends Exception("Cannot create space.")
-    with SafeException
+      with SafeException
 
 }

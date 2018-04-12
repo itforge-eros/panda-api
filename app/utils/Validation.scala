@@ -2,9 +2,8 @@ package utils
 
 import definitions.exceptions.AppException.UnexpectedError
 
-import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
-import scala.util.{Failure, Try}
+import scala.util.{Failure, Success, Try}
 
 trait Validation {
 
@@ -18,22 +17,22 @@ trait Validation {
       new Guard(condition, exception)
   }
 
-  protected def ValidateWith[A](guards: Guard*)(action: => Try[A]): Try[A] = {
+  protected def ValidateWith[A](guards: Guard*)(action: => Try[A]): Try[A] = try {
     guards find (_.isViolate) map (_.getException) match {
       case Some(error) => Failure(error)
-      case None => Try(action) recoverWith {
-        case e: Throwable => Failure(new UnexpectedError(e))
-      } flatten
+      case None => action
     }
+  } catch {
+    case e: Throwable => Failure(new UnexpectedError(e))
   }
 
-  protected def Validate[A](guards: Guard*)(action: => A): Try[A] = {
+  protected def Validate[A](guards: Guard*)(action: => A): Try[A] = try {
     guards find (_.isViolate) map (_.getException) match {
       case Some(error) => Failure(error)
-      case None => Try(action) recoverWith {
-        case e: Throwable => Failure(new UnexpectedError(e))
-      }
+      case None => Success(action)
     }
+  } catch {
+    case e: Throwable => Failure(new UnexpectedError(e))
   }
 
 }
