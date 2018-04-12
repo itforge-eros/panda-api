@@ -22,6 +22,11 @@ class SpaceFacade(spacePersist: SpacePersist,
       .map(Space.of)
   }
 
+  def findByName(name: String): Try[List[Space]] = Validate() {
+    spacePersist.findByName(name)
+      .map(Space.of)
+  }
+
   def findAll: Try[List[Space]] = {
     Try(spacePersist.findAll map Space.of)
   }

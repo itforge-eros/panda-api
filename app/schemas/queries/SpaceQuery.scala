@@ -5,6 +5,8 @@ import java.util.UUID
 import models.BaseModel
 import sangria.macros.derive.GraphQLField
 
+import scala.util.Success
+
 trait SpaceQuery extends BaseModel {
 
   @GraphQLField
@@ -17,7 +19,9 @@ trait SpaceQuery extends BaseModel {
     ctx.ctx.spaceFacade.findAll
   }
 
-//  @GraphQLField
-//  def searchSpaces(name: Option[String])(ctx: AppContext[Unit])
+  @GraphQLField
+  def searchSpaces(name: Option[String])(ctx: AppContext[Unit]) = resolve {
+    name map ctx.ctx.spaceFacade.findByName getOrElse Success(Nil)
+  }
 
 }

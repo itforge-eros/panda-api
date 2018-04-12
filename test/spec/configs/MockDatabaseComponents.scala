@@ -13,6 +13,7 @@ trait MockDatabaseComponents extends MockFactory {
     override def insert(space: SpaceEntity): Boolean = true
     override def findAll: List[SpaceEntity] = SpaceData.spaces
     override def find(id: UUID): Option[SpaceEntity] = SpaceData.spaces find (_.id == id)
+    override def findByName(name: String) = ???
   }
 
   lazy val memberPersist: MemberPersist = new MemberPersist {
