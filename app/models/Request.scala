@@ -15,6 +15,7 @@ case class Request(id: UUID,
                    proposal: Option[String],
                    dates: List[Date],
                    period: Range,
+                   status: RequestStatus,
                    createdAt: Instant,
                    @GraphQLExclude spaceId: UUID,
                    @GraphQLExclude clientId: UUID) extends BaseModel {
@@ -38,6 +39,15 @@ case class Request(id: UUID,
 
 object Request {
 
-  def of(requestEntity: RequestEntity): Request = requestEntity.to[Request]()
+  def of(requestEntity: RequestEntity): Request = Request(
+    requestEntity.id,
+    requestEntity.proposal,
+    requestEntity.dates,
+    requestEntity.period,
+    RequestStatus(requestEntity.status),
+    requestEntity.createdAt,
+    requestEntity.spaceId,
+    requestEntity.clientId
+  )
 
 }

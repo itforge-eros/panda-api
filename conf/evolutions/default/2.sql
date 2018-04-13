@@ -8,6 +8,6 @@ CREATE TABLE member (
   email                 varchar(64) NOT NULL
 );
 
-# ---!Downs
+# --- !Downs
 
 DROP TABLE member;

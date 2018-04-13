@@ -5,6 +5,7 @@ import java.util.UUID
 
 import definitions.exceptions.AppException._
 import entities.RequestEntity
+import models.RequestStatus.Pending
 import models.{Member, Request, Review}
 import persists.{RequestPersist, ReviewPersist, SpacePersist}
 import schemas.inputs.RequestInput
@@ -38,6 +39,7 @@ class RequestFacade(requestPersist: RequestPersist,
       input.proposal,
       input.dates,
       input.period.toRange,
+      Pending.code,
       Instant.now(),
       input.spaceId,
       member.id

@@ -10,6 +10,6 @@ CREATE TABLE request (
   client_id             uuid NOT NULL REFERENCES member (id)
 );
 
-# ---!Downs
+# --- !Downs
 
 DROP TABLE request;

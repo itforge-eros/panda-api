@@ -2,6 +2,6 @@
 
 CREATE EXTENSION fuzzystrmatch;
 
-# ---!Downs
+# --- !Downs
 
 DROP EXTENSION fuzzystrmatch;

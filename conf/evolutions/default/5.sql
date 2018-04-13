@@ -13,7 +13,7 @@ CREATE TABLE reservation (
   EXCLUDE USING gist (space_id WITH =, date WITH =, period WITH &&)
 );
 
-# ---!Downs
+# --- !Downs
 
 DROP TABLE reservation;
 

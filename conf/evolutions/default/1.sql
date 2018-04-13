@@ -12,7 +12,7 @@ CREATE TABLE space (
   created_at            timestamp NOT NULL
 );
 
-# ---!Downs
+# --- !Downs
 
 DROP TABLE space;
 

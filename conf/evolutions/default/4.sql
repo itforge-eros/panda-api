@@ -10,6 +10,6 @@ CREATE TABLE review (
   PRIMARY KEY (request_id, reviewer_id)
 );
 
-# ---!Downs
+# --- !Downs
 
 DROP TABLE review;

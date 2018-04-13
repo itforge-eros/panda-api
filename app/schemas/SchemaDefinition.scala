@@ -4,7 +4,7 @@ import inputs.{RequestInput, ReviewInput, SpaceInput}
 import models._
 import sangria.execution.FieldTag
 import sangria.macros.derive._
-import sangria.schema.Schema
+import sangria.schema.{EnumType, Schema}
 import utils.graphql.GraphqlUtil
 
 object SchemaDefinition extends GraphqlUtil[PandaContext] {
@@ -15,6 +15,7 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val reviewType: Type[Review] = deriveObjectType()
   implicit val reservationType: Type[Reservation] = deriveObjectType()
   implicit val memberWithToken: Type[MemberWithToken] = deriveObjectType()
+  implicit val requestStatusType: EnumType[RequestStatus] = deriveEnumType()
 
   implicit val spaceInputType: InputType[SpaceInput] = deriveInputObjectType()
   implicit val requestInputType: InputType[RequestInput] = deriveInputObjectType()
