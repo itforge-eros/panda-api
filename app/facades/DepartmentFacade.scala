@@ -2,12 +2,13 @@ package facades
 
 import java.util.UUID
 
-import definitions.exceptions.DepartmentException.DepartmentNotFoundException
+import definitions.exceptions.DepartmentException.{CannotCreateDepartmentException, DepartmentNotFoundException}
+import entities.DepartmentEntity
 import models.Department
 import persists.DepartmentPersist
 import schemas.inputs.DepartmentInput
 
-import scala.util.{Success, Try}
+import scala.util.{Failure, Success, Try}
 
 class DepartmentFacade(departmentPersist: DepartmentPersist) extends BaseFacade {
 
@@ -16,11 +17,16 @@ class DepartmentFacade(departmentPersist: DepartmentPersist) extends BaseFacade 
   }
 
   def create(input: DepartmentInput): Try[Department] = ValidateWith() {
-    Success(Department(
+    val departmentEntity = DepartmentEntity(
       UUID.randomUUID(),
-      "random name",
-      Some("whatever")
-    ))
+      input.name,
+      input.description
+    )
+
+    departmentPersist.create(departmentEntity) match {
+      case true => Success(departmentEntity) map Department.of
+      case false => Failure(CannotCreateDepartmentException)
+    }
   }
 
 }

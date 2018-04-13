@@ -46,7 +46,7 @@ class RequestFacade(requestPersist: RequestPersist,
     )
 
     requestPersist.insert(requestEntity) match {
-      case true => Success(Request.of(requestEntity))
+      case true => Success(requestEntity) map Request.of
       case false => Failure(CannotCreateSpaceException)
     }
   }

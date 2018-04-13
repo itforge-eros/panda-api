@@ -50,7 +50,7 @@ class SpaceFacade(spacePersist: SpacePersist,
     )
 
     spacePersist.insert(spaceEntity) match {
-      case true => Success(Space.of(spaceEntity))
+      case true => Success(spaceEntity) map Space.of
       case false => Failure(CannotCreateSpaceException)
     }
   }
