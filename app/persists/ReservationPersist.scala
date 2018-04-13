@@ -12,4 +12,6 @@ trait ReservationPersist {
 
   def findByClientId(clientId: UUID): List[ReservationEntity]
 
+  def insert(reservationEntity: ReservationEntity): Boolean
+
 }

@@ -24,6 +24,19 @@ class ReservationPostgres(db: Database) extends ReservationPersist
     SQL"SELECT * FROM member WHERE member_id=$clientId::uuid" as rowParser.*
   }
 
+  override def insert(reservation: ReservationEntity): Boolean = db.withConnection { implicit connection =>
+    SQL"""
+         INSERT INTO reservation VALUES (
+           ${reservation.id}::uuid,
+           ${reservation.date},
+           ${reservation.period}::int4range,
+           ${reservation.isAttended},
+           ${reservation.spaceId}::uuid,
+           ${reservation.clientId}::uuid
+         )
+       """ executeStatement()
+  }
+
   private lazy val rowParser =
     Macro.namedParser[ReservationEntity](ColumnNaming.SnakeCase)
 
