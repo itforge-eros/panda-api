@@ -6,8 +6,6 @@ import entities.MemberEntity
 import henkan.convert.Syntax._
 import sangria.macros.derive._
 
-import scala.util.Try
-
 case class Member(id: UUID,
                   username: String,
                   firstName: String,
