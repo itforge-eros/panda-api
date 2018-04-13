@@ -1,6 +1,6 @@
 # --- !Ups
 
-CREATE TYPE request_status AS ENUM ('pending', 'success', 'failed', 'cancelled');
+CREATE TYPE request_status AS ENUM ('pending', 'approved', 'rejected', 'cancelled');
 ALTER TABLE request ADD status request_status NOT NULL DEFAULT 'pending';
 
 # --- !Downs

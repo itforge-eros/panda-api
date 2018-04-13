@@ -14,4 +14,6 @@ trait RequestPersist {
 
   def insert(request: RequestEntity): Boolean
 
+  def setStatus(requestId: UUID, status: String): Boolean
+
 }

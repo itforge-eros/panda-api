@@ -26,7 +26,7 @@ class RequestPostgres(db: Database) extends RequestPersist
     SQL"SELECT * FROM request WHERE client_id=$clientId::uuid" as rowParser.*
   }
 
-  override def insert(request: RequestEntity): Boolean = db.withTransaction { implicit connection =>
+  override def insert(request: RequestEntity): Boolean = db.withConnection { implicit connection =>
     SQL"""
          INSERT INTO request VALUES (
            ${request.id}::uuid,
@@ -38,6 +38,10 @@ class RequestPostgres(db: Database) extends RequestPersist
            ${request.clientId}::uuid
          )
        """ executeInsert rowParser.singleOpt isDefined
+  }
+
+  override def setStatus(requestId: UUID, status: String): Boolean = db.withConnection { implicit connection =>
+    SQL"UPDATE request SET status = $status::request_status WHERE id = $requestId::uuid" executeStatement()
   }
 
   private lazy val rowParser =

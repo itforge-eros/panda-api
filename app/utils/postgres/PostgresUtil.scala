@@ -3,7 +3,7 @@ package utils.postgres
 import java.sql.{Connection, PreparedStatement}
 
 import anorm.Column.nonNull
-import anorm.{Column, ToStatement}
+import anorm.{Column, Row, SimpleSql, ToStatement}
 import org.postgresql.util.PGobject
 import play.api.db.Database
 
@@ -25,5 +25,29 @@ trait PostgresUtil {
       case null => s.setString(index, null)
       case _ => s.setString(index, PostgresRange.fromScalaRange(range).toString)
     }
+
+  implicit class SqlStatement(sqlStatement: SimpleSql[Row])
+                             (implicit connection: Connection) {
+
+    def executeStatement(expectedChangedRow: Int = 1): Boolean =
+      expectedChangedRow == 1 match {
+        case true => updateSingleRow()
+        case false => updateBatch(expectedChangedRow)
+      }
+
+    private def updateSingleRow(): Boolean =
+      sqlStatement.executeUpdate == 1
+
+    private def updateBatch(expectedChangedRow: Int): Boolean = {
+      connection.setAutoCommit(false)
+
+      sqlStatement.executeUpdate == expectedChangedRow match {
+        case true => connection.commit(); true
+        case false if sqlStatement.executeUpdate == 0 => false
+        case false => connection.rollback(); false
+      }
+    }
+
+  }
 
 }

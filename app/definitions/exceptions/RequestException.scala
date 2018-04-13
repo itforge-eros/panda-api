@@ -17,7 +17,11 @@ trait RequestException {
       with SafeException
 
   object ReviewAlreadyExistedException
-    extends Exception("Review already existed.")
+    extends Exception("You already review this request.")
+      with SafeException
+
+  object RequestAlreadyClosedException
+    extends Exception("Request already closed.")
       with SafeException
 
 }

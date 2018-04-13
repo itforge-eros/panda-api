@@ -10,18 +10,18 @@ object RequestStatus {
 
   def apply(s: String): RequestStatus = values.find(s == _.code).get
 
-  val values: List[RequestStatus] = List(Pending, Success, Failed, Cancelled)
+  val values: List[RequestStatus] = List(Pending, Approved, Rejected, Cancelled)
 
   case object Pending extends RequestStatus {
     override def code = "pending"
   }
 
-  case object Success extends RequestStatus {
-    override def code = "success"
+  case object Approved extends RequestStatus {
+    override def code = "approved"
   }
 
-  case object Failed extends RequestStatus {
-    override def code = "failed"
+  case object Rejected extends RequestStatus {
+    override def code = "rejected"
   }
 
   case object Cancelled extends RequestStatus {
