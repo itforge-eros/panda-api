@@ -21,7 +21,7 @@ class ReservationPostgres(db: Database) extends ReservationPersist
   }
 
   override def findByClientId(clientId: UUID): List[ReservationEntity] = db.withConnection { implicit connection =>
-    SQL"SELECT * FROM member WHERE member_id=$clientId::uuid" as rowParser.*
+    SQL"SELECT * FROM reservation WHERE client_id=$clientId::uuid" as rowParser.*
   }
 
   override def insert(reservation: ReservationEntity): Boolean = db.withConnection { implicit connection =>
