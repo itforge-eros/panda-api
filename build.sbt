@@ -62,6 +62,8 @@ libraryDependencies ++= Seq(
   "org.tpolecat" %% "doobie-specs2" % doobieVersion
 )
 
+scalacOptions += "-Ypartial-unification" // 2.11.9+
+
 packageName in Docker := "panda-api"
 dockerRepository := Some("docker.io")
 dockerUsername := Some("kavinvin")
