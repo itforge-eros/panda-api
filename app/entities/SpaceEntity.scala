@@ -8,4 +8,5 @@ case class SpaceEntity(id: UUID,
                        description: Option[String],
                        capacity: Option[Int],
                        isAvailable: Boolean,
-                       createdAt: Instant)
+                       createdAt: Instant,
+                       groupId: UUID)

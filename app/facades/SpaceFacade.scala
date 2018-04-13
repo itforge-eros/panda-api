@@ -45,7 +45,8 @@ class SpaceFacade(spacePersist: SpacePersist,
       input.description,
       input.capacity,
       input.isAvailable,
-      Instant.now()
+      Instant.now(),
+      input.groupId
     )
 
     spacePersist.insert(spaceEntity) match {

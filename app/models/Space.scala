@@ -15,7 +15,8 @@ case class Space(id: UUID,
                  description: Option[String],
                  capacity: Option[Int],
                  isAvailable: Boolean,
-                 createdAt: Instant) extends BaseModel {
+                 createdAt: Instant,
+                 @GraphQLExclude groupId: UUID) extends BaseModel {
 
   @GraphQLField
   def requests(ctx: AppContext[Space]) = authorize(ctx) { implicit member =>
