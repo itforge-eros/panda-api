@@ -30,6 +30,7 @@ class MockPandaComponents(context: Context) extends BuiltInComponentsWithLogging
   lazy val requestFacade: RequestFacade = wire[RequestFacade]
   lazy val reviewFacade: ReviewFacade = wire[ReviewFacade]
   lazy val reservationFacade: ReservationFacade = wire[ReservationFacade]
+  lazy val groupFacade: GroupFacade = wire[GroupFacade]
 
   lazy val graphqlController: GraphqlController = wire[GraphqlController]
   lazy val router: Router = wire[Routes]

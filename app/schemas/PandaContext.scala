@@ -15,4 +15,5 @@ case class PandaContext(query: Query,
                         memberFacade: MemberFacade,
                         requestFacade: RequestFacade,
                         reviewFacade: ReviewFacade,
-                        reservationFacade: ReservationFacade)
+                        reservationFacade: ReservationFacade,
+                        groupFacade: GroupFacade)
