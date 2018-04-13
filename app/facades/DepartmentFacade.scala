@@ -4,16 +4,21 @@ import java.util.UUID
 
 import definitions.exceptions.DepartmentException.{CannotCreateDepartmentException, DepartmentNotFoundException}
 import entities.DepartmentEntity
-import models.Department
-import persists.DepartmentPersist
+import models.{Department, Role}
+import persists.{DepartmentPersist, RolePersist}
 import schemas.inputs.DepartmentInput
 
 import scala.util.{Failure, Success, Try}
 
-class DepartmentFacade(departmentPersist: DepartmentPersist) extends BaseFacade {
+class DepartmentFacade(departmentPersist: DepartmentPersist,
+                       rolePersist: RolePersist) extends BaseFacade {
 
   def find(id: UUID): Try[Department] = ValidateWith() {
     departmentPersist.find(id) toTry DepartmentNotFoundException map Department.of
+  }
+
+  def roles(id: UUID): Try[List[Role]] = Validate() {
+    rolePersist.findByDepartmentId(id) map Role.of
   }
 
   def create(input: DepartmentInput): Try[Department] = ValidateWith() {

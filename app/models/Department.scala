@@ -4,10 +4,18 @@ import java.util.UUID
 
 import entities.DepartmentEntity
 import henkan.convert.Syntax._
+import sangria.macros.derive.GraphQLField
 
 case class Department(id: UUID,
                       name: String,
-                      description: Option[String]) extends BaseModel
+                      description: Option[String]) extends BaseModel {
+
+  @GraphQLField
+  def roles(ctx: AppContext[Department]) = authorize(ctx) { implicit member =>
+    ctx.ctx.departmentFacade.roles(id)
+  }
+
+}
 
 object Department {
 
