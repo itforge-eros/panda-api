@@ -18,6 +18,7 @@ trait DatabaseComponents extends DBComponents
   lazy val reviewPersist: ReviewPersist = wire[ReviewPostgres]
   lazy val reservationPersist: ReservationPersist = wire[ReservationPostgres]
   lazy val departmentPersist: DepartmentPersist = wire[DepartmentPostgres]
+  lazy val rolePersist: RolePersist = wire[RolePostgres]
 
   applicationEvolutions
 

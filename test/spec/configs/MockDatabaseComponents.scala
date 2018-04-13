@@ -26,5 +26,6 @@ trait MockDatabaseComponents extends MockFactory {
   lazy val reviewPersist: ReviewPersist = mock[ReviewPersist]
   lazy val reservationPersist: ReservationPersist = mock[ReservationPersist]
   lazy val departmentPersist: DepartmentPersist = mock[DepartmentPersist]
+  lazy val rolePersist: RolePersist = mock[RolePersist]
 
 }

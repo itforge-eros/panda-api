@@ -5,3 +5,4 @@ class Query extends SpaceQuery
   with RequestQuery
   with AuthenticationQuery
   with DepartmentQuery
+  with RoleQuery

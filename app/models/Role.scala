@@ -9,7 +9,7 @@ import sangria.macros.derive.GraphQLExclude
 case class Role(id: UUID,
                 name: String,
                 description: Option[String],
-                @GraphQLExclude groupId: UUID)
+                @GraphQLExclude departmentId: UUID)
 
 object Role {
 
