@@ -44,6 +44,7 @@ class RequestPostgres(db: Database) extends RequestPersist
     SQL"UPDATE request SET status = $status::request_status WHERE id = $requestId::uuid" executeStatement()
   }
 
+
   private lazy val rowParser =
     Macro.namedParser[RequestEntity](ColumnNaming.SnakeCase)
 

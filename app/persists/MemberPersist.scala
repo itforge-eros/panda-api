@@ -10,6 +10,8 @@ trait MemberPersist {
 
   def findByUsername(username: String): Option[MemberEntity]
 
+  def findByRoleId(roleId: UUID): List[MemberEntity]
+
   def insert(member: MemberEntity): Option[MemberEntity]
 
 }

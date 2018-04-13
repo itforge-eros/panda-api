@@ -20,6 +20,14 @@ class RolePostgres(db: Database) extends RolePersist
     SQL"SELECT * FROM role WHERE department_id=$departmentId::uuid" as rowParser.*
   }
 
+  override def findByMemberId(memberId: UUID): List[RoleEntity] = db.withConnection { implicit connection =>
+    SQL"""
+        SELECT * FROM role
+        JOIN member_role ON role.id = member_role.role_id
+        WHERE member_id=$memberId::uuid
+       """ as rowParser.*
+  }
+
   override def insert(roleEntity: RoleEntity): Boolean = db.withConnection { implicit connection =>
     SQL"""
          INSERT INTO role VALUES (
@@ -30,6 +38,7 @@ class RolePostgres(db: Database) extends RolePersist
          )
        """ executeStatement()
   }
+
 
   private lazy val rowParser =
     Macro.namedParser[RoleEntity](ColumnNaming.SnakeCase)

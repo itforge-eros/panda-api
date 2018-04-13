@@ -2,17 +2,18 @@ package facades
 
 import java.util.UUID
 
-import models.{Member, Request, Reservation, Review}
-import persists.{MemberPersist, RequestPersist, ReservationPersist, ReviewPersist}
 import definitions.exceptions.AppException._
+import models._
+import persists._
 
 import scala.language.postfixOps
-import scala.util.{Failure, Try}
+import scala.util.Try
 
 class MemberFacade(memberPersist: MemberPersist,
                    requestPersist: RequestPersist,
                    reviewPersist: ReviewPersist,
-                   reservationPersist: ReservationPersist) extends BaseFacade {
+                   reservationPersist: ReservationPersist,
+                   rolePersist: RolePersist) extends BaseFacade {
 
   def find(id: UUID): Try[Member] = ValidateWith() {
     memberPersist.find(id) toTry MemberNotFoundException map Member.of
@@ -36,6 +37,10 @@ class MemberFacade(memberPersist: MemberPersist,
 
   def reservations(id: UUID): Try[List[Reservation]] = Validate() {
     reservationPersist.findByClientId(id) map Reservation.of
+  }
+
+  def roles(id: UUID): Try[List[Role]] = Validate() {
+    rolePersist.findByMemberId(id) map Role.of
   }
 
 }

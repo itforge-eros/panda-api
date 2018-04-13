@@ -10,6 +10,8 @@ trait RolePersist {
 
   def findByDepartmentId(departmentId: UUID): List[RoleEntity]
 
+  def findByMemberId(memberId: UUID): List[RoleEntity]
+
   def insert(roleEntity: RoleEntity): Boolean
 
 }

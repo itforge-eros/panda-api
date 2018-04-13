@@ -40,6 +40,7 @@ class ReviewPostgres(db: Database) extends ReviewPersist {
        """ executeInsert rowParser.singleOpt isDefined
   }
 
+
   private lazy val rowParser =
     Macro.namedParser[ReviewEntity](ColumnNaming.SnakeCase)
 

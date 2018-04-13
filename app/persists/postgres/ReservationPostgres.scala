@@ -37,6 +37,7 @@ class ReservationPostgres(db: Database) extends ReservationPersist
        """ executeStatement()
   }
 
+
   private lazy val rowParser =
     Macro.namedParser[ReservationEntity](ColumnNaming.SnakeCase)
 

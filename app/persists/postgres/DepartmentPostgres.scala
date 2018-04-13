@@ -26,6 +26,7 @@ class DepartmentPostgres(db: Database) extends DepartmentPersist
        """ executeStatement()
   }
 
+
   private lazy val rowParser =
     Macro.namedParser[DepartmentEntity](ColumnNaming.SnakeCase)
 

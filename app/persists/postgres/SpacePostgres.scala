@@ -42,6 +42,7 @@ class SpacePostgres(db: Database) extends SpacePersist {
        """ executeInsert rowParser.singleOpt isDefined
   }
 
+
   private lazy val rowParser =
     Macro.namedParser[SpaceEntity](ColumnNaming.SnakeCase)
 

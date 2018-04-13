@@ -27,6 +27,11 @@ case class Member(id: UUID,
     ctx.ctx.memberFacade.reservations(id)
   }
 
+  @GraphQLField
+  def roles(ctx: AppContext[Member]) = resolve {
+    ctx.ctx.memberFacade.roles(id)
+  }
+
 }
 
 object Member {

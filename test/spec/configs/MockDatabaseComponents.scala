@@ -20,6 +20,7 @@ trait MockDatabaseComponents extends MockFactory {
     override def insert(member: MemberEntity): Option[MemberEntity] = ???
     override def findByUsername(username: String): Option[MemberEntity] = ???
     override def find(id: UUID): Option[MemberEntity] = MemberData.members find (_.id == id)
+    override def findByRoleId(roleId: UUID) = ???
   }
 
   lazy val requestPersist: RequestPersist = mock[RequestPersist]
@@ -27,5 +28,6 @@ trait MockDatabaseComponents extends MockFactory {
   lazy val reservationPersist: ReservationPersist = mock[ReservationPersist]
   lazy val departmentPersist: DepartmentPersist = mock[DepartmentPersist]
   lazy val rolePersist: RolePersist = mock[RolePersist]
+  lazy val memberRolePersist: MemberRolePersist = mock[MemberRolePersist]
 
 }

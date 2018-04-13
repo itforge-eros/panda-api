@@ -37,7 +37,7 @@ class AuthenticationFacade(memberPersist: MemberPersist,
 
   private def findOrElseCreateMember(existingMember: ExistingMemberEntity): Try[MemberEntity] = Try {
     memberPersist.findByUsername(existingMember.username)
-      .getOrElse(memberPersist.insert(MemberEntity.of(existingMember)).get)
+      .getOrElse(memberPersist.insert(existingMember.toMember).get)
   }
 
   private def createToken(memberId: UUID): String = {
