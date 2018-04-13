@@ -7,7 +7,7 @@ import henkan.convert.Syntax._
 
 case class Group(id: UUID,
                  name: String,
-                 description: String) extends BaseModel
+                 description: Option[String]) extends BaseModel
 
 object Group {
 

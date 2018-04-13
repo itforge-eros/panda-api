@@ -16,6 +16,7 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val reservationType: Type[Reservation] = deriveObjectType()
   implicit val memberWithToken: Type[MemberWithToken] = deriveObjectType()
   implicit val requestStatusType: EnumType[RequestStatus] = deriveEnumType()
+  implicit val groupType: Type[Group] = deriveObjectType()
 
   implicit val spaceInputType: InputType[SpaceInput] = deriveInputObjectType()
   implicit val requestInputType: InputType[RequestInput] = deriveInputObjectType()

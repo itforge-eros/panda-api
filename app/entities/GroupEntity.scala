@@ -4,4 +4,4 @@ import java.util.UUID
 
 case class GroupEntity(id: UUID,
                        name: String,
-                       description: String)
+                       description: Option[String])
