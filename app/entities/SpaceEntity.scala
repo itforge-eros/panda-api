@@ -9,4 +9,4 @@ case class SpaceEntity(id: UUID,
                        capacity: Option[Int],
                        isAvailable: Boolean,
                        createdAt: Instant,
-                       groupId: UUID)
+                       departmentId: UUID)

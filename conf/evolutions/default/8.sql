@@ -1,15 +1,15 @@
 # --- !Ups
 
-CREATE TABLE "group" (
+CREATE TABLE department (
   id                    uuid PRIMARY KEY,
   name                  varchar(64) NOT NULL,
   description           text
 );
 
-ALTER TABLE space ADD group_id uuid REFERENCES "group" (id);
+ALTER TABLE space ADD department_id uuid REFERENCES department (id);
 
 # --- !Downs
 
-ALTER TABLE space DROP group_id;
+ALTER TABLE space DROP department_id;
 
-DROP TABLE "group";
+DROP TABLE department;

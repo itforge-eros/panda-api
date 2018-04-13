@@ -31,7 +31,7 @@ class PandaComponents(context: Context) extends BuiltInComponentsWithLogging(con
   lazy val requestFacade: RequestFacade = wire[RequestFacade]
   lazy val reviewFacade: ReviewFacade = wire[ReviewFacade]
   lazy val reservationFacade: ReservationFacade = wire[ReservationFacade]
-  lazy val groupFacade: GroupFacade = wire[GroupFacade]
+  lazy val departmentFacade: DepartmentFacade = wire[DepartmentFacade]
 
   lazy val graphqlController: GraphqlController = wire[GraphqlController]
   lazy val router: Router = wire[Routes]

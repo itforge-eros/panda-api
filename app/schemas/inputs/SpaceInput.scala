@@ -6,4 +6,4 @@ case class SpaceInput(name: String,
                       description: Option[String],
                       capacity: Option[Int],
                       isAvailable: Boolean,
-                      groupId: UUID)
+                      departmentId: UUID)
