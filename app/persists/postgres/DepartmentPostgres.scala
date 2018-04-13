@@ -16,7 +16,7 @@ class DepartmentPostgres(db: Database) extends DepartmentPersist
     SQL"SELECT * FROM department WHERE id=$id::uuid" as rowParser.singleOpt
   }
 
-  override def create(departmentEntity: DepartmentEntity) = db.withConnection { implicit connection =>
+  override def insert(departmentEntity: DepartmentEntity) = db.withConnection { implicit connection =>
     SQL"""
          INSERT INTO department VALUES (
            ${departmentEntity.id}::uuid,

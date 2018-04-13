@@ -3,7 +3,7 @@ package facades
 import java.util.UUID
 
 import definitions.exceptions.DepartmentException.{CannotCreateDepartmentException, DepartmentNotFoundException}
-import entities.DepartmentEntity
+import entities.{DepartmentEntity, RoleEntity}
 import models.{Department, Role}
 import persists.{DepartmentPersist, RolePersist}
 import schemas.inputs.DepartmentInput
@@ -22,13 +22,21 @@ class DepartmentFacade(departmentPersist: DepartmentPersist,
   }
 
   def create(input: DepartmentInput): Try[Department] = ValidateWith() {
-    val departmentEntity = DepartmentEntity(
-      UUID.randomUUID(),
+    val departmentId = UUID.randomUUID()
+    lazy val departmentEntity = DepartmentEntity(
+      departmentId,
       input.name,
       input.description
     )
+    lazy val adminRoleEntity = RoleEntity(
+      UUID.randomUUID(),
+      "Owner",
+      Some("An owner of the department"),
+      departmentId
+    )
 
-    departmentPersist.create(departmentEntity) match {
+    departmentPersist.insert(departmentEntity) &
+      rolePersist.insert(adminRoleEntity) match {
       case true => Success(departmentEntity) map Department.of
       case false => Failure(CannotCreateDepartmentException)
     }
