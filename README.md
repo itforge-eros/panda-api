@@ -1,53 +1,75 @@
-![](https://i.imgur.com/uteHb6I.png)
-# Project Panda API 🐼
+![KMITL OSRS](https://zartre.com/files/KMITL-OSRS.png)
+# Panda API
 
-Welcome to the repository of **Project Panda** (or _The Panda Project_), aka _KMITL Online Space Reservation System_.
+An API of **KMITL Online Space Reservation System**, aka _Panda Project_.
 
-# ![](https://png.icons8.com/ios/30/000000/project.png) The Panda Project
-The Panda Project sources are hosted on GitHub.
+# Contributing
 
-* Project Panda API : [itforge-eros/panda-api](https://github.com/itforge-eros/panda-api)
-* Project Panda Front End : [itforge-eros/panda-website](https://github.com/itforge-eros/panda-website)
-* Project Panda Documentation : [itforge-eros/panda-docs](https://github.com/itforge-eros/panda-docs)
+We are happy to let you become part of the project.
 
-[![Build Status](https://travis-ci.org/itforge-eros/panda-api.svg?branch=develop)](https://travis-ci.org/itforge-eros/panda-api)
+## Prerequisite
 
-# ![](https://png.icons8.com/ios/30/000000/launched-rocket.png) Starting up the server
-
-Make sure you own these in your local compute device
-1. SBT (Scala and Java Simple Build Tool)
-2. PostgreSQL
-
-If you have not download those, here's a script for `homebrew`
-```shell
+1. Install [sbt](https://www.scala-sbt.org/index.html)
+```bash
 $ brew install sbt
+```
+
+2. Install PostgreSQL
+```bash
 $ brew install postgresql
 ```
 
-Then, you can start the application
-```shell
-$ ./script/setup-database development
+## Start a Server
+
+1. Make sure PostgreSQL server is started at localhost:5432
+```bash
+$ brew services start postgresql
+```
+
+2. Run the script to create user and development database in PostgreSQL
+```bash
+$ ./script/setup-database
+```
+
+3. Start a server. sbt will automatically download the required version of sbt in this project, then grab all of the dependependies.
+```
 $ sbt run
 ```
 
-And run the SBT
-```shell
-$ sbt test
+The API can now be accessed at `localhost:9000`.
+
+## Project Structure
+
+```
+panda-api/
+├── app/
+│   ├── config/             <-- app configuration files
+│   ├── controllers/        <-- REST API controllers
+│   ├── definitions/        <-- app definitions e.g. exceptions, constants
+│   ├── entities/           <-- database entities, they have exactly same structure as database tables
+│   ├── facades/            <-- application logic
+│   ├── models/             <-- GraphQL models
+│   ├── persists/           <-- database interfaces and implementations
+│   ├── schemas/            <-- GraphQL schemas
+│   ├── services/           <-- outside services e.g. LDAP, Facebook authentication
+│   ├── utils/              <-- utilities
+│   └── validators/         <-- validation logic
+├── conf/
+│   ├── application.conf    <-- default application configuration
+│   ├── base.conf           <-- base configuration
+│   ├── production.conf     <-- production configuration
+│   ├── evolutions/         <-- database DDL scripts
+│   └── routes/             <-- route file
+├── project/
+│   ├── build.properties    <-- sbt version used in this project
+│   └── plugins.sbt         <-- sbt plugins
+├── script/                 <-- script files
+├── test/                   <-- tests
+└── build.sbt               <-- sbt build file, which contains application dependencies, plugins and tasks
 ```
 
-# ![](https://png.icons8.com/ios/30/000000/pull-request.png) Contributing
-We are happy to let you become the part of the project. <br>
-NOTE : Pull request approving process will start after 7th May 2018.
-
-Steps to contribute to our project
-1. [Fork](https://help.github.com/articles/fork-a-repo/) our repository
-2. Edit the code on your forked repository
-3. Go to our repository and [create new pull request](https://help.github.com/articles/creating-a-pull-request/)
-4. We will review your code, and eventually pull your code to our repository.
-5. You have made our system shinier everyday!
-
-# ![](https://png.icons8.com/ios/30/000000/groups.png) Team Members
-We are from Information Technology, King Mongkut Institute of Technology Ladkrabang
+# Team Members
+We are from Information Technology, King Mongkut's Institute of Technology Ladkrabang
 
 ||First Name|Last Name|GitHub Username|Student ID|
 |:-:|--|------|---------------|---------|
@@ -57,11 +79,7 @@ We are from Information Technology, King Mongkut Institute of Technology Ladkrab
 |<img src="https://avatars0.githubusercontent.com/u/3814520" width="75px">|Nathan|Yiangsupapaanontr|[@DobaKung](https://github.com/DobaKung)|59070087|
 |<img src="https://avatars1.githubusercontent.com/u/20330195" width="75px">|Pornprom|Kiawjak|[@foofybuster](https://github.com/foofybuster)|59070113|
 
-This repository is part of these subject
-- Web Programming 06016215
-- Information System and Analysis 06016216
-- Database System Concepts 06016217
-
----
-
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)[![forthebadge](https://forthebadge.com/images/badges/contains-cat-gifs.svg)](https://forthebadge.com)[![forthebadge](https://forthebadge.com/images/badges/powered-by-responsibility.svg)](https://forthebadge.com)
+The project is part of these subjects:
+* 06016215 Web Programming
+* 06016216 Information System and Analysis
+* 06016217 Database System Concepts
