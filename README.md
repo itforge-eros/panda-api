@@ -31,7 +31,7 @@ $ brew services start postgresql
 $ ./script/setup-database
 ```
 
-3. Start a server. sbt will automatically download the required version of sbt in this project, then grab all of the dependependies.
+3. Start a server. sbt will automatically download the required version of sbt in this project, then install all dependencies.
 ```
 $ sbt run
 ```
