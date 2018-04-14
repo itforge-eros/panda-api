@@ -1,6 +1,7 @@
 package validators
 
 import definitions.exceptions.AppException._
+import doobie.util.log.Success
 import models.Member
 import utils.graphql.GraphqlUtil.AppContext
 
@@ -13,8 +14,12 @@ trait AuthorizationValidator {
     (ctx.ctx.member map f toRight UnauthorizedException toTry) flatten
   } map Some.apply
 
-  def resolve[A](f: => Try[A]): Try[Option[A]] = {
-    f map Some.apply
+  def resolveOption[A](block: => Try[A]): Try[Option[A]] = {
+    block map Some.apply
+  }
+
+  def resolve[A](block: => Try[A]): Try[A] = {
+    block
   }
 
 }

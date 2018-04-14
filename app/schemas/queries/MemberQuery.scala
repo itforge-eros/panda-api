@@ -8,7 +8,7 @@ import sangria.macros.derive.GraphQLField
 trait MemberQuery extends BaseModel {
 
   @GraphQLField
-  def member(id: UUID)(ctx: AppContext[Unit]) = resolve {
+  def member(id: UUID)(ctx: AppContext[Unit]) = resolveOption {
     ctx.ctx.memberFacade.find(id)
   }
 

@@ -8,7 +8,7 @@ import scala.language.postfixOps
 trait AuthenticationQuery extends BaseModel {
 
   @GraphQLField
-  def login(username: String, password: String)(ctx: AppContext[Unit]) = resolve {
+  def login(username: String, password: String)(ctx: AppContext[Unit]) = resolveOption {
     ctx.ctx.authenticationFacade.login(username, password)
   }
 

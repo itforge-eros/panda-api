@@ -28,7 +28,7 @@ $ brew services start postgresql
 
 2. Run the script to create user and development database in PostgreSQL
 ```bash
-$ ./script/setup-database
+$ ./script/setup-database development
 ```
 
 3. Start a server. sbt will automatically download the required version of sbt in this project, then install all dependencies.

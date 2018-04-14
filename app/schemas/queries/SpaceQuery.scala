@@ -10,7 +10,7 @@ import scala.util.Success
 trait SpaceQuery extends BaseModel {
 
   @GraphQLField
-  def space(id: UUID)(ctx: AppContext[Unit]) = resolve {
+  def space(id: UUID)(ctx: AppContext[Unit]) = resolveOption {
     ctx.ctx.spaceFacade.find(id)
   }
 
