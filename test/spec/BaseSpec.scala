@@ -18,7 +18,7 @@ import sangria.marshalling.circe.{CirceInputUnmarshaller, CirceResultMarshaller}
 import sangria.marshalling.playJson._
 import sangria.marshalling.{InputUnmarshaller, ResultMarshaller}
 import spec.configs.MockApplicationLoader
-import spec.data.MemberData
+import spec.data.{Data, MemberData}
 import spec.helpers.ControllerSpecHelper
 import utils.graphql.GraphqlQuery
 
@@ -56,14 +56,14 @@ abstract class BaseSpec extends AsyncWordSpec
 
   protected val query: GraphqlQuery = GraphqlQuery(
     query = """
-      | query findSpace($id: String!) {
+      | query findSpace($id: UUID!) {
       |   space(id: $id) {
       |     id
       |   }
       | }
     """.stripMargin,
     operationName = Some("findSpace"),
-    variables = Some(Map("id" -> "001") asJson)
+    variables = Some(Map("id" -> Data.uuid1.toString) asJson)
   )
 
   private lazy val claim = JwtClaim(
