@@ -1,31 +1,39 @@
 package models
 
+import sangria.macros.derive.GraphQLName
+
 sealed trait RequestStatus {
 
-  def code: String
+  def name: String
+
+  override def toString = name
 
 }
 
 object RequestStatus {
 
-  def apply(s: String): RequestStatus = values.find(s == _.code).get
+  def apply(s: String): RequestStatus = values.find(s == _.name).get
 
-  val values: List[RequestStatus] = List(Pending, Approved, Rejected, Cancelled)
+  val values: List[RequestStatus] = List(Pending, Completed, Failed, Cancelled)
 
+  @GraphQLName("PENDING")
   case object Pending extends RequestStatus {
-    override def code = "pending"
+    override def name = "pending"
   }
 
-  case object Approved extends RequestStatus {
-    override def code = "approved"
+  @GraphQLName("COMPLETED")
+  case object Completed extends RequestStatus {
+    override def name = "completed"
   }
 
-  case object Rejected extends RequestStatus {
-    override def code = "rejected"
+  @GraphQLName("FAILED")
+  case object Failed extends RequestStatus {
+    override def name = "failed"
   }
 
+  @GraphQLName("CANCELLED")
   case object Cancelled extends RequestStatus {
-    override def code = "cancelled"
+    override def name = "cancelled"
   }
 
 }

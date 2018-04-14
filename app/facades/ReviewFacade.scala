@@ -5,7 +5,7 @@ import java.util.UUID
 
 import definitions.exceptions.AppException._
 import entities.{RequestEntity, ReservationEntity, ReviewEntity}
-import models.RequestStatus.{Approved, Pending, Rejected}
+import models.RequestStatus.{Completed, Pending, Failed}
 import models.{Member, Review}
 import persists.{RequestPersist, ReservationPersist, ReviewPersist}
 import schemas.inputs.ReviewInput
@@ -30,7 +30,7 @@ class ReviewFacade(reviewPersist: ReviewPersist,
     )
 
     findRequest(input.requestId) flatMap { requestEntity =>
-      requestEntity.status == Pending.code match {
+      requestEntity.status == Pending.name match {
         case true => createReview(reviewEntity) map Review.of
         case false => Failure(RequestAlreadyClosedException)
       }
@@ -41,16 +41,16 @@ class ReviewFacade(reviewPersist: ReviewPersist,
   private def updateRequestStatus(requestId: UUID): Boolean = {
     reviewPersist.findByRequestId(requestId) partition (_.isApproval) match {
       case (approvals, _) if approvals.length >= requiredApproval =>
-        requestPersist.setStatus(requestId, Approved.code)
+        requestPersist.setStatus(requestId, Completed.name)
       case (_, rejections) if rejections.nonEmpty =>
-        requestPersist.setStatus(requestId, Rejected.code)
+        requestPersist.setStatus(requestId, Failed.name)
       case _ => true
     }
   }
 
   private def updateReservation(requestId: UUID): Boolean = {
     requestPersist.find(requestId) map { requestEntity =>
-      requestEntity.status == Approved.code match {
+      requestEntity.status == Completed.name match {
         case true => createReservations(requestEntity)
         case false => true
       }

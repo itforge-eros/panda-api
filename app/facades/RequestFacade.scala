@@ -39,7 +39,7 @@ class RequestFacade(requestPersist: RequestPersist,
       input.proposal,
       input.dates,
       input.period.toRange,
-      Pending.code,
+      Pending.name,
       Instant.now(),
       input.spaceId,
       member.id

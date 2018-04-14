@@ -14,13 +14,6 @@ import utils.datatypes.DateUtil.{dateFormat, parseDate}
 
 trait Scalar extends AutoDerivation {
 
-  implicit val uuidType: ScalarAlias[UUID, String] = ScalarAlias(StringType,
-    toScalar = _.toString,
-    fromScalar = idString => try Right(UUID.fromString(idString)) catch {
-      case _: IllegalArgumentException => Left(InvalidIdViolation)
-    }
-  )
-
   implicit val instantType: ScalarAlias[Instant, Long] = ScalarAlias(LongType,
     toScalar = _.getEpochSecond,
     fromScalar = instantLong => try Right(Instant.ofEpochSecond(instantLong)) catch {
@@ -40,6 +33,22 @@ trait Scalar extends AutoDerivation {
   )
 
   implicit val rangeInputType: InputType[RangeInput] = deriveInputObjectType[RangeInput]()
+
+  implicit val uuidType: ScalarType[UUID] = ScalarType("UUID",
+    coerceOutput = (u, _) => u.toString,
+    coerceUserInput = {
+      case s: String => try Right(UUID.fromString(s)) catch {
+        case _: IllegalArgumentException => Left(InvalidUuidViolation)
+      }
+      case _ => Left(InvalidUuidViolation)
+    },
+    coerceInput = {
+      case ast.StringValue(s, _, _, _, _) => try Right(UUID.fromString(s)) catch {
+        case _: IllegalArgumentException => Left(InvalidUuidViolation)
+      }
+      case _ => Left(InvalidUuidViolation)
+    }
+  )
 
   implicit val dateType: ScalarType[Date] = ScalarType("Date",
     coerceOutput = (d, _) => dateFormat.format(d),
