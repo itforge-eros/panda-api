@@ -1,13 +1,14 @@
 # --- !Ups
 
-CREATE TABLE review (
-  request_id            uuid NOT NULL REFERENCES request (id),
-  reviewer_id           uuid NOT NULL REFERENCES member (id),
-  description           text,
-  is_approval           boolean NOT NULL,
-  created_at            timestamp NOT NULL,
+CREATE TYPE review_event AS ENUM ('approve', 'reject', 'comment');
 
-  PRIMARY KEY (request_id, reviewer_id)
+CREATE TABLE review (
+  id                    uuid PRIMARY KEY,
+  body                  text,
+  event                 review_event NOT NULL,
+  created_at            timestamp NOT NULL,
+  request_id            uuid NOT NULL REFERENCES request (id),
+  reviewer_id           uuid NOT NULL REFERENCES member (id)
 );
 
 # --- !Downs

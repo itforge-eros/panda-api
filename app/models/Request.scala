@@ -5,6 +5,7 @@ import java.util.{Date, UUID}
 
 import entities.RequestEntity
 import henkan.convert.Syntax._
+import models.enums.RequestStatus
 import sangria.macros.derive._
 import utils.graphql.GraphqlUtil.AppContext
 
@@ -12,7 +13,7 @@ import scala.language.postfixOps
 import scala.util.Try
 
 case class Request(id: UUID,
-                   proposal: Option[String],
+                   body: Option[String],
                    dates: List[Date],
                    period: Range,
                    status: RequestStatus,
@@ -41,7 +42,7 @@ object Request {
 
   def of(requestEntity: RequestEntity): Request = Request(
     requestEntity.id,
-    requestEntity.proposal,
+    requestEntity.body,
     requestEntity.dates,
     requestEntity.period,
     RequestStatus(requestEntity.status),

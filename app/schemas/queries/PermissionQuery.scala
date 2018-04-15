@@ -10,4 +10,7 @@ trait PermissionQuery extends BaseModel {
     ctx.ctx.permissionFacade.findByName(name)
   }
 
+  @GraphQLField
+  def permissions(ctx: AppContext[Unit]) = ctx.ctx.permissionFacade.permissions
+
 }

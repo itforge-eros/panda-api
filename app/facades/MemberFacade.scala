@@ -3,6 +3,8 @@ package facades
 import java.util.UUID
 
 import definitions.exceptions.AppException._
+import definitions.exceptions.AuthorizationException.NoPermissionException
+import definitions.exceptions.MemberException.MemberNotFoundException
 import models._
 import persists._
 

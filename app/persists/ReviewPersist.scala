@@ -6,7 +6,7 @@ import entities.ReviewEntity
 
 trait ReviewPersist {
 
-  def find(requestId: UUID, reviewerId: UUID): Option[ReviewEntity]
+  def find(id: UUID): Option[ReviewEntity]
 
   def findByRequestId(requestId: UUID): List[ReviewEntity]
 

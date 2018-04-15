@@ -4,11 +4,14 @@ import java.time.Instant
 import java.util.UUID
 
 import definitions.exceptions.AppException._
+import definitions.exceptions.AuthorizationException.NoPermissionException
+import definitions.exceptions.RequestException.RequestNotFoundException
+import definitions.exceptions.SpaceException.{CannotCreateSpaceException, SpaceNotFoundException}
 import entities.RequestEntity
-import models.RequestStatus.Pending
+import models.enums.RequestStatus.Pending
 import models.{Member, Request, Review}
 import persists.{RequestPersist, ReviewPersist, SpacePersist}
-import schemas.inputs.RequestInput
+import schemas.inputs.CreateRequestInput
 
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
@@ -30,7 +33,7 @@ class RequestFacade(requestPersist: RequestPersist,
     reviewPersist.findByRequestId(id) map Review.of
   }
 
-  def create(input: RequestInput)
+  def create(input: CreateRequestInput)
             (implicit member: Member): Try[Request] = ValidateWith(
     Guard(spacePersist.find(input.spaceId) isEmpty, SpaceNotFoundException)
   ) {

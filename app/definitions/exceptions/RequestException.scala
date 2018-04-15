@@ -2,7 +2,7 @@ package definitions.exceptions
 
 import definitions.exceptions.AppException.SafeException
 
-trait RequestException {
+object RequestException {
 
   object RequestNotFoundException
     extends Exception("Request not found.")
@@ -10,14 +10,6 @@ trait RequestException {
 
   object CannotCreateRequestException
     extends Exception("Cannot create request.")
-      with SafeException
-
-  object CannotCreateReviewException
-    extends Exception("Cannot create review.")
-      with SafeException
-
-  object ReviewAlreadyExistedException
-    extends Exception("You already review this request.")
       with SafeException
 
   object RequestAlreadyClosedException

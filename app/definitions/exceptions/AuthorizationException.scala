@@ -1,8 +1,9 @@
 package definitions.exceptions
 
 import definitions.exceptions.AppException.SafeException
+import definitions.exceptions.HttpException.BadRequestException
 
-trait AuthorizationException extends HttpException {
+object AuthorizationException {
 
   object WrongUsernameOrPasswordException
     extends Exception("Wrong username or password.")

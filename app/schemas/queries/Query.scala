@@ -1,9 +1,11 @@
 package schemas.queries
 
-class Query extends SpaceQuery
+class Query extends AuthenticationQuery
+  with SpaceQuery
   with MemberQuery
   with RequestQuery
-  with AuthenticationQuery
+  with ReviewQuery
+  with ReservationQuery
   with DepartmentQuery
   with RoleQuery
   with PermissionQuery

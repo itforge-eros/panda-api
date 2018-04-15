@@ -1,4 +1,4 @@
-package models
+package models.enums
 
 import sangria.macros.derive.GraphQLName
 
@@ -37,6 +37,3 @@ object RequestStatus {
   }
 
 }
-
-
-

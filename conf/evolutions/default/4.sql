@@ -4,7 +4,7 @@ CREATE TYPE request_status AS ENUM ('pending', 'completed', 'failed', 'cancelled
 
 CREATE TABLE request (
   id                    uuid PRIMARY KEY,
-  proposal              text,
+  body                  text,
   dates                 date[] NOT NULL,
   period                int4range NOT NULL,
   status                request_status NOT NULL,

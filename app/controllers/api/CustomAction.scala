@@ -1,6 +1,8 @@
 package controllers.api
 
 import definitions.exceptions.AppException._
+import definitions.exceptions.AuthorizationException.{JwtDecodingException, MalformedJwtTokenException, WrongBearerHeaderFormatException}
+import definitions.exceptions.HttpException.UnexpectedError
 import definitions.{AppSecurity, Handlers}
 import facades.AuthenticationFacade
 import models.Member

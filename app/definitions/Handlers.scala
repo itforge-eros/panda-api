@@ -1,13 +1,15 @@
 package definitions
 
 import controllers.api.TryResults
-import definitions.exceptions.AppException._
 import definitions.Violations._
+import definitions.exceptions.AppException._
+import definitions.exceptions.AuthorizationException.{JwtDecodingException, UnauthorizedException}
+import definitions.exceptions.GraphqlException.GraphqlVariablesParseError
+import definitions.exceptions.HttpException.{BadRequestException, UnexpectedError}
 import play.api.mvc.Result
 import sangria.execution.{ExceptionHandler, HandledException, MaxQueryDepthReachedError}
 import sangria.marshalling.ResultMarshaller
 import sangria.validation.Violation
-import utils.Functional._
 
 import scala.concurrent.Future
 import scala.util.Failure

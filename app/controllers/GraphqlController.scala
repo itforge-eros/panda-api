@@ -1,7 +1,7 @@
 package controllers
 
 import controllers.api.ApiController
-import definitions.exceptions.AppException.GraphqlVariablesParseError
+import definitions.exceptions.GraphqlException.GraphqlVariablesParseError
 import facades.{AuthenticationFacade, GraphqlFacade}
 import io.circe.Json
 import io.circe.generic.auto._

@@ -2,10 +2,14 @@ package definitions.exceptions
 
 import definitions.exceptions.AppException.SafeException
 
-trait SpaceException {
+object SpaceException {
 
   object SpaceNotFoundException
     extends Exception("Space not found.")
+      with SafeException
+
+  object SpaceNameAlreadyTaken
+    extends Exception("Space name already taken")
       with SafeException
 
   object CannotCreateSpaceException

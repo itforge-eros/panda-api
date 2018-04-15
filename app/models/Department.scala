@@ -15,6 +15,11 @@ case class Department(id: UUID,
     ctx.ctx.departmentFacade.roles(id)
   }
 
+  @GraphQLField
+  def spaces(ctx: AppContext[Department]) = resolve {
+    ctx.ctx.departmentFacade.spaces(id)
+  }
+
 }
 
 object Department {

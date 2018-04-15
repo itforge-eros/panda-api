@@ -16,6 +16,15 @@ class RolePostgres(db: Database) extends RolePersist
     SQL"SELECT * FROM role WHERE id=$id::uuid" as rowParser.singleOpt
   }
 
+  override def findByName(departmentName: String, roleName: String): Option[RoleEntity] = db.withConnection { implicit connection =>
+    SQL"""
+        SELECT * FROM role
+        JOIN department ON role.department_id = department.id
+        WHERE department.name=$departmentName
+        AND role.name=$roleName
+       """ as rowParser.singleOpt
+  }
+
   override def findByDepartmentId(departmentId: UUID): List[RoleEntity] = db.withConnection { implicit connection =>
     SQL"SELECT * FROM role WHERE department_id=$departmentId::uuid" as rowParser.*
   }

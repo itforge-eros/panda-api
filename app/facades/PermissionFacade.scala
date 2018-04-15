@@ -11,4 +11,6 @@ class PermissionFacade extends BaseFacade {
     Permission.values.find(name == _.name) toTry PermissionNotFoundException
   }
 
+  def permissions: List[Permission] = Permission.values
+
 }

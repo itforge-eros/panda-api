@@ -30,10 +30,10 @@ class RequestPostgres(db: Database) extends RequestPersist
     SQL"""
          INSERT INTO request VALUES (
            ${request.id}::uuid,
-           ${request.proposal},
+           ${request.body},
            ARRAY[${request.dates}]::date[],
            ${request.period}::int4range,
-           ${request.status},
+           ${request.status}::request_status,
            ${request.createdAt},
            ${request.spaceId}::uuid,
            ${request.clientId}::uuid

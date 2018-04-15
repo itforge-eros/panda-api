@@ -2,7 +2,7 @@ package definitions.exceptions
 
 import definitions.exceptions.AppException.SafeException
 
-trait MemberException {
+object MemberException {
 
   object MemberNotFoundException
     extends Exception("Member not found.")

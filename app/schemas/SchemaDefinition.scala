@@ -1,10 +1,12 @@
 package schemas
 
-import inputs.{DepartmentInput, RequestInput, ReviewInput, SpaceInput}
+import inputs.{CreateDepartmentInput, CreateRequestInput, CreateReviewInput, CreateSpaceInput}
+import io.circe.Json
 import models._
+import models.enums.{RequestStatus, ReviewEvent}
 import sangria.execution.FieldTag
 import sangria.macros.derive._
-import sangria.schema.{EnumType, Schema}
+import sangria.schema.{EnumType, InputField, InputObjectType, OptionInputType, Schema}
 import utils.graphql.GraphqlUtil
 
 object SchemaDefinition extends GraphqlUtil[PandaContext] {
@@ -15,15 +17,17 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val reviewType: Type[Review] = deriveObjectType()
   implicit val reservationType: Type[Reservation] = deriveObjectType()
   implicit val memberWithToken: Type[MemberWithToken] = deriveObjectType()
-  implicit val requestStatusType: EnumType[RequestStatus] = deriveEnumType()
   implicit val departmentType: Type[Department] = deriveObjectType()
   implicit val roleType: Type[Role] = deriveObjectType()
   implicit val permissionType: Type[Permission] = deriveObjectType()
 
-  implicit val spaceInputType: InputType[SpaceInput] = deriveInputObjectType()
-  implicit val requestInputType: InputType[RequestInput] = deriveInputObjectType()
-  implicit val reviewInputType: InputType[ReviewInput] = deriveInputObjectType()
-  implicit val departmentInputType: InputType[DepartmentInput] = deriveInputObjectType()
+  implicit val requestStatusEnumType: EnumType[RequestStatus] = deriveEnumType()
+  implicit val reviewEventEnumType: EnumType[ReviewEvent] = deriveEnumType()
+
+  implicit val spaceInputType: InputType[CreateSpaceInput] = deriveInputObjectType()
+  implicit val requestInputType: InputType[CreateRequestInput] = deriveInputObjectType()
+  implicit val reviewInputType: InputType[CreateReviewInput] = deriveInputObjectType()
+  implicit val departmentInputType: InputType[CreateDepartmentInput] = deriveInputObjectType()
 
   val queryType: Type[Unit] = deriveContextObjectType(_.query)
   val mutationType: Type[Unit] = deriveContextObjectType(_.mutation)

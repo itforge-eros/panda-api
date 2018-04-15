@@ -1,6 +1,6 @@
 package controllers.api
 
-import definitions.exceptions.AppException.FormException
+import definitions.exceptions.HttpException.FormException
 import play.api.data.Form
 import play.api.libs.circe.Circe
 import play.api.mvc.{AbstractController, ControllerComponents, Request}

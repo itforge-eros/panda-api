@@ -1,6 +1,6 @@
 package validators
 
-import definitions.exceptions.AppException._
+import definitions.exceptions.AuthorizationException.UnauthorizedException
 import models.Member
 import utils.graphql.GraphqlUtil.AppContext
 

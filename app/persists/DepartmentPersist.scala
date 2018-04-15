@@ -8,6 +8,8 @@ trait DepartmentPersist {
 
   def find(id: UUID): Option[DepartmentEntity]
 
+  def findByName(name: String): Option[DepartmentEntity]
+
   def insert(departmentEntity: DepartmentEntity): Boolean
 
 }

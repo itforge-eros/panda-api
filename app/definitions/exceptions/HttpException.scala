@@ -6,7 +6,7 @@ import com.typesafe.scalalogging.LazyLogging
 import definitions.exceptions.AppException.SafeException
 import play.api.data.Form
 
-trait HttpException extends LazyLogging {
+object HttpException extends LazyLogging {
 
   class BadRequestException(message: String)
     extends Exception(message)

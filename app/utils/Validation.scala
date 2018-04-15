@@ -1,6 +1,6 @@
 package utils
 
-import definitions.exceptions.AppException.UnexpectedError
+import definitions.exceptions.HttpException.UnexpectedError
 
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}

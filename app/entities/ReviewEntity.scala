@@ -3,8 +3,9 @@ package entities
 import java.time.Instant
 import java.util.UUID
 
-case class ReviewEntity(requestId: UUID,
-                        reviewerId: UUID,
-                        description: Option[String],
-                        isApproval: Boolean,
-                        createdAt: Instant)
+case class ReviewEntity(id: UUID,
+                        body: Option[String],
+                        event: String,
+                        createdAt: Instant,
+                        requestId: UUID,
+                        reviewerId: UUID)

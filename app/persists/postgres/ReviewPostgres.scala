@@ -12,12 +12,8 @@ import scala.language.postfixOps
 
 class ReviewPostgres(db: Database) extends ReviewPersist {
 
-  override def find(requestId: UUID, reviewerId: UUID): Option[ReviewEntity] = db.withConnection { implicit connection =>
-    SQL"""
-         SELECT * FROM review
-         WHERE request_id=$requestId::uuid
-         AND reviewer_id=$reviewerId::uuid
-       """ as rowParser.singleOpt
+  override def find(id: UUID): Option[ReviewEntity] = db.withConnection { implicit connection =>
+    SQL"SELECT * FROM review WHERE id=$id::uuid" as rowParser.singleOpt
   }
 
   override def findByRequestId(requestId: UUID): List[ReviewEntity] = db.withConnection { implicit connection =>
@@ -31,11 +27,12 @@ class ReviewPostgres(db: Database) extends ReviewPersist {
   override def insert(reviewEntity: ReviewEntity): Boolean = db.withConnection { implicit connection =>
     SQL"""
          INSERT INTO review VALUES (
+           ${reviewEntity.id}::uuid,
+           ${reviewEntity.body},
+           ${reviewEntity.event}::review_event,
+           ${reviewEntity.createdAt},
            ${reviewEntity.requestId}::uuid,
-           ${reviewEntity.reviewerId}::uuid,
-           ${reviewEntity.description},
-           ${reviewEntity.isApproval},
-           ${reviewEntity.createdAt}
+           ${reviewEntity.reviewerId}::uuid
          )
        """ executeInsert rowParser.singleOpt isDefined
   }

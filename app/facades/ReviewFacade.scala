@@ -4,11 +4,14 @@ import java.time.Instant
 import java.util.UUID
 
 import definitions.exceptions.AppException._
+import definitions.exceptions.RequestException.{RequestAlreadyClosedException, RequestNotFoundException}
+import definitions.exceptions.ReviewException.{CannotCreateReviewException, ReviewNotFoundException}
 import entities.{RequestEntity, ReservationEntity, ReviewEntity}
-import models.RequestStatus.{Completed, Pending, Failed}
+import models.enums.RequestStatus.{Completed, Failed, Pending}
+import models.enums.ReviewEvent
 import models.{Member, Review}
 import persists.{RequestPersist, ReservationPersist, ReviewPersist}
-import schemas.inputs.ReviewInput
+import schemas.inputs.CreateReviewInput
 
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
@@ -17,16 +20,19 @@ class ReviewFacade(reviewPersist: ReviewPersist,
                    requestPersist: RequestPersist,
                    reservationPersist: ReservationPersist) extends BaseFacade {
 
-  def create(input: ReviewInput, isApproval: Boolean)
-            (implicit member: Member): Try[Review] = ValidateWith(
-    Guard(reviewPersist.find(input.requestId, member.id) isDefined, ReviewAlreadyExistedException)
-  ) {
+  def find(id: UUID): Try[Review] = ValidateWith() {
+    reviewPersist.find(id) toTry ReviewNotFoundException map Review.of
+  }
+
+  def create(input: CreateReviewInput)
+            (implicit member: Member): Try[Review] = ValidateWith() {
     val reviewEntity = ReviewEntity(
+      UUID.randomUUID(),
+      input.body,
+      ReviewEvent.Approve.name, // TODO: Accept review event from input argument
+      Instant.now(),
       input.requestId,
-      member.id,
-      input.description,
-      isApproval,
-      Instant.now()
+      member.id
     )
 
     findRequest(input.requestId) flatMap { requestEntity =>
@@ -39,12 +45,18 @@ class ReviewFacade(reviewPersist: ReviewPersist,
 
 
   private def updateRequestStatus(requestId: UUID): Boolean = {
-    reviewPersist.findByRequestId(requestId) partition (_.isApproval) match {
-      case (approvals, _) if approvals.length >= requiredApproval =>
-        requestPersist.setStatus(requestId, Completed.name)
-      case (_, rejections) if rejections.nonEmpty =>
-        requestPersist.setStatus(requestId, Failed.name)
-      case _ => true
+    val reviews = reviewPersist.findByRequestId(requestId)
+    val approvals = reviews.filter(_.event == ReviewEvent.Approve.name)
+    val rejections = reviews.filter(_.event == ReviewEvent.Reject.name)
+
+    approvals.length >= requiredApproval match {
+      case true => requestPersist.setStatus(requestId, Completed.name)
+      case false => None
+    }
+
+    rejections.nonEmpty match {
+      case true => requestPersist.setStatus(requestId, Failed.name)
+      case false => true
     }
   }
 

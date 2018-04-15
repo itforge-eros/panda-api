@@ -2,7 +2,7 @@ package definitions.exceptions
 
 import definitions.exceptions.AppException.SafeException
 
-trait GraphqlException {
+object GraphqlException {
 
   object GraphqlVariablesParseError
     extends Exception("Cannot parse GraphQL variables.")

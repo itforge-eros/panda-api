@@ -1,3 +1,3 @@
 package schemas.inputs
 
-case class SpaceSearchInput(name: Option[String])
+case class SpaceSearchInput(query: Option[String])

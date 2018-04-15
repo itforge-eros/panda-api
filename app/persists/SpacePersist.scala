@@ -8,7 +8,11 @@ trait SpacePersist {
 
   def find(id: UUID): Option[SpaceEntity]
 
-  def findByName(name: String): List[SpaceEntity]
+  def searchByName(name: String): List[SpaceEntity]
+
+  def findByName(departmentName: String, spaceName: String): Option[SpaceEntity]
+
+  def findByDepartmentId(departmentId: UUID): List[SpaceEntity]
 
   def findAll: List[SpaceEntity]
 

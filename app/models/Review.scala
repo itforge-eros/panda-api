@@ -4,17 +4,17 @@ import java.time.Instant
 import java.util.UUID
 
 import entities.ReviewEntity
-import henkan.convert.Syntax._
+import models.enums.ReviewEvent
 import sangria.macros.derive.{GraphQLExclude, GraphQLField}
 
 import scala.language.postfixOps
-import scala.util.Try
 
-case class Review(@GraphQLExclude requestId: UUID,
-                  @GraphQLExclude reviewerId: UUID,
-                  description: Option[String],
-                  isApproval: Boolean,
-                  createdAt: Instant) extends BaseModel {
+case class Review(id: UUID,
+                  body: Option[String],
+                  event: ReviewEvent,
+                  createdAt: Instant,
+                  @GraphQLExclude requestId: UUID,
+                  @GraphQLExclude reviewerId: UUID) extends BaseModel {
 
   @GraphQLField
   def request(ctx: AppContext[Review]) = authorize(ctx) { implicit member =>
@@ -30,6 +30,13 @@ case class Review(@GraphQLExclude requestId: UUID,
 
 object Review {
 
-  def of(reviewEntity: ReviewEntity): Review = reviewEntity.to[Review]()
+  def of(entity: ReviewEntity): Review = Review(
+    entity.id,
+    entity.body,
+    ReviewEvent(entity.event),
+    entity.createdAt,
+    entity.requestId,
+    entity.reviewerId
+  )
 
 }

@@ -16,12 +16,25 @@ class SpacePostgres(db: Database) extends SpacePersist {
     SQL"SELECT * FROM space WHERE id=$id::uuid" as rowParser.singleOpt
   }
 
-  override def findByName(name: String): List[SpaceEntity] = db.withConnection { implicit connection =>
+  override def searchByName(name: String): List[SpaceEntity] = db.withConnection { implicit connection =>
     SQL"""
          SELECT *, levenshtein(name, $name) FROM space
          ORDER BY levenshtein
          LIMIT 20;
        """ as rowParser.*
+  }
+
+  override def findByName(departmentName: String, spaceName: String): Option[SpaceEntity] = db.withConnection { implicit connection =>
+    SQL"""
+        SELECT * FROM space
+        JOIN department ON space.department_id = department.id
+        WHERE department.name=$departmentName
+        AND space.name=$spaceName
+       """ as rowParser.singleOpt
+  }
+
+  override def findByDepartmentId(departmentId: UUID): List[SpaceEntity] = db.withConnection { implicit connection =>
+    SQL"SELECT * FROM space WHERE department_id=$departmentId::uuid" as rowParser.*
   }
 
   override def findAll: List[SpaceEntity] = db.withConnection { implicit connection =>
