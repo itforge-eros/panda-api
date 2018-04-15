@@ -1,18 +1,18 @@
 package spec.configs
 
 import com.softwaremill.macwire.wire
-import config.components.{BuiltInComponentsWithLogging, GraphqlComponents, ServiceComponents}
+import config.components.{GraphqlComponents, ServiceComponents}
 import controllers.{AssetsComponents, GraphqlController}
 import facades._
 import models.Member
 import play.api.ApplicationLoader.Context
-import play.api.NoHttpFiltersComponents
 import play.api.i18n.I18nComponents
 import play.api.routing.Router
+import play.api.{BuiltInComponentsFromContext, NoHttpFiltersComponents}
 import router.Routes
 import schemas.PandaContext
 
-class MockPandaComponents(context: Context) extends BuiltInComponentsWithLogging(context)
+class MockPandaComponents(context: Context) extends BuiltInComponentsFromContext(context)
   with MockDatabaseComponents
   with ServiceComponents
   with GraphqlComponents

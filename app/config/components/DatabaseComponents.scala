@@ -20,7 +20,6 @@ trait DatabaseComponents extends DBComponents
   lazy val departmentPersist: DepartmentPersist = wire[DepartmentPostgres]
   lazy val rolePersist: RolePersist = wire[RolePostgres]
   lazy val memberRolePersist: MemberRolePersist = wire[MemberRolePostgres]
-  lazy val permissionPersist: PermissionPersist = wire[PermissionPostgres]
 
   applicationEvolutions
 

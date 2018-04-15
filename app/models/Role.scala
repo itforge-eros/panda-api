@@ -9,6 +9,7 @@ import sangria.macros.derive.{GraphQLExclude, GraphQLField}
 case class Role(id: UUID,
                 name: String,
                 description: Option[String],
+                permissions: List[Permission],
                 @GraphQLExclude departmentId: UUID) extends BaseModel {
 
   @GraphQLField
@@ -25,6 +26,12 @@ case class Role(id: UUID,
 
 object Role {
 
-  def of(roleEntity: RoleEntity): Role = roleEntity.to[Role]()
+  def of(roleEntity: RoleEntity): Role = Role(
+    roleEntity.id,
+    roleEntity.name,
+    roleEntity.description,
+    roleEntity.permissions flatMap Permission.fromName,
+    roleEntity.departmentId
+  )
 
 }

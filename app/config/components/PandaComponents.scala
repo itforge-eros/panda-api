@@ -5,7 +5,7 @@ import controllers.{AssetsComponents, GraphqlController}
 import facades._
 import models.Member
 import play.api.ApplicationLoader.Context
-import play.api.NoHttpFiltersComponents
+import play.api.{BuiltInComponentsFromContext, LoggerConfigurator, NoHttpFiltersComponents}
 import play.api.i18n.I18nComponents
 import play.api.routing.Router
 import play.filters.HttpFiltersComponents
@@ -13,7 +13,7 @@ import play.filters.cors.{CORSComponents, CORSFilter}
 import router.Routes
 import schemas.PandaContext
 
-class PandaComponents(context: Context) extends BuiltInComponentsWithLogging(context)
+class PandaComponents(context: Context) extends BuiltInComponentsFromContext(context)
   with DatabaseComponents
   with ServiceComponents
   with GraphqlComponents
@@ -39,5 +39,9 @@ class PandaComponents(context: Context) extends BuiltInComponentsWithLogging(con
   lazy val router: Router = wire[Routes]
 
   override val httpFilters = Seq(corsFilter)
+
+  LoggerConfigurator(context.environment.classLoader) foreach {
+    _.configure(context.environment, context.initialConfiguration, Map.empty)
+  }
 
 }

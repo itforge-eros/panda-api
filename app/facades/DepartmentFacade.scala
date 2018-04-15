@@ -4,6 +4,7 @@ import java.util.UUID
 
 import definitions.exceptions.DepartmentException.{CannotCreateDepartmentException, DepartmentNotFoundException}
 import entities.{DepartmentEntity, MemberRoleEntity, RoleEntity}
+import models.Permission.AdminAccessPermission
 import models.{Department, Member, Role}
 import persists.{DepartmentPersist, MemberRolePersist, RolePersist}
 import schemas.inputs.DepartmentInput
@@ -35,6 +36,7 @@ class DepartmentFacade(departmentPersist: DepartmentPersist,
       roleId,
       "Owner",
       Some("An owner of the department"),
+      List(AdminAccessPermission.name),
       departmentId
     )
     lazy val ownerMemberRoleEntity = MemberRoleEntity(
