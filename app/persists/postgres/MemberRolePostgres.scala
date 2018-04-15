@@ -1,12 +1,8 @@
 package persists.postgres
 
+import anorm._
 import entities.MemberRoleEntity
 import persists.MemberRolePersist
-import play.api.db.Database
-import anorm.Macro.ColumnNaming
-import anorm._
-import entities.{DepartmentEntity, RoleEntity}
-import persists.RolePersist
 import play.api.db.Database
 import utils.postgres.PostgresUtil
 
