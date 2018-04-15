@@ -34,6 +34,7 @@ class RolePostgres(db: Database) extends RolePersist
            ${roleEntity.id}::uuid,
            ${roleEntity.name},
            ${roleEntity.description},
+           ARRAY[${roleEntity.permissions}],
            ${roleEntity.departmentId}::uuid
          )
        """ executeStatement()

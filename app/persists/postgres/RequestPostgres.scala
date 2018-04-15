@@ -33,6 +33,7 @@ class RequestPostgres(db: Database) extends RequestPersist
            ${request.proposal},
            ARRAY[${request.dates}]::date[],
            ${request.period}::int4range,
+           ${request.status},
            ${request.createdAt},
            ${request.spaceId}::uuid,
            ${request.clientId}::uuid

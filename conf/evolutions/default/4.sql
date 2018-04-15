@@ -1,15 +1,20 @@
 # --- !Ups
 
-CREATE TABLE review (
-  request_id            uuid NOT NULL REFERENCES request (id),
-  reviewer_id           uuid NOT NULL REFERENCES member (id),
-  description           text,
-  is_approval           boolean NOT NULL,
-  created_at            timestamp NOT NULL,
+CREATE TYPE request_status AS ENUM ('pending', 'completed', 'failed', 'cancelled');
 
-  PRIMARY KEY (request_id, reviewer_id)
+CREATE TABLE request (
+  id                    uuid PRIMARY KEY,
+  proposal              text,
+  dates                 date[] NOT NULL,
+  period                int4range NOT NULL,
+  status                request_status NOT NULL,
+  created_at            timestamp NOT NULL,
+  space_id              uuid NOT NULL REFERENCES space (id),
+  client_id             uuid NOT NULL REFERENCES member (id)
 );
 
 # --- !Downs
 
-DROP TABLE review;
+DROP TABLE request;
+
+DROP TYPE request_status;

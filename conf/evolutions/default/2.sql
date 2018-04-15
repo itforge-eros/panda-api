@@ -1,13 +1,22 @@
 # --- !Ups
 
-CREATE TABLE member (
+CREATE DOMAIN positive_int AS INT
+  CHECK(VALUE >= 0);
+
+CREATE TABLE space (
   id                    uuid PRIMARY KEY,
-  username              varchar(64) NOT NULL,
-  first_name            varchar(64) NOT NULL,
-  last_name             varchar(64) NOT NULL,
-  email                 varchar(64) NOT NULL
+  name                  varchar(64) NOT NULL,
+  description           text,
+  capacity              positive_int,
+  is_available          boolean NOT NULL,
+  created_at            timestamp NOT NULL,
+  department_id         uuid NOT NULL references department (id),
+
+  UNIQUE (name, department_id)
 );
 
 # --- !Downs
 
-DROP TABLE member;
+DROP TABLE space;
+
+DROP DOMAIN positive_int;

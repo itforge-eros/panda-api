@@ -1,13 +1,12 @@
 # --- !Ups
 
-CREATE TABLE role (
-  id                    uuid PRIMARY KEY,
-  name                  varchar(64) NOT NULL,
-  description           text,
-  permissions           varchar(64)[] NOT NULL,
-  department_id         uuid NOT NULL REFERENCES department (id)
+CREATE TABLE member_role (
+  member_id             uuid NOT NULL REFERENCES member (id),
+  role_id               uuid NOT NULL REFERENCES role (id),
+
+  PRIMARY KEY (member_id, role_id)
 );
 
 # --- !Downs
 
-DROP TABLE role;
+DROP TABLE member_role;

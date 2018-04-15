@@ -1,15 +1,13 @@
 # --- !Ups
 
-CREATE TABLE request (
+CREATE TABLE member (
   id                    uuid PRIMARY KEY,
-  proposal              text,
-  dates                 date[] NOT NULL,
-  period                int4range NOT NULL,
-  created_at            timestamp NOT NULL,
-  space_id              uuid NOT NULL REFERENCES space (id),
-  client_id             uuid NOT NULL REFERENCES member (id)
+  username              varchar(64) UNIQUE NOT NULL,
+  first_name            varchar(64) NOT NULL,
+  last_name             varchar(64) NOT NULL,
+  email                 varchar(64) NOT NULL
 );
 
 # --- !Downs
 
-DROP TABLE request;
+DROP TABLE member;

@@ -1,20 +1,15 @@
 # --- !Ups
 
-CREATE EXTENSION btree_gist;
+CREATE TABLE review (
+  request_id            uuid NOT NULL REFERENCES request (id),
+  reviewer_id           uuid NOT NULL REFERENCES member (id),
+  description           text,
+  is_approval           boolean NOT NULL,
+  created_at            timestamp NOT NULL,
 
-CREATE TABLE reservation (
-  id                    uuid PRIMARY KEY,
-  date                  date NOT NULL,
-  period                int4range NOT NULL,
-  is_attended           boolean NOT NULL,
-  space_id              uuid NOT NULL REFERENCES space (id),
-  client_id             uuid NOT NULL REFERENCES member (id),
-
-  EXCLUDE USING gist (space_id WITH =, date WITH =, period WITH &&)
+  PRIMARY KEY (request_id, reviewer_id)
 );
 
 # --- !Downs
 
-DROP TABLE reservation;
-
-DROP EXTENSION btree_gist;
+DROP TABLE review;

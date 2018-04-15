@@ -1,15 +1,15 @@
 # --- !Ups
 
-CREATE TABLE department (
+CREATE TABLE role (
   id                    uuid PRIMARY KEY,
   name                  varchar(64) NOT NULL,
-  description           text
-);
+  description           text,
+  permissions           varchar(64)[] NOT NULL,
+  department_id         uuid NOT NULL REFERENCES department (id),
 
-ALTER TABLE space ADD department_id uuid REFERENCES department (id);
+  UNIQUE (name, department_id)
+);
 
 # --- !Downs
 
-ALTER TABLE space DROP department_id;
-
-DROP TABLE department;
+DROP TABLE role;
