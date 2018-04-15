@@ -1,7 +1,6 @@
 package validators
 
 import definitions.exceptions.AppException._
-import doobie.util.log.Success
 import models.Member
 import utils.graphql.GraphqlUtil.AppContext
 

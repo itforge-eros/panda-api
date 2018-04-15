@@ -18,6 +18,7 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val requestStatusType: EnumType[RequestStatus] = deriveEnumType()
   implicit val departmentType: Type[Department] = deriveObjectType()
   implicit val roleType: Type[Role] = deriveObjectType()
+  implicit val permissionType: Type[Permission] = deriveObjectType()
 
   implicit val spaceInputType: InputType[SpaceInput] = deriveInputObjectType()
   implicit val requestInputType: InputType[RequestInput] = deriveInputObjectType()

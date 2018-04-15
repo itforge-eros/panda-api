@@ -6,4 +6,3 @@ import validators.AuthorizationValidator
 
 trait BaseModel extends GraphqlUtil[PandaContext]
   with AuthorizationValidator
-
