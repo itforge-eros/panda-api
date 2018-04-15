@@ -56,14 +56,15 @@ abstract class BaseSpec extends AsyncWordSpec
 
   protected val query: GraphqlQuery = GraphqlQuery(
     query = """
-      | query findSpace($id: UUID!) {
-      |   space(id: $id) {
+      | query findSpace($department: String!, $name: String!) {
+      |   space(department: $department, name: $name) {
       |     id
+      |     name
       |   }
       | }
     """.stripMargin,
     operationName = Some("findSpace"),
-    variables = Some(Map("id" -> Data.uuid1.toString) asJson)
+    variables = Some(Map("name" -> "M02", "department" -> "cat") asJson)
   )
 
   private lazy val claim = JwtClaim(
