@@ -12,7 +12,7 @@ sealed trait RequestStatus {
 
 object RequestStatus {
 
-  def apply(s: String): RequestStatus = values.find(s == _.name).get
+  def apply(s: String): RequestStatus = values.find(s.toLowerCase() == _.name).get
 
   val values: List[RequestStatus] = List(Pending, Completed, Failed, Cancelled)
 

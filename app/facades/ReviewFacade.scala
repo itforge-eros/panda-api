@@ -29,7 +29,7 @@ class ReviewFacade(reviewPersist: ReviewPersist,
     val reviewEntity = ReviewEntity(
       UUID.randomUUID(),
       input.body,
-      ReviewEvent.Approve.name, // TODO: Accept review event from input argument
+      input.event.name,
       Instant.now(),
       input.requestId,
       member.id
