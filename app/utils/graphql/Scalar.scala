@@ -1,6 +1,7 @@
 package utils.graphql
 
 import java.time.{DateTimeException, Instant}
+import java.util.UUID.fromString
 import java.util.{Date, UUID}
 
 import definitions.Violations._
@@ -11,6 +12,8 @@ import sangria.macros.derive.deriveInputObjectType
 import sangria.schema._
 import sangria.validation.Violation
 import utils.datatypes.DateUtil.{dateFormat, parseDate}
+import utils.datatypes.UuidUtil
+import utils.datatypes.UuidUtil._
 
 trait Scalar extends AutoDerivation {
 
@@ -34,16 +37,16 @@ trait Scalar extends AutoDerivation {
 
   implicit val rangeInputType: InputType[RangeInput] = deriveInputObjectType[RangeInput]()
 
-  implicit val uuidType: ScalarType[UUID] = ScalarType("UUID",
-    coerceOutput = (u, _) => u.toString,
+  implicit val uuidType: ScalarType[UUID] = ScalarType("ID",
+    coerceOutput = (uuid, _) => uuidToBase62(uuid),
     coerceUserInput = {
-      case s: String => try Right(UUID.fromString(s)) catch {
+      case s: String => try Right(uuidFromBase62(s)) catch {
         case _: IllegalArgumentException => Left(InvalidUuidViolation)
       }
       case _ => Left(InvalidUuidViolation)
     },
     coerceInput = {
-      case ast.StringValue(s, _, _, _, _) => try Right(UUID.fromString(s)) catch {
+      case ast.StringValue(s, _, _, _, _) => try Right(uuidFromBase62(s)) catch {
         case _: IllegalArgumentException => Left(InvalidUuidViolation)
       }
       case _ => Left(InvalidUuidViolation)
