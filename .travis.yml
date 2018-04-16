@@ -1,5 +1,7 @@
 language: scala
 sudo: false
+services:
+  - docker
 cache:
   directories:
     - $HOME/.ivy2/cache
