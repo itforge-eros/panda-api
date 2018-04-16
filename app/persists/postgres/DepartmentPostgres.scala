@@ -17,7 +17,7 @@ class DepartmentPostgres(db: Database) extends DepartmentPersist
   }
 
   override def findByName(name: String): Option[DepartmentEntity] = db.withConnection { implicit connection =>
-    SQL"SELECT * FROM department WHERE name=$name" as rowParser.singleOpt
+    SQL"SELECT * FROM department WHERE name ILIKE $name" as rowParser.singleOpt
   }
 
   override def insert(departmentEntity: DepartmentEntity) = db.withConnection { implicit connection =>
@@ -25,6 +25,8 @@ class DepartmentPostgres(db: Database) extends DepartmentPersist
          INSERT INTO department VALUES (
            ${departmentEntity.id}::uuid,
            ${departmentEntity.name},
+           ${departmentEntity.fullEnglishName},
+           ${departmentEntity.fullThaiName},
            ${departmentEntity.description}
          )
        """ executeStatement()

@@ -6,14 +6,16 @@ CREATE DOMAIN positive_int AS INT
 CREATE TABLE space (
   id                    uuid PRIMARY KEY,
   name                  varchar(64) NOT NULL,
+  full_name             varchar(64) NOT NULL,
   description           text,
   capacity              positive_int,
   is_available          boolean NOT NULL,
   created_at            timestamp NOT NULL,
-  department_id         uuid NOT NULL references department (id),
-
-  UNIQUE (name, department_id)
+  department_id         uuid NOT NULL references department (id)
 );
+
+CREATE UNIQUE INDEX unique_space_name
+  ON space (id, lower(name));
 
 # --- !Downs
 

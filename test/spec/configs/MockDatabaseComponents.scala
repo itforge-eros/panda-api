@@ -11,7 +11,7 @@ trait MockDatabaseComponents extends MockFactory {
 
   lazy val spacePersist: SpacePersist = new SpacePersist {
     override def insert(space: SpaceEntity): Boolean = true
-    override def findByName(departmentName: String, spaceName: String) = SpaceData.spaces find (_.name == spaceName)
+    override def findByName(departmentName: String, spaceName: String) = SpaceData.spaces find (_.fullName == spaceName)
     override def findByDepartmentId(departmentId: UUID) = ???
     override def findAll: List[SpaceEntity] = SpaceData.spaces
     override def find(id: UUID): Option[SpaceEntity] = SpaceData.spaces find (_.id == id)

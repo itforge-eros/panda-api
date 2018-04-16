@@ -37,7 +37,7 @@ object UuidUtil {
     val bytes = BigInt(base62.decode(str.getBytes())).toByteArray
     val buffer = ByteBuffer.wrap(bytes)
     try new UUID(buffer.getLong, buffer.getLong) catch {
-      case _: BufferUnderflowException => throw new IllegalArgumentException()
+      case _: BufferUnderflowException => println("something's wrong!!!");throw new IllegalArgumentException()
     }
   }
 

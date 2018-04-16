@@ -26,8 +26,8 @@ class RolePostgres(db: Database) extends RolePersist
           role.department_id
         FROM role
         JOIN department ON role.department_id = department.id
-        WHERE department.name=$departmentName
-        AND role.name=$roleName
+        WHERE department.name ILIKE $departmentName
+        AND role.name ILIKE $roleName
        """ as rowParser.singleOpt
   }
 

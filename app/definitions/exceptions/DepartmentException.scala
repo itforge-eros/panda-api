@@ -8,6 +8,10 @@ object DepartmentException {
     extends Exception("Department not found.")
       with SafeException
 
+  object DepartmentNameAlreadyTaken
+    extends Exception("Department name already taken")
+      with SafeException
+
   object CannotCreateDepartmentException
     extends Exception("Cannot create department.")
       with SafeException

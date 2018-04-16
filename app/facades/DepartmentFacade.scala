@@ -2,7 +2,7 @@ package facades
 
 import java.util.UUID
 
-import definitions.exceptions.DepartmentException.{CannotCreateDepartmentException, DepartmentNotFoundException}
+import definitions.exceptions.DepartmentException.{CannotCreateDepartmentException, DepartmentNameAlreadyTaken, DepartmentNotFoundException}
 import entities.{DepartmentEntity, MemberRoleEntity, RoleEntity}
 import models.Permission.AdminAccessPermission
 import models.{Department, Member, Role, Space}
@@ -33,12 +33,16 @@ class DepartmentFacade(departmentPersist: DepartmentPersist,
   }
 
   def create(input: CreateDepartmentInput)
-            (implicit member: Member): Try[Department] = ValidateWith() {
+            (implicit member: Member): Try[Department] = ValidateWith(
+    Guard(departmentPersist.findByName(input.name).isDefined, DepartmentNameAlreadyTaken)
+  ) {
     val departmentId = UUID.randomUUID()
     val roleId = UUID.randomUUID()
     lazy val departmentEntity = DepartmentEntity(
       departmentId,
       input.name,
+      input.fullEnglishName,
+      input.fullThaiName,
       input.description
     )
     lazy val ownerRoleEntity = RoleEntity(

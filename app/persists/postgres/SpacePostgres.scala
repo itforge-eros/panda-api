@@ -29,6 +29,7 @@ class SpacePostgres(db: Database) extends SpacePersist {
         SELECT
           space.id,
           space.name,
+          space.full_name,
           space.description,
           space.capacity,
           space.is_available,
@@ -36,8 +37,8 @@ class SpacePostgres(db: Database) extends SpacePersist {
           space.department_id
         FROM space
         JOIN department ON space.department_id = department.id
-        WHERE department.name=$departmentName
-        AND space.name=$spaceName
+        WHERE department.name ILIKE $departmentName
+        AND space.name ILIKE $spaceName
        """ as rowParser.singleOpt
   }
 
@@ -54,6 +55,7 @@ class SpacePostgres(db: Database) extends SpacePersist {
          INSERT INTO space VALUES (
            ${space.id}::uuid,
            ${space.name},
+           ${space.fullName},
            ${space.description},
            ${space.capacity},
            ${space.isAvailable},

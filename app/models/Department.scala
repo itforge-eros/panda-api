@@ -8,6 +8,8 @@ import sangria.macros.derive.GraphQLField
 
 case class Department(id: UUID,
                       name: String,
+                      fullEnglishName: String,
+                      fullThaiName: String,
                       description: Option[String]) extends BaseModel {
 
   @GraphQLField

@@ -14,3 +14,5 @@ CREATE TABLE review (
 # --- !Downs
 
 DROP TABLE review;
+
+DROP TYPE review_event;

@@ -54,6 +54,7 @@ class SpaceFacade(spacePersist: SpacePersist,
       lazy val spaceEntity = SpaceEntity(
         UUID.randomUUID(),
         input.name,
+        input.fullName,
         input.description,
         input.capacity,
         input.isAvailable,

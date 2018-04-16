@@ -24,7 +24,7 @@ object Handlers extends TryResults {
   }
 
   lazy val onViolation: PartialFunction[(ResultMarshaller, Violation), HandledException] = {
-    case (_, error @ InvalidUuidViolation) => HandledException(error.errorMessage)
+    case (_, error @ InvalidIdViolation) => HandledException(error.errorMessage)
     case (_, error @ InvalidInstantViolation) => HandledException(error.errorMessage)
     case (_, error @ InvalidDateViolation) => HandledException(error.errorMessage)
     case (_, error @ InvalidRangeViolation) => HandledException(error.errorMessage)
