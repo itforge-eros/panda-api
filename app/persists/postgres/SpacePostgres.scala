@@ -26,7 +26,15 @@ class SpacePostgres(db: Database) extends SpacePersist {
 
   override def findByName(departmentName: String, spaceName: String): Option[SpaceEntity] = db.withConnection { implicit connection =>
     SQL"""
-        SELECT * FROM space
+        SELECT
+          space.id,
+          space.name,
+          space.description,
+          space.capacity,
+          space.is_available,
+          space.created_at,
+          space.department_id
+        FROM space
         JOIN department ON space.department_id = department.id
         WHERE department.name=$departmentName
         AND space.name=$spaceName

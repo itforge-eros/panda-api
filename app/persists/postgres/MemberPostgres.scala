@@ -20,7 +20,13 @@ class MemberPostgres(db: Database) extends MemberPersist {
 
   override def findByRoleId(roleId: UUID): List[MemberEntity] = db.withConnection { implicit connection =>
     SQL"""
-        SELECT * FROM member
+        SELECT
+          member.id,
+          member.username,
+          member.first_name,
+          member.last_name,
+          member.email
+        FROM member
         JOIN member_role ON member.id = member_role.member_id
         WHERE role_id=$roleId::uuid
        """ as rowParser.*

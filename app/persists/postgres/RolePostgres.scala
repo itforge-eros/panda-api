@@ -18,7 +18,13 @@ class RolePostgres(db: Database) extends RolePersist
 
   override def findByName(departmentName: String, roleName: String): Option[RoleEntity] = db.withConnection { implicit connection =>
     SQL"""
-        SELECT * FROM role
+        SELECT
+          role.id,
+          role.name,
+          role.description,
+          role.permissions,
+          role.department_id
+        FROM role
         JOIN department ON role.department_id = department.id
         WHERE department.name=$departmentName
         AND role.name=$roleName
@@ -31,7 +37,13 @@ class RolePostgres(db: Database) extends RolePersist
 
   override def findByMemberId(memberId: UUID): List[RoleEntity] = db.withConnection { implicit connection =>
     SQL"""
-        SELECT * FROM role
+        SELECT
+          role.id,
+          role.name,
+          role.description,
+          role.permissions,
+          role.department_id
+        FROM role
         JOIN member_role ON role.id = member_role.role_id
         WHERE member_id=$memberId::uuid
        """ as rowParser.*
