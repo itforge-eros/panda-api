@@ -20,17 +20,17 @@ case class Space(id: UUID,
                  @GraphQLExclude departmentId: UUID) extends BaseModel {
 
   @GraphQLField
-  def department(ctx: AppContext[Space]) = resolve {
+  def department(ctx: AppContext[Space]): Department = resolve {
     ctx.ctx.departmentFacade.find(departmentId)
   }
 
   @GraphQLField
-  def requests(ctx: AppContext[Space]) = authorize(ctx) { implicit member =>
+  def requests(ctx: AppContext[Space]): List[Request] = authorize(ctx) { implicit member =>
     ctx.ctx.spaceFacade.requests(id)
   }
 
   @GraphQLField
-  def reservations(ctx: AppContext[Space]) = resolve {
+  def reservations(ctx: AppContext[Space]): List[Reservation] = resolve {
     ctx.ctx.spaceFacade.reservations(id)
   }
 

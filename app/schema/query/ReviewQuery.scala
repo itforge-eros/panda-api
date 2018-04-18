@@ -2,13 +2,13 @@ package schema.query
 
 import java.util.UUID
 
-import models.BaseModel
+import models.{BaseModel, Review}
 import sangria.macros.derive.GraphQLField
 
 trait ReviewQuery extends BaseModel {
 
   @GraphQLField
-  def review(id: UUID)(ctx: AppContext[Unit]) = authorize(ctx) { implicit member =>
+  def review(id: UUID)(ctx: AppContext[Unit]): Option[Review] = authorizeOption(ctx) { implicit member =>
     ctx.ctx.reviewFacade.find(id)
   }
 

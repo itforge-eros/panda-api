@@ -22,17 +22,17 @@ case class Request(id: UUID,
                    @GraphQLExclude clientId: UUID) extends BaseModel {
 
   @GraphQLField
-  def space(ctx: AppContext[Request]) = resolve {
+  def space(ctx: AppContext[Request]): Space = resolve {
     ctx.ctx.spaceFacade.find(spaceId)
   }
 
   @GraphQLField
-  def client(ctx: AppContext[Request]) = resolve {
+  def client(ctx: AppContext[Request]): Member = resolve {
     ctx.ctx.memberFacade.find(clientId)
   }
 
   @GraphQLField
-  def reviews(ctx: AppContext[Request]) = authorize(ctx) { implicit member =>
+  def reviews(ctx: AppContext[Request]): List[Review] = authorize(ctx) { implicit member =>
     ctx.ctx.requestFacade.reviews(id)
   }
 

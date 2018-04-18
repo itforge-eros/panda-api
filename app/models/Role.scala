@@ -13,12 +13,12 @@ case class Role(id: UUID,
                 @GraphQLExclude departmentId: UUID) extends BaseModel {
 
   @GraphQLField
-  def department(ctx: AppContext[Role]) = resolve {
+  def department(ctx: AppContext[Role]): Department = resolve {
     ctx.ctx.departmentFacade.find(departmentId)
   }
 
   @GraphQLField
-  def members(ctx: AppContext[Role]) = resolve {
+  def members(ctx: AppContext[Role]): List[Member] = resolve {
     ctx.ctx.roleFacade.members(id)
   }
 

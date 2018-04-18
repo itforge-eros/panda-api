@@ -17,12 +17,12 @@ case class Reservation(id: UUID,
                        @GraphQLExclude clientId: UUID) extends BaseModel {
 
   @GraphQLField
-  def space(ctx: AppContext[Reservation]) = resolve {
+  def space(ctx: AppContext[Reservation]): Space = resolve {
     ctx.ctx.spaceFacade.find(spaceId)
   }
 
   @GraphQLField
-  def client(ctx: AppContext[Reservation]) = resolve {
+  def client(ctx: AppContext[Reservation]): Member = resolve {
     ctx.ctx.memberFacade.find(clientId)
   }
 

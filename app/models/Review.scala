@@ -17,12 +17,12 @@ case class Review(id: UUID,
                   @GraphQLExclude reviewerId: UUID) extends BaseModel {
 
   @GraphQLField
-  def request(ctx: AppContext[Review]) = authorize(ctx) { implicit member =>
+  def request(ctx: AppContext[Review]): Request = authorize(ctx) { implicit member =>
     ctx.ctx.requestFacade.find(requestId)
   }
 
   @GraphQLField
-  def reviewer(ctx: AppContext[Review]) = resolve {
+  def reviewer(ctx: AppContext[Review]): Member = resolve {
     ctx.ctx.memberFacade.find(reviewerId)
   }
 

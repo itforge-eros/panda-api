@@ -1,19 +1,17 @@
 package schema.query
 
-import java.util.UUID
-
-import models.BaseModel
+import models.{BaseModel, Member}
 import sangria.macros.derive.GraphQLField
 
 trait MemberQuery extends BaseModel {
 
   @GraphQLField
-  def member(username: String)(ctx: AppContext[Unit]) = resolveOption {
+  def member(username: String)(ctx: AppContext[Unit]): Option[Member] = resolveOption {
     ctx.ctx.memberFacade.findByUsername(username)
   }
 
   @GraphQLField
-  def me(ctx: AppContext[Unit]) = authorize(ctx) { implicit member =>
+  def me(ctx: AppContext[Unit]): Member = authorize(ctx) { implicit member =>
     ctx.ctx.memberFacade.find(member.id)
   }
 
