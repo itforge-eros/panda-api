@@ -47,7 +47,7 @@ class DepartmentFacade(departmentPersist: DepartmentPersist,
     )
     lazy val ownerRoleEntity = RoleEntity(
       roleId,
-      "Owner",
+      "Administrators",
       Some("An owner of the department"),
       List(AdminAccessPermission.name),
       departmentId

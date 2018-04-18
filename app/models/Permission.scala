@@ -20,32 +20,34 @@ object Permission {
   def apply(name: String): Option[Permission] = values.find(name == _.name)
 
   object AdminAccessPermission
-    extends Permission("ADMIN_PERMISSION", "Provides full access to any resources", List(
-      SpaceCreateAccess,
+    extends Permission("ADMIN_ACCESS", "Provides full access to any resources", List(
       SpaceReadAccess,
-      RequestCreateAccess
+      SpaceCreateAccess,
+      RequestReadAccess,
+      RequestCreateAccess,
     ))
 
   object SpaceFullAccessPermission
-    extends Permission("SPACE_FULL_ACCESS_PERMISSION", "Provides full access to spaces", List(
+    extends Permission("SPACE_FULL_ACCESS", "Provides full access to spaces", List(
       SpaceCreateAccess,
       SpaceReadAccess
     ))
 
   object SpaceReadOnlyAccessPermission
-    extends Permission("SPACE_READ_ONLY_PERMISSION", "Provides read only access to spaces", List(
+    extends Permission("SPACE_READ_ONLY_ACCESS", "Provides read only access to spaces", List(
       SpaceReadAccess
     ))
 
   object RequestCreateAccessPermission
-    extends Permission("REQUEST_CREATE_PERMISSION", "Provides request creation access to spaces", List(
+    extends Permission("REQUEST_CREATE_ACCESS", "Provides request creation access", List(
       RequestCreateAccess,
+      RequestReadAccess,
       SpaceReadAccess
     ))
 
   object RequestApprovalAccessPermission
-    extends Permission("APPROVER_PERMISSION", "Provides approval access to requests", List(
-      RequestApproveAccess
+    extends Permission("REVIEW_CREATE_ACCESS", "Provides review creation access", List(
+      RequestReviewAccess
     ))
 
 }

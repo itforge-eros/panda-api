@@ -12,10 +12,13 @@ object Access {
   @GraphQLName("SPACE_CREATE_ACCESS")
   case object SpaceCreateAccess extends Access
 
+  @GraphQLName("REQUEST_READ_ACCESS")
+  case object RequestReadAccess extends Access
+
   @GraphQLName("REQUEST_CREATE_ACCESS")
   case object RequestCreateAccess extends Access
 
-  @GraphQLName("REQUEST_APPROVE_ACCESS")
-  case object RequestApproveAccess extends Access
+  @GraphQLName("REQUEST_REVIEW_ACCESS")
+  case object RequestReviewAccess extends Access
 
 }

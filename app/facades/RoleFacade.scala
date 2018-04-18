@@ -27,7 +27,8 @@ class RoleFacade(rolePersist: RolePersist,
     memberPersist.findByRoleId(id) map Member.of
   }
 
-  def create(input: CreateRoleInput): Try[Role] = {
+  def create(input: CreateRoleInput)
+            (implicit member: Member): Try[Role] = {
     lazy val maybeDepartmentEntity = departmentPersist.find(input.departmentId)
     lazy val roleEntity = RoleEntity(
       UUID.randomUUID(),
