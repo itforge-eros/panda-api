@@ -1,15 +1,11 @@
-package schemas
+package schema
 
-import java.util.Date
-
-import inputs.{CreateDepartmentInput, CreateRequestInput, CreateReviewInput, CreateSpaceInput}
-import io.circe.{Decoder, Encoder, HCursor, Json}
+import io.circe.{Decoder, HCursor}
 import models._
-import models.enums.{RequestStatus, ReviewEvent}
-import sangria.execution.FieldTag
+import models.enums.{Access, RequestStatus, ReviewEvent}
+import models.inputs.{CreateDepartmentInput, CreateRequestInput, CreateReviewInput, CreateSpaceInput}
 import sangria.macros.derive._
-import sangria.schema.{EnumType, InputField, InputObjectType, OptionInputType, Schema}
-import utils.datatypes.DateUtil.{dateFormat, parseDate}
+import sangria.schema.{EnumType, Schema}
 import utils.graphql.GraphqlUtil
 
 object SchemaDefinition extends GraphqlUtil[PandaContext] {
@@ -24,6 +20,7 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val roleType: Type[Role] = deriveObjectType()
   implicit val permissionType: Type[Permission] = deriveObjectType()
 
+  implicit val accessType: EnumType[Access] = deriveEnumType()
   implicit val requestStatusEnumType: EnumType[RequestStatus] = deriveEnumType()
   implicit val reviewEventEnumType: EnumType[ReviewEvent] = deriveEnumType()
 

@@ -1,4 +1,4 @@
-package schemas.queries
+package schema.query
 
 class Query extends AuthenticationQuery
   with SpaceQuery

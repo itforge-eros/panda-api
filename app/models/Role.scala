@@ -30,7 +30,7 @@ object Role {
     roleEntity.id,
     roleEntity.name,
     roleEntity.description,
-    roleEntity.permissions flatMap Permission.fromName,
+    roleEntity.permissions map Permission.apply map (_.get),
     roleEntity.departmentId
   )
 

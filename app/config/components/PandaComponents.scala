@@ -11,7 +11,7 @@ import play.api.routing.Router
 import play.filters.HttpFiltersComponents
 import play.filters.cors.{CORSComponents, CORSFilter}
 import router.Routes
-import schemas.PandaContext
+import schema.PandaContext
 
 class PandaComponents(context: Context) extends BuiltInComponentsFromContext(context)
   with DatabaseComponents

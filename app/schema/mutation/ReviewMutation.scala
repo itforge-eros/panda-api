@@ -1,8 +1,8 @@
-package schemas.mutations
+package schema.mutation
 
 import models.BaseModel
+import models.inputs.CreateReviewInput
 import sangria.macros.derive.GraphQLField
-import schemas.inputs.CreateReviewInput
 
 trait ReviewMutation extends BaseModel {
 

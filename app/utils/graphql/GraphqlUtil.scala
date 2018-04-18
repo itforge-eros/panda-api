@@ -5,7 +5,7 @@ import io.circe.parser._
 import sangria.marshalling.FromInput
 import sangria.marshalling.circe.circeDecoderFromInput
 import sangria.schema.{Context, InputObjectType, ObjectType}
-import schemas.PandaContext
+import schema.PandaContext
 import utils.Functional._
 
 import scala.language.implicitConversions

@@ -1,4 +1,4 @@
-package schemas.queries
+package schema.query
 
 import java.util.UUID
 

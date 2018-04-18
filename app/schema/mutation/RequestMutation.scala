@@ -1,8 +1,8 @@
-package schemas.mutations
+package schema.mutation
 
 import models.BaseModel
+import models.inputs.CreateRequestInput
 import sangria.macros.derive.GraphQLField
-import schemas.inputs.{CreateRequestInput, CreateReviewInput}
 
 import scala.language.postfixOps
 

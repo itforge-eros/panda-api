@@ -1,6 +1,6 @@
 package models
 
-import schemas.PandaContext
+import schema.PandaContext
 import utils.graphql.GraphqlUtil
 import validators.AuthorizationValidator
 

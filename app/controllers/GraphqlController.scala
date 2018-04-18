@@ -7,7 +7,7 @@ import io.circe.Json
 import io.circe.generic.auto._
 import play.api.mvc._
 import sangria.renderer.SchemaRenderer.renderSchema
-import schemas.SchemaDefinition
+import schema.SchemaDefinition
 import utils.graphql.{GraphqlQuery, GraphqlUtil}
 
 import scala.concurrent.ExecutionContext

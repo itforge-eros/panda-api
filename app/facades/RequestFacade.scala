@@ -9,9 +9,9 @@ import definitions.exceptions.RequestException.RequestNotFoundException
 import definitions.exceptions.SpaceException.{CannotCreateSpaceException, SpaceNotFoundException}
 import entities.RequestEntity
 import models.enums.RequestStatus.Pending
+import models.inputs.CreateRequestInput
 import models.{Member, Request, Review}
 import persists.{RequestPersist, ReviewPersist, SpacePersist}
-import schemas.inputs.CreateRequestInput
 
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
@@ -39,7 +39,7 @@ class RequestFacade(requestPersist: RequestPersist,
   ) {
     lazy val requestEntity = RequestEntity(
       UUID.randomUUID(),
-      input.proposal,
+      input.body,
       input.dates,
       input.period.toRange,
       Pending.name,

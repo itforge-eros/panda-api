@@ -9,9 +9,9 @@ import definitions.exceptions.ReviewException.{CannotCreateReviewException, Revi
 import entities.{RequestEntity, ReservationEntity, ReviewEntity}
 import models.enums.RequestStatus.{Completed, Failed, Pending}
 import models.enums.ReviewEvent
+import models.inputs.CreateReviewInput
 import models.{Member, Review}
 import persists.{RequestPersist, ReservationPersist, ReviewPersist}
-import schemas.inputs.CreateReviewInput
 
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}

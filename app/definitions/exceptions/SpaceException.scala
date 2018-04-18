@@ -9,7 +9,7 @@ object SpaceException {
       with SafeException
 
   object SpaceNameAlreadyTaken
-    extends Exception("Space name already taken")
+    extends Exception("Space name already taken.")
       with SafeException
 
   object CannotCreateSpaceException

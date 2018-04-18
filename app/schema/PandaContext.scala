@@ -1,10 +1,10 @@
-package schemas
+package schema
 
 import facades._
 import models.Member
 import persists._
-import schemas.mutations.Mutation
-import schemas.queries.Query
+import schema.mutation.Mutation
+import schema.query.Query
 import services.AuthenticationService
 
 case class PandaContext(query: Query,

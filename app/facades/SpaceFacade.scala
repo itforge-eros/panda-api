@@ -6,9 +6,9 @@ import java.util.UUID
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
 import definitions.exceptions.SpaceException.{CannotCreateSpaceException, SpaceNameAlreadyTaken, SpaceNotFoundException}
 import entities.SpaceEntity
+import models.inputs.CreateSpaceInput
 import models.{Member, Request, Reservation, Space}
 import persists.{DepartmentPersist, RequestPersist, ReservationPersist, SpacePersist}
-import schemas.inputs.CreateSpaceInput
 
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
@@ -46,22 +46,21 @@ class SpaceFacade(spacePersist: SpacePersist,
   def create(input: CreateSpaceInput)
             (implicit member: Member): Try[Space] = {
     lazy val maybeDepartmentEntity = departmentPersist.find(input.departmentId)
+    lazy val spaceEntity = SpaceEntity(
+      UUID.randomUUID(),
+      input.name,
+      input.fullName,
+      input.description,
+      input.capacity,
+      input.isAvailable,
+      Instant.now(),
+      input.departmentId
+    )
 
     ValidateWith(
-      Guard(maybeDepartmentEntity isEmpty, DepartmentNotFoundException),
-      Guard(spacePersist.findByName(maybeDepartmentEntity.get.name, input.name) isDefined, SpaceNameAlreadyTaken)
+      Guard(maybeDepartmentEntity.isEmpty, DepartmentNotFoundException),
+      Guard(spacePersist.findByName(maybeDepartmentEntity.get.name, input.name).isDefined, SpaceNameAlreadyTaken)
     ) {
-      lazy val spaceEntity = SpaceEntity(
-        UUID.randomUUID(),
-        input.name,
-        input.fullName,
-        input.description,
-        input.capacity,
-        input.isAvailable,
-        Instant.now(),
-        input.departmentId
-      )
-
       spacePersist.insert(spaceEntity) match {
         case true => Success(spaceEntity) map Space.of
         case false => Failure(CannotCreateSpaceException)

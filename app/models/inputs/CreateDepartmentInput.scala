@@ -1,4 +1,4 @@
-package schemas.inputs
+package models.inputs
 
 case class CreateDepartmentInput(name: String,
                                  fullEnglishName: String,

@@ -1,4 +1,4 @@
-package schemas.mutations
+package schema.mutation
 
 class Mutation extends SpaceMutation
   with RequestMutation

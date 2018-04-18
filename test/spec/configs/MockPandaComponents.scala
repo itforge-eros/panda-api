@@ -10,7 +10,7 @@ import play.api.i18n.I18nComponents
 import play.api.routing.Router
 import play.api.{BuiltInComponentsFromContext, NoHttpFiltersComponents}
 import router.Routes
-import schemas.PandaContext
+import schema.PandaContext
 
 class MockPandaComponents(context: Context) extends BuiltInComponentsFromContext(context)
   with MockDatabaseComponents

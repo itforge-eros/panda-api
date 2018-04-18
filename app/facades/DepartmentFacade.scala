@@ -5,9 +5,9 @@ import java.util.UUID
 import definitions.exceptions.DepartmentException.{CannotCreateDepartmentException, DepartmentNameAlreadyTaken, DepartmentNotFoundException}
 import entities.{DepartmentEntity, MemberRoleEntity, RoleEntity}
 import models.Permission.AdminAccessPermission
+import models.inputs.CreateDepartmentInput
 import models.{Department, Member, Role, Space}
 import persists.{DepartmentPersist, MemberRolePersist, RolePersist, SpacePersist}
-import schemas.inputs.CreateDepartmentInput
 
 import scala.util.{Failure, Success, Try}
 

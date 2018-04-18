@@ -1,8 +1,8 @@
-package schemas.mutations
+package schema.mutation
 
 import models.BaseModel
+import models.inputs.CreateSpaceInput
 import sangria.macros.derive.GraphQLField
-import schemas.inputs.CreateSpaceInput
 
 trait SpaceMutation extends BaseModel {
 

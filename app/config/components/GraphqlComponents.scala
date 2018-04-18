@@ -1,8 +1,8 @@
 package config.components
 
 import com.softwaremill.macwire.wire
-import schemas.mutations.Mutation
-import schemas.queries.Query
+import schema.mutation.Mutation
+import schema.query.Query
 
 trait GraphqlComponents {
 

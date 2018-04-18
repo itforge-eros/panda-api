@@ -1,4 +1,4 @@
-package schemas.inputs
+package models.inputs
 
 import java.util.UUID
 

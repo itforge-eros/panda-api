@@ -1,4 +1,4 @@
-package schemas
+package schema
 
 import sangria.execution.{BeforeFieldResult, Middleware, MiddlewareBeforeField, MiddlewareQueryContext}
 import sangria.schema.Context

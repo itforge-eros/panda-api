@@ -7,8 +7,8 @@ import scala.util.Try
 
 class PermissionFacade extends BaseFacade {
 
-  def findByName(name: String): Try[Permission] = ValidateWith() {
-    Permission.values.find(name == _.name) toTry PermissionNotFoundException
+  def find(name: String): Try[Permission] = ValidateWith() {
+    Permission(name) toTry PermissionNotFoundException
   }
 
   def permissions: List[Permission] = Permission.values

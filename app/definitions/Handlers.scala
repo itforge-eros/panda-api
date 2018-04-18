@@ -19,21 +19,21 @@ object Handlers extends TryResults {
   lazy val exceptionHandler = ExceptionHandler(onException, onViolation)
 
   lazy val onException: PartialFunction[(ResultMarshaller, Throwable), HandledException] = {
-    case (_, error @ MaxQueryDepthReachedError(_)) => HandledException(error.getMessage)
-    case (_, error: SafeException) => HandledException(error.getMessage)
+    case (_, e @ MaxQueryDepthReachedError(_)) => HandledException(e.getMessage)
+    case (_, e: SafeException) => HandledException(e.getMessage)
   }
 
   lazy val onViolation: PartialFunction[(ResultMarshaller, Violation), HandledException] = {
-    case (_, error @ InvalidIdViolation) => HandledException(error.errorMessage)
-    case (_, error @ InvalidInstantViolation) => HandledException(error.errorMessage)
-    case (_, error @ InvalidDateViolation) => HandledException(error.errorMessage)
-    case (_, error @ InvalidRangeViolation) => HandledException(error.errorMessage)
+    case (_, e @ InvalidIdViolation) => HandledException(e.errorMessage)
+    case (_, e @ InvalidInstantViolation) => HandledException(e.errorMessage)
+    case (_, e @ InvalidDateViolation) => HandledException(e.errorMessage)
+    case (_, e @ InvalidRangeViolation) => HandledException(e.errorMessage)
   }
 
   def graphqlAction: PartialFunction[Throwable, Future[Result]] = {
-    case GraphqlVariablesParseError => response(Failure(GraphqlVariablesParseError).badRequest)
+    case e @ GraphqlVariablesParseError => response(Failure(e).badRequest)
+    case e @ UnauthorizedException => response(Failure(e).unauthorized)
     case e: JwtDecodingException => response(Failure(e).badRequest)
-    case UnauthorizedException => response(Failure(UnauthorizedException).unauthorized)
     case e: BadRequestException => response(Failure(e).badRequest)
     case e: UnexpectedError => response(Failure(e).unauthorized)
     case e => response(Failure(new UnexpectedError(e)).internalServerError)

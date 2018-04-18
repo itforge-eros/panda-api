@@ -1,8 +1,8 @@
-package schemas.mutations
+package schema.mutation
 
 import models.BaseModel
+import models.inputs.CreateDepartmentInput
 import sangria.macros.derive.GraphQLField
-import schemas.inputs.CreateDepartmentInput
 
 trait DepartmentMutation extends BaseModel {
 
