@@ -4,9 +4,9 @@ import java.util.UUID
 
 import models.{BaseModel, Department}
 import models.edges.MemberDepartmentEdge
-import sangria.macros.derive.GraphQLField
+import sangria.macros.derive.{GraphQLExclude, GraphQLField}
 
-case class MemberDepartmentConnection(memberId: UUID) extends BaseModel {
+case class MemberDepartmentConnection(@GraphQLExclude memberId: UUID) extends BaseModel {
 
   @GraphQLField
   def edges(ctx: AppContext[MemberDepartmentConnection]): List[MemberDepartmentEdge] = {
