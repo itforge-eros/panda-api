@@ -32,7 +32,7 @@ case class Request(id: UUID,
   }
 
   @GraphQLField
-  def reviews(ctx: AppContext[Request]): List[Review] = authorize(ctx) { implicit member =>
+  def reviews(ctx: AppContext[Request]): List[Review] = authorize(ctx) { implicit viewer =>
     ctx.ctx.requestFacade.reviews(id)
   }
 

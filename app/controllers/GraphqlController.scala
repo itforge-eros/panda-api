@@ -24,12 +24,12 @@ class GraphqlController(components: ControllerComponents,
     GraphqlAction.async { request =>
       val graphqlQuery = GraphqlQuery(query, operation, variables map parseVariables)
 
-      graphqlFacade.executeQuery(graphqlQuery)(request.member) toResult
+      graphqlFacade.executeQuery(graphqlQuery)(request.viewer) toResult
     }
 
   def graphqlBody: Action[GraphqlQuery] =
     GraphqlAction.async(parser) { request =>
-      graphqlFacade.executeQuery(request.body)(request.member) toResult
+      graphqlFacade.executeQuery(request.body)(request.viewer) toResult
     }
 
   def schema = Action {

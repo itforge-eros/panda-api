@@ -13,15 +13,15 @@ class ReservationPostgres(db: Database) extends ReservationPersist
   with PostgresUtil {
 
   override def find(id: UUID): Option[ReservationEntity] = db.withConnection { implicit connection =>
-    SQL"SELECT * FROM reservation WHERE id=$id::uuid" as rowParser.singleOpt
+    SQL"SELECT * FROM reservation WHERE id = $id::uuid" as rowParser.singleOpt
   }
 
   override def findBySpaceId(spaceId: UUID): List[ReservationEntity] = db.withConnection { implicit connection =>
-    SQL"SELECT * FROM reservation WHERE space_id=$spaceId::uuid" as rowParser.*
+    SQL"SELECT * FROM reservation WHERE space_id = $spaceId::uuid" as rowParser.*
   }
 
   override def findByClientId(clientId: UUID): List[ReservationEntity] = db.withConnection { implicit connection =>
-    SQL"SELECT * FROM reservation WHERE client_id=$clientId::uuid" as rowParser.*
+    SQL"SELECT * FROM reservation WHERE client_id = $clientId::uuid" as rowParser.*
   }
 
   override def insert(reservation: ReservationEntity): Boolean = db.withConnection { implicit connection =>

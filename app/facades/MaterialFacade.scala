@@ -5,7 +5,7 @@ import java.util.UUID
 import definitions.exceptions.MaterialException.{CannotCreateMaterialException, MaterialNotFoundException}
 import entities.{MaterialEntity, MultiLanguageString}
 import models.Material
-import models.inputs.{CreateMaterialInput, MultiLanguageStringInput}
+import models.inputs.CreateMaterialInput
 import persists.MaterialPersist
 
 import scala.util.{Failure, Success, Try}

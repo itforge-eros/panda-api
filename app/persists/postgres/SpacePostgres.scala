@@ -13,7 +13,7 @@ import scala.language.postfixOps
 class SpacePostgres(db: Database) extends SpacePersist {
 
   override def find(id: UUID): Option[SpaceEntity] = db.withConnection { implicit connection =>
-    SQL"SELECT * FROM space WHERE id=$id::uuid" as rowParser.singleOpt
+    SQL"SELECT * FROM space WHERE id = $id::uuid" as rowParser.singleOpt
   }
 
   override def searchByName(name: String): List[SpaceEntity] = db.withConnection { implicit connection =>
@@ -44,7 +44,7 @@ class SpacePostgres(db: Database) extends SpacePersist {
   }
 
   override def findByDepartmentId(departmentId: UUID): List[SpaceEntity] = db.withConnection { implicit connection =>
-    SQL"SELECT * FROM space WHERE department_id=$departmentId::uuid" as rowParser.*
+    SQL"SELECT * FROM space WHERE department_id = $departmentId::uuid" as rowParser.*
   }
 
   override def findAll: List[SpaceEntity] = db.withConnection { implicit connection =>

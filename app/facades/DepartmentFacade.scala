@@ -8,6 +8,7 @@ import models.Permission.AdminAccessPermission
 import models.inputs.CreateDepartmentInput
 import models._
 import persists._
+import utils.Guard
 
 import scala.util.{Failure, Success, Try}
 

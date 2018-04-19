@@ -23,7 +23,7 @@ trait Scalar extends AutoDerivation {
   )
 
   case class RangeInput(start: Int, end: Int) {
-    def toRange = Range(start, end)
+    def toRange: Range = Range(start, end)
   }
 
   implicit val rangeType: ObjectType[Unit, Range] = ObjectType("Range",

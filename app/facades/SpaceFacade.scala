@@ -6,9 +6,10 @@ import java.util.UUID
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
 import definitions.exceptions.SpaceException.{CannotCreateSpaceException, SpaceNameAlreadyTaken, SpaceNotFoundException}
 import entities.SpaceEntity
-import models.inputs.CreateSpaceInput
+import models.inputs.{CreateSpaceInput, UpdateSpaceInput}
 import models.{Member, Request, Reservation, Space}
 import persists.{DepartmentPersist, RequestPersist, ReservationPersist, SpacePersist}
+import utils.Guard
 
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
@@ -35,7 +36,7 @@ class SpaceFacade(spacePersist: SpacePersist,
   }
 
   def requests(id: UUID)
-              (implicit member: Member): Try[List[Request]] = validate() {
+              (implicit viewer: Member): Try[List[Request]] = validate() {
     requestPersist.findBySpaceId(id) map Request.of
   }
 
@@ -44,7 +45,7 @@ class SpaceFacade(spacePersist: SpacePersist,
   }
 
   def create(input: CreateSpaceInput)
-            (implicit member: Member): Try[Space] = {
+            (implicit viewer: Member): Try[Space] = {
     lazy val maybeDepartmentEntity = departmentPersist.find(input.departmentId)
     lazy val spaceEntity = SpaceEntity(
       UUID.randomUUID(),
@@ -66,6 +67,29 @@ class SpaceFacade(spacePersist: SpacePersist,
         case true => Success(spaceEntity) map Space.of
         case false => Failure(CannotCreateSpaceException)
       }
+    }
+  }
+
+  def update(input: UpdateSpaceInput)
+            (implicit viewer: Member): Try[Member] = {
+    lazy val maybeSpaceEntity = spacePersist.find(input.spaceId)
+    lazy val updatedSpaceEntity = SpaceEntity(
+      input.spaceId,
+      input.name,
+      input.fullName,
+      input.description,
+      input.category.name,
+      input.capacity,
+      input.isAvailable,
+      maybeSpaceEntity.get.createdAt,
+      maybeSpaceEntity.get.departmentId
+    )
+
+    validateWith(
+      Guard(maybeSpaceEntity.isEmpty, SpaceNotFoundException)
+    ) {
+      // TODO: implement update space
+      ???
     }
   }
 

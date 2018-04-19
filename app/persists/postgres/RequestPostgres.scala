@@ -15,15 +15,15 @@ class RequestPostgres(db: Database) extends RequestPersist
   with PostgresUtil {
 
   override def find(id: UUID): Option[RequestEntity] = db.withConnection { implicit connection =>
-    SQL"SELECT * FROM request WHERE id=$id::uuid" as rowParser.singleOpt
+    SQL"SELECT * FROM request WHERE id = $id::uuid" as rowParser.singleOpt
   }
 
   override def findBySpaceId(spaceId: UUID): List[RequestEntity] = db.withConnection { implicit connection =>
-    SQL"SELECT * FROM request WHERE space_id=$spaceId::uuid" as rowParser.*
+    SQL"SELECT * FROM request WHERE space_id = $spaceId::uuid" as rowParser.*
   }
 
   override def findByClientId(clientId: UUID): List[RequestEntity] = db.withConnection{ implicit connection =>
-    SQL"SELECT * FROM request WHERE client_id=$clientId::uuid" as rowParser.*
+    SQL"SELECT * FROM request WHERE client_id = $clientId::uuid" as rowParser.*
   }
 
   override def insert(request: RequestEntity): Boolean = db.withConnection { implicit connection =>

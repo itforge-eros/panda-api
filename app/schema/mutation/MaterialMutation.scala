@@ -7,7 +7,7 @@ import sangria.macros.derive.GraphQLField
 trait MaterialMutation extends BaseModel {
 
   @GraphQLField
-  def createMaterial(input: CreateMaterialInput)(ctx: AppContext[Unit]): Option[Material] = authorizeOption(ctx) { implicit member =>
+  def createMaterial(input: CreateMaterialInput)(ctx: AppContext[Unit]): Option[Material] = authorizeOption(ctx) { implicit viewer =>
     ctx.ctx.materialFacade.create(input)
   }
 

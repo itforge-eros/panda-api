@@ -7,7 +7,7 @@ import sangria.macros.derive.GraphQLField
 trait DepartmentMutation extends BaseModel {
 
   @GraphQLField
-  def createDepartment(input: CreateDepartmentInput)(ctx: AppContext[Unit]): Option[Department] = authorizeOption(ctx) { implicit member =>
+  def createDepartment(input: CreateDepartmentInput)(ctx: AppContext[Unit]): Option[Department] = authorizeOption(ctx) { implicit viewer =>
     ctx.ctx.departmentFacade.create(input)
   }
 

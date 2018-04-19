@@ -29,4 +29,9 @@ object SpaceCategory {
     override def name = "MEETING_ROOM"
   }
 
+  @GraphQLName(ComputerLab.name)
+  case object ComputerLab extends SpaceCategory {
+    override def name = "COMPUTER_LAB"
+  }
+
 }

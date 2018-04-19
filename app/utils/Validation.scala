@@ -7,16 +7,6 @@ import scala.util.{Failure, Success, Try}
 
 trait Validation {
 
-  class Guard(condition: => Boolean, exception: => Exception) {
-    def isViolate: Boolean = condition
-    def getException: Exception = exception
-  }
-
-  object Guard {
-    def apply(condition: => Boolean, exception: => Exception): Guard =
-      new Guard(condition, exception)
-  }
-
   protected def validateWith[A](guards: Guard*)(action: => Try[A]): Try[A] = try {
     guards find (_.isViolate) map (_.getException) match {
       case Some(error) => Failure(error)

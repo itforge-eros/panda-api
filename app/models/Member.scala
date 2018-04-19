@@ -4,6 +4,8 @@ import java.util.UUID
 
 import entities.MemberEntity
 import henkan.convert.Syntax._
+import models.connections.MemberDepartmentConnection
+import models.edges.MemberDepartmentEdge
 import sangria.macros.derive._
 
 case class Member(id: UUID,
@@ -13,12 +15,12 @@ case class Member(id: UUID,
                   email: String) extends BaseModel {
 
   @GraphQLField
-  def requests(ctx: AppContext[Member]): List[Request] = authorize(ctx) { implicit member =>
+  def requests(ctx: AppContext[Member]): List[Request] = authorize(ctx) { implicit viewer =>
     ctx.ctx.memberFacade.requests(id)
   }
 
   @GraphQLField
-  def reviews(ctx: AppContext[Member]): List[Review] = authorize(ctx) { implicit member =>
+  def reviews(ctx: AppContext[Member]): List[Review] = authorize(ctx) { implicit viewer =>
     ctx.ctx.memberFacade.reviews(id)
   }
 
@@ -30,6 +32,11 @@ case class Member(id: UUID,
   @GraphQLField
   def roles(ctx: AppContext[Member]): List[Role] = resolve {
     ctx.ctx.memberFacade.roles(id)
+  }
+
+  @GraphQLField
+  def departments(ctx: AppContext[Member]): MemberDepartmentConnection = {
+    MemberDepartmentConnection(id)
   }
 
 }

@@ -13,7 +13,7 @@ class RolePostgres(db: Database) extends RolePersist
   with PostgresUtil {
 
   override def find(id: UUID): Option[RoleEntity] = db.withConnection { implicit connection =>
-    SQL"SELECT * FROM role WHERE id=$id::uuid" as rowParser.singleOpt
+    SQL"SELECT * FROM role WHERE id = $id::uuid" as rowParser.singleOpt
   }
 
   override def findByName(departmentName: String, roleName: String): Option[RoleEntity] = db.withConnection { implicit connection =>
@@ -32,7 +32,7 @@ class RolePostgres(db: Database) extends RolePersist
   }
 
   override def findByDepartmentId(departmentId: UUID): List[RoleEntity] = db.withConnection { implicit connection =>
-    SQL"SELECT * FROM role WHERE department_id=$departmentId::uuid" as rowParser.*
+    SQL"SELECT * FROM role WHERE department_id = $departmentId::uuid" as rowParser.*
   }
 
   override def findByMemberId(memberId: UUID): List[RoleEntity] = db.withConnection { implicit connection =>
@@ -45,7 +45,7 @@ class RolePostgres(db: Database) extends RolePersist
           role.department_id
         FROM role
         JOIN member_role ON role.id = member_role.role_id
-        WHERE member_id=$memberId::uuid
+        WHERE member_role.member_id = $memberId::uuid
        """ as rowParser.*
   }
 

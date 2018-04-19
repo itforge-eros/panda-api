@@ -3,7 +3,6 @@ package models
 import java.util.UUID
 
 import entities.RoleEntity
-import henkan.convert.Syntax._
 import sangria.macros.derive.{GraphQLExclude, GraphQLField}
 
 case class Role(id: UUID,

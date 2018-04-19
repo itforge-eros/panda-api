@@ -1,6 +1,5 @@
 package controllers.api
 
-import definitions.exceptions.AppException._
 import definitions.exceptions.AuthorizationException.{JwtDecodingException, MalformedJwtTokenException, WrongBearerHeaderFormatException}
 import definitions.exceptions.HttpException.UnexpectedError
 import definitions.{AppSecurity, Handlers}
@@ -70,7 +69,7 @@ trait CustomAction extends TryResults
 
 
   case class GraphqlRequest[A](request: Request[A],
-                               member: Option[Member]) extends WrappedRequest[A](request)
+                               viewer: Option[Member]) extends WrappedRequest[A](request)
 
   protected val authenticationFacade: AuthenticationFacade
 

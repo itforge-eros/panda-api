@@ -17,7 +17,7 @@ case class Review(id: UUID,
                   @GraphQLExclude reviewerId: UUID) extends BaseModel {
 
   @GraphQLField
-  def request(ctx: AppContext[Review]): Request = authorize(ctx) { implicit member =>
+  def request(ctx: AppContext[Review]): Request = authorize(ctx) { implicit viewer =>
     ctx.ctx.requestFacade.find(requestId)
   }
 

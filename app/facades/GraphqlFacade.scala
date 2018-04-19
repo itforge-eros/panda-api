@@ -18,7 +18,7 @@ class GraphqlFacade(context: Option[Member] => PandaContext)
                    (implicit ec: ExecutionContext) {
 
   def executeQuery(form: GraphqlQuery)
-                  (implicit member: Option[Member]): Future[Json] =
+                  (implicit viewer: Option[Member]): Future[Json] =
     QueryParser parse form.query flatMapFuture {
       executeQuery(_, form.operationName, form.variables map forceStringToObject)
     }
@@ -26,11 +26,11 @@ class GraphqlFacade(context: Option[Member] => PandaContext)
   def executeQuery(document: Document,
                    operationName: Option[String],
                    variables: Option[Json])
-                  (implicit member: Option[Member]): Future[Json] =
+                  (implicit viewer: Option[Member]): Future[Json] =
     Executor.execute(
       schema = SchemaDefinition.schema,
       queryAst = document,
-      userContext = context(member),
+      userContext = context(viewer),
       operationName = operationName,
       variables = variables getOrElse Json.obj(),
       exceptionHandler = Handlers.exceptionHandler

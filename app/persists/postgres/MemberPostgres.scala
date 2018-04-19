@@ -11,11 +11,11 @@ import play.api.db.Database
 class MemberPostgres(db: Database) extends MemberPersist {
 
   override def find(id: UUID): Option[MemberEntity] = db.withConnection { implicit connection =>
-    SQL"SELECT * FROM member WHERE id=$id::uuid" as rowParser.singleOpt
+    SQL"SELECT * FROM member WHERE id = $id::uuid" as rowParser.singleOpt
   }
 
   override def findByUsername(username: String): Option[MemberEntity] = db.withConnection { implicit connection =>
-    SQL"SELECT * FROM member WHERE username=$username" as rowParser.singleOpt
+    SQL"SELECT * FROM member WHERE username = $username" as rowParser.singleOpt
   }
 
   override def findByRoleId(roleId: UUID): List[MemberEntity] = db.withConnection { implicit connection =>
@@ -28,7 +28,7 @@ class MemberPostgres(db: Database) extends MemberPersist {
           member.email
         FROM member
         JOIN member_role ON member.id = member_role.member_id
-        WHERE role_id=$roleId::uuid
+        WHERE role_id = $roleId::uuid
        """ as rowParser.*
   }
 

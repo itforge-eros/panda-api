@@ -5,9 +5,11 @@ import java.util.UUID
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
 import definitions.exceptions.RoleException.{CannotCreateRoleException, RoleNameAlreadyTaken, RoleNotFoundException}
 import entities.RoleEntity
+import models.enums.Access
 import models.inputs.CreateRoleInput
-import models.{Member, Role}
+import models.{Member, Permission, Role}
 import persists.{DepartmentPersist, MemberPersist, RolePersist}
+import utils.Guard
 
 import scala.util.{Failure, Success, Try}
 
@@ -28,7 +30,7 @@ class RoleFacade(rolePersist: RolePersist,
   }
 
   def create(input: CreateRoleInput)
-            (implicit member: Member): Try[Role] = {
+            (implicit viewer: Member): Try[Role] = {
     lazy val maybeDepartmentEntity = departmentPersist.find(input.departmentId)
     lazy val roleEntity = RoleEntity(
       UUID.randomUUID(),
@@ -48,5 +50,23 @@ class RoleFacade(rolePersist: RolePersist,
       }
     }
   }
+
+  def getRoles(memberId: UUID, departmentId: UUID): Try[List[Role]] = validate() {
+    val departmentRoles = rolePersist.findByDepartmentId(departmentId)
+    val memberRoles = rolePersist.findByMemberId(memberId)
+
+    departmentRoles intersect memberRoles map Role.of
+  }
+
+  def getPermission(memberId: UUID, departmentId: UUID): Try[List[Permission]] = {
+    getRoles(memberId, departmentId) map { roles =>
+      roles flatMap (_.permissions) distinct
+    }
+  }
+
+  def getAccesses(memberId: UUID, departmentId: UUID): Try[List[Access]] =
+    getPermission(memberId, departmentId) map { permissions =>
+      permissions flatMap (_.accesses) distinct
+    }
 
 }

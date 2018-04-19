@@ -23,7 +23,7 @@ case class Space(id: UUID,
   }
 
   @GraphQLField
-  def requests(ctx: AppContext[Space]): List[Request] = authorize(ctx) { implicit member =>
+  def requests(ctx: AppContext[Space]): List[Request] = authorize(ctx) { implicit viewer =>
     ctx.ctx.spaceFacade.requests(id)
   }
 

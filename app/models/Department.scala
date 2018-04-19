@@ -13,7 +13,7 @@ case class Department(id: UUID,
                       description: Option[String]) extends BaseModel {
 
   @GraphQLField
-  def roles(ctx: AppContext[Department]): List[Role] = authorize(ctx) { implicit member =>
+  def roles(ctx: AppContext[Department]): List[Role] = authorize(ctx) { implicit viewer =>
     ctx.ctx.departmentFacade.roles(id)
   }
 

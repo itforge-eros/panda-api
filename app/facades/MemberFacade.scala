@@ -6,6 +6,7 @@ import definitions.exceptions.AuthorizationException.NoPermissionException
 import definitions.exceptions.MemberException.MemberNotFoundException
 import models._
 import persists._
+import utils.Guard
 
 import scala.language.postfixOps
 import scala.util.Try
@@ -14,7 +15,8 @@ class MemberFacade(memberPersist: MemberPersist,
                    requestPersist: RequestPersist,
                    reviewPersist: ReviewPersist,
                    reservationPersist: ReservationPersist,
-                   rolePersist: RolePersist) extends BaseFacade {
+                   rolePersist: RolePersist,
+                   departmentPersist: DepartmentPersist) extends BaseFacade {
 
   def find(id: UUID): Try[Member] = validateWith() {
     memberPersist.find(id) toTry MemberNotFoundException map Member.of
@@ -24,16 +26,16 @@ class MemberFacade(memberPersist: MemberPersist,
     memberPersist.findByUsername(username) toTry MemberNotFoundException map Member.of
   }
 
-  def requests(id: UUID)(implicit member: Member): Try[List[Request]] = validate(
-    Guard(member.id != id, NoPermissionException)
+  def requests(id: UUID)(implicit viewer: Member): Try[List[Request]] = validate(
+    Guard(viewer.id != id, NoPermissionException)
   ) {
-    requestPersist.findByClientId(member.id) map Request.of
+    requestPersist.findByClientId(viewer.id) map Request.of
   }
 
-  def reviews(id: UUID)(implicit member: Member): Try[List[Review]] = validate(
-    Guard(member.id != id, NoPermissionException)
+  def reviews(id: UUID)(implicit viewer: Member): Try[List[Review]] = validate(
+    Guard(viewer.id != id, NoPermissionException)
   ) {
-    reviewPersist.findByReviewerId(member.id) map Review.of
+    reviewPersist.findByReviewerId(viewer.id) map Review.of
   }
 
   def reservations(id: UUID): Try[List[Reservation]] = validate() {
@@ -42,6 +44,10 @@ class MemberFacade(memberPersist: MemberPersist,
 
   def roles(id: UUID): Try[List[Role]] = validate() {
     rolePersist.findByMemberId(id) map Role.of
+  }
+
+  def departments(id: UUID): Try[List[Department]] = validate() {
+    departmentPersist.findByMemberId(id) map Department.of
   }
 
 }

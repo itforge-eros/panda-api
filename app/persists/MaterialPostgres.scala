@@ -17,7 +17,7 @@ class MaterialPostgres(db: Database) extends MaterialPersist
   with PostgresUtil {
 
   override def find(id: UUID): Option[MaterialEntity] = db.withConnection { implicit connection =>
-    SQL"SELECT * FROM material WHERE id=$id::uuid" as rowParser.singleOpt
+    SQL"SELECT * FROM material WHERE id = $id::uuid" as rowParser.singleOpt
   }
 
   override def findByDepartmentId(departmentId: UUID) = db.withConnection { implicit connection =>

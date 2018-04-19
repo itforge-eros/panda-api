@@ -11,8 +11,8 @@ trait MemberQuery extends BaseModel {
   }
 
   @GraphQLField
-  def me(ctx: AppContext[Unit]): Member = authorize(ctx) { implicit member =>
-    ctx.ctx.memberFacade.find(member.id)
+  def me(ctx: AppContext[Unit]): Member = authorize(ctx) { implicit viewer =>
+    ctx.ctx.memberFacade.find(viewer.id)
   }
 
 }

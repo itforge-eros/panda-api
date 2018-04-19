@@ -3,6 +3,8 @@ package schema
 import entities.MultiLanguageString
 import io.circe.Decoder
 import models._
+import models.connections.MemberDepartmentConnection
+import models.edges.MemberDepartmentEdge
 import models.enums.{Access, RequestStatus, ReviewEvent, SpaceCategory}
 import models.inputs._
 import sangria.macros.derive._
@@ -22,6 +24,9 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val permissionType:                  Type[Permission]                            = deriveObjectType()
   implicit val materialType:                    Type[Material]                              = deriveObjectType()
   implicit val multiLanguageString:             Type[MultiLanguageString]                   = deriveObjectType()
+
+  implicit val memberDepartmentConnection:      Type[MemberDepartmentConnection]            = deriveObjectType()
+  implicit val memberDepartmentEdge:            Type[MemberDepartmentEdge]                  = deriveObjectType()
 
   implicit val createSpaceInput:                InputType[CreateSpaceInput]                 = deriveInputObjectType()
   implicit val createRequestInput:              InputType[CreateRequestInput]               = deriveInputObjectType()

@@ -12,8 +12,15 @@ object RequestException {
     extends Exception("Cannot create request.")
       with SafeException
 
+  object CannotCancelRequestException
+    extends Exception("Cannot cancel request.")
+      with SafeException
+
   object RequestAlreadyClosedException
     extends Exception("Request already closed.")
       with SafeException
+
+  class NegativePeriodException(range: Range)
+    extends Exception(s"Invalid period. Period must be positive. Got [${range.start}, ${range.end}).")
 
 }

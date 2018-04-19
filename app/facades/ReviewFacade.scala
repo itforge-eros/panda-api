@@ -25,14 +25,14 @@ class ReviewFacade(reviewPersist: ReviewPersist,
   }
 
   def create(input: CreateReviewInput)
-            (implicit member: Member): Try[Review] = validateWith() {
+            (implicit viewer: Member): Try[Review] = validateWith() {
     val reviewEntity = ReviewEntity(
       UUID.randomUUID(),
       input.body,
       input.event.name,
       Instant.now(),
       input.requestId,
-      member.id
+      viewer.id
     )
 
     findRequest(input.requestId) flatMap { requestEntity =>
