@@ -33,7 +33,7 @@ object Review {
   def of(entity: ReviewEntity): Review = Review(
     entity.id,
     entity.body,
-    ReviewEvent(entity.event),
+    ReviewEvent(entity.event).get,
     entity.createdAt,
     entity.requestId,
     entity.reviewerId

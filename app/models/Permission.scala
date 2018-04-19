@@ -9,7 +9,7 @@ case class Permission(name: String,
 
 object Permission {
 
-  var values: List[Permission] = List(
+  val values: List[Permission] = List(
     AdminAccessPermission,
     SpaceFullAccessPermission,
     SpaceReadOnlyAccessPermission,
@@ -17,7 +17,7 @@ object Permission {
     RequestApprovalAccessPermission
   )
 
-  def apply(name: String): Option[Permission] = values.find(name == _.name)
+  def apply(s: String): Option[Permission] = values.find(s equalsIgnoreCase _.name)
 
   object AdminAccessPermission
     extends Permission("ADMIN_ACCESS", "Provides full access to any resources", List(

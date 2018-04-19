@@ -31,6 +31,7 @@ class SpacePostgres(db: Database) extends SpacePersist {
           space.name,
           space.full_name,
           space.description,
+          space.category,
           space.capacity,
           space.is_available,
           space.created_at,

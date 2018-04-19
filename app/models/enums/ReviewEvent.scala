@@ -12,7 +12,7 @@ sealed trait ReviewEvent {
 
 object ReviewEvent {
 
-  def apply(s: String): ReviewEvent = values.find(s.toLowerCase() == _.name).get
+  def apply(s: String): Option[ReviewEvent] = values.find(s equalsIgnoreCase _.name)
 
   val values: List[ReviewEvent] = List(Approve, Reject, Comment)
 

@@ -3,17 +3,15 @@ package models
 import java.time.Instant
 import java.util.UUID
 
-import definitions.exceptions.AppException._
 import entities.SpaceEntity
-import henkan.convert.Syntax._
+import models.enums.SpaceCategory
 import sangria.macros.derive._
-
-import scala.util.{Failure, Try}
 
 case class Space(id: UUID,
                  name: String,
                  fullName: String,
                  description: Option[String],
+                 category: SpaceCategory,
                  capacity: Option[Int],
                  isAvailable: Boolean,
                  createdAt: Instant,
@@ -38,6 +36,16 @@ case class Space(id: UUID,
 
 object Space {
 
-  def of(spaceEntity: SpaceEntity): Space = spaceEntity.to[Space]()
+  def of(entity: SpaceEntity): Space = Space(
+    entity.id,
+    entity.name,
+    entity.fullName,
+    entity.description,
+    SpaceCategory(entity.category).get,
+    entity.capacity,
+    entity.isAvailable,
+    entity.createdAt,
+    entity.departmentId
+  )
 
 }

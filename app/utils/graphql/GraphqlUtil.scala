@@ -28,6 +28,9 @@ trait GraphqlUtil[PartialContext] extends Scalar {
     json.asString flatMapEither parser.parse getOrElse json
   }
 
+  protected def getDecoder[A](f: String => A): Decoder[A] =
+    (c: HCursor) => Decoder.decodeString.map(f)(c)
+
 }
 
 object GraphqlUtil extends GraphqlUtil[PandaContext]
