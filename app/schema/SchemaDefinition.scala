@@ -1,6 +1,7 @@
 package schema
 
-import io.circe.{Decoder, HCursor}
+import entities.MultiLanguageString
+import io.circe.Decoder
 import models._
 import models.enums.{Access, RequestStatus, ReviewEvent, SpaceCategory}
 import models.inputs._
@@ -19,12 +20,16 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val departmentType:                  Type[Department]                            = deriveObjectType()
   implicit val roleType:                        Type[Role]                                  = deriveObjectType()
   implicit val permissionType:                  Type[Permission]                            = deriveObjectType()
+  implicit val materialType:                    Type[Material]                              = deriveObjectType()
+  implicit val multiLanguageString:             Type[MultiLanguageString]                   = deriveObjectType()
 
   implicit val createSpaceInput:                InputType[CreateSpaceInput]                 = deriveInputObjectType()
   implicit val createRequestInput:              InputType[CreateRequestInput]               = deriveInputObjectType()
   implicit val createReviewInput:               InputType[CreateReviewInput]                = deriveInputObjectType()
   implicit val createDepartmentInput:           InputType[CreateDepartmentInput]            = deriveInputObjectType()
   implicit val createRoleInput:                 InputType[CreateRoleInput]                  = deriveInputObjectType()
+  implicit val createMaterialInput:             InputType[CreateMaterialInput]              = deriveInputObjectType()
+  implicit val multiLanguageStringInput:        InputType[MultiLanguageStringInput]         = deriveInputObjectType()
 
   implicit val accessEnum:                      EnumType[Access]                            = deriveEnumType()
   implicit val requestStatusEnum:               EnumType[RequestStatus]                     = deriveEnumType()

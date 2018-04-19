@@ -22,6 +22,11 @@ case class Department(id: UUID,
     ctx.ctx.departmentFacade.spaces(id)
   }
 
+  @GraphQLField
+  def materials(ctx: AppContext[Department]): List[Material] = resolve {
+    ctx.ctx.departmentFacade.materials(id)
+  }
+
 }
 
 object Department {

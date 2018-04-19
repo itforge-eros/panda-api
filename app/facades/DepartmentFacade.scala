@@ -6,15 +6,16 @@ import definitions.exceptions.DepartmentException.{CannotCreateDepartmentExcepti
 import entities.{DepartmentEntity, MemberRoleEntity, RoleEntity}
 import models.Permission.AdminAccessPermission
 import models.inputs.CreateDepartmentInput
-import models.{Department, Member, Role, Space}
-import persists.{DepartmentPersist, MemberRolePersist, RolePersist, SpacePersist}
+import models._
+import persists._
 
 import scala.util.{Failure, Success, Try}
 
 class DepartmentFacade(departmentPersist: DepartmentPersist,
                        rolePersist: RolePersist,
                        memberRolePersist: MemberRolePersist,
-                       spacePersist: SpacePersist) extends BaseFacade {
+                       spacePersist: SpacePersist,
+                       materialPersist: MaterialPersist) extends BaseFacade {
 
   def find(id: UUID): Try[Department] = ValidateWith() {
     departmentPersist.find(id) toTry DepartmentNotFoundException map Department.of
@@ -26,6 +27,10 @@ class DepartmentFacade(departmentPersist: DepartmentPersist,
 
   def roles(id: UUID): Try[List[Role]] = Validate() {
     rolePersist.findByDepartmentId(id) map Role.of
+  }
+
+  def materials(id: UUID): Try[List[Material]] = Validate() {
+    materialPersist.findByDepartmentId(id) map Material.of
   }
 
   def spaces(id: UUID): Try[List[Space]] = Validate() {

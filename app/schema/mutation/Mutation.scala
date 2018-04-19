@@ -5,3 +5,4 @@ class Mutation extends SpaceMutation
   with ReviewMutation
   with RoleMutation
   with DepartmentMutation
+  with MaterialMutation

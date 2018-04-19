@@ -15,7 +15,7 @@ CREATE TABLE space (
 );
 
 CREATE UNIQUE INDEX unique_space_name
-  ON space (id, lower(name));
+  ON space (department_id, lower(name));
 
 # --- !Downs
 

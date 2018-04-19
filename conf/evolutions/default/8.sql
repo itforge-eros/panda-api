@@ -9,7 +9,7 @@ CREATE TABLE role (
 );
 
 CREATE UNIQUE INDEX unique_role_name
-  ON space (id, lower(name));
+  ON space (department_id, lower(name));
 
 # --- !Downs
 

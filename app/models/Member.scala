@@ -28,7 +28,7 @@ case class Member(id: UUID,
   }
 
   @GraphQLField
-  def roles(ctx: AppContext[Member]): List[Role] = authorize(ctx) { implicit member =>
+  def roles(ctx: AppContext[Member]): List[Role] = resolve {
     ctx.ctx.memberFacade.roles(id)
   }
 
