@@ -1,7 +1,11 @@
 # --- !Ups
 
-ALTER TABLE space ADD COLUMN category VARCHAR(64) NOT NULL DEFAULT 'CLASSROOM';
+CREATE TABLE material (
+  id                    uuid PRIMARY KEY,
+  name                  json NOT NULL,
+  department_id         uuid NOT NULL REFERENCES department (id)
+);
 
 # --- !Downs
 
-ALTER TABLE space DROP COLUMN category;
+DROP TABLE material;
