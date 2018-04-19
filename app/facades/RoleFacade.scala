@@ -15,15 +15,15 @@ class RoleFacade(rolePersist: RolePersist,
                  memberPersist: MemberPersist,
                  departmentPersist: DepartmentPersist) extends BaseFacade {
 
-  def find(id: UUID): Try[Role] = ValidateWith() {
+  def find(id: UUID): Try[Role] = validateWith() {
     rolePersist.find(id) toTry RoleNotFoundException map Role.of
   }
 
-  def findByName(department: String, name: String): Try[Role] = ValidateWith() {
+  def findByName(department: String, name: String): Try[Role] = validateWith() {
     rolePersist.findByName(department, name) toTry RoleNotFoundException map Role.of
   }
 
-  def members(id: UUID): Try[List[Member]] = Validate() {
+  def members(id: UUID): Try[List[Member]] = validate() {
     memberPersist.findByRoleId(id) map Member.of
   }
 
@@ -34,11 +34,11 @@ class RoleFacade(rolePersist: RolePersist,
       UUID.randomUUID(),
       input.name,
       input.description,
-      input.permissions,
+      input.permissions.distinct,
       input.departmentId
     )
 
-    ValidateWith(
+    validateWith(
       Guard(maybeDepartmentEntity.isEmpty, DepartmentNotFoundException),
       Guard(rolePersist.findByName(maybeDepartmentEntity.get.name, input.name).isDefined, RoleNameAlreadyTaken)
     ) {

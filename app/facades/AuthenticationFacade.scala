@@ -21,14 +21,14 @@ class AuthenticationFacade(memberPersist: MemberPersist,
                            authenticationService: AuthenticationService,
                            configuration: Configuration) extends BaseFacade {
 
-  def findById(id: UUID): Try[Member] = ValidateWith() {
+  def findById(id: UUID): Try[Member] = validateWith() {
     memberPersist.find(id)
       .toTry(MemberNotFoundException)
       .map(Member.of)
   }
 
 
-  def login(username: String, password: String): Try[MemberWithToken] = ValidateWith() {
+  def login(username: String, password: String): Try[MemberWithToken] = validateWith() {
     authenticationService.login(username, password)
       .toTry(WrongUsernameOrPasswordException)
       .flatMap(findOrElseCreateMember)

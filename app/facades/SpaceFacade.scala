@@ -18,28 +18,28 @@ class SpaceFacade(spacePersist: SpacePersist,
                   reservationPersist: ReservationPersist,
                   departmentPersist: DepartmentPersist) extends BaseFacade {
 
-  def find(id: UUID): Try[Space] = ValidateWith() {
+  def find(id: UUID): Try[Space] = validateWith() {
     spacePersist.find(id) toTry SpaceNotFoundException map Space.of
   }
 
-  def findByName(department: String, name: String): Try[Space] = ValidateWith() {
+  def findByName(department: String, name: String): Try[Space] = validateWith() {
     spacePersist.findByName(department, name) toTry SpaceNotFoundException map Space.of
   }
 
-  def searchByName(name: String): Try[List[Space]] = Validate() {
+  def searchByName(name: String): Try[List[Space]] = validate() {
     spacePersist.searchByName(name) map Space.of
   }
 
-  def findAll: Try[List[Space]] = Validate() {
+  def findAll: Try[List[Space]] = validate() {
     spacePersist.findAll map Space.of
   }
 
   def requests(id: UUID)
-              (implicit member: Member): Try[List[Request]] = Validate() {
+              (implicit member: Member): Try[List[Request]] = validate() {
     requestPersist.findBySpaceId(id) map Request.of
   }
 
-  def reservations(id: UUID): Try[List[Reservation]] = Validate() {
+  def reservations(id: UUID): Try[List[Reservation]] = validate() {
     reservationPersist.findBySpaceId(id) map Reservation.of
   }
 
@@ -58,7 +58,7 @@ class SpaceFacade(spacePersist: SpacePersist,
       input.departmentId
     )
 
-    ValidateWith(
+    validateWith(
       Guard(maybeDepartmentEntity.isEmpty, DepartmentNotFoundException),
       Guard(spacePersist.findByName(maybeDepartmentEntity.get.name, input.name).isDefined, SpaceNameAlreadyTaken)
     ) {

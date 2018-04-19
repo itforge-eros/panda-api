@@ -17,28 +17,28 @@ class DepartmentFacade(departmentPersist: DepartmentPersist,
                        spacePersist: SpacePersist,
                        materialPersist: MaterialPersist) extends BaseFacade {
 
-  def find(id: UUID): Try[Department] = ValidateWith() {
+  def find(id: UUID): Try[Department] = validateWith() {
     departmentPersist.find(id) toTry DepartmentNotFoundException map Department.of
   }
 
-  def findByName(name: String): Try[Department] = ValidateWith() {
+  def findByName(name: String): Try[Department] = validateWith() {
     departmentPersist.findByName(name) toTry DepartmentNotFoundException map Department.of
   }
 
-  def roles(id: UUID): Try[List[Role]] = Validate() {
+  def roles(id: UUID): Try[List[Role]] = validate() {
     rolePersist.findByDepartmentId(id) map Role.of
   }
 
-  def materials(id: UUID): Try[List[Material]] = Validate() {
+  def materials(id: UUID): Try[List[Material]] = validate() {
     materialPersist.findByDepartmentId(id) map Material.of
   }
 
-  def spaces(id: UUID): Try[List[Space]] = Validate() {
+  def spaces(id: UUID): Try[List[Space]] = validate() {
     spacePersist.findByDepartmentId(id) map Space.of
   }
 
   def create(input: CreateDepartmentInput)
-            (implicit member: Member): Try[Department] = ValidateWith(
+            (implicit member: Member): Try[Department] = validateWith(
     Guard(departmentPersist.findByName(input.name).isDefined, DepartmentNameAlreadyTaken)
   ) {
     val departmentId = UUID.randomUUID()

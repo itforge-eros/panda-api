@@ -20,12 +20,12 @@ class ReviewFacade(reviewPersist: ReviewPersist,
                    requestPersist: RequestPersist,
                    reservationPersist: ReservationPersist) extends BaseFacade {
 
-  def find(id: UUID): Try[Review] = ValidateWith() {
+  def find(id: UUID): Try[Review] = validateWith() {
     reviewPersist.find(id) toTry ReviewNotFoundException map Review.of
   }
 
   def create(input: CreateReviewInput)
-            (implicit member: Member): Try[Review] = ValidateWith() {
+            (implicit member: Member): Try[Review] = validateWith() {
     val reviewEntity = ReviewEntity(
       UUID.randomUUID(),
       input.body,

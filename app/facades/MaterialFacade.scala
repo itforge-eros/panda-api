@@ -12,7 +12,7 @@ import scala.util.{Failure, Success, Try}
 
 class MaterialFacade(materialPersist: MaterialPersist) extends BaseFacade {
 
-  def find(id: UUID): Try[Material] = ValidateWith() {
+  def find(id: UUID): Try[Material] = validateWith() {
     materialPersist.find(id) toTry MaterialNotFoundException map Material.of
   }
 
@@ -23,7 +23,7 @@ class MaterialFacade(materialPersist: MaterialPersist) extends BaseFacade {
       input.departmentId
     )
 
-    ValidateWith() {
+    validateWith() {
       materialPersist.create(materialEntity) match {
         case true => Success(materialEntity) map Material.of
         case false => Failure(CannotCreateMaterialException)

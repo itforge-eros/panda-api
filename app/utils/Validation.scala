@@ -17,7 +17,7 @@ trait Validation {
       new Guard(condition, exception)
   }
 
-  protected def ValidateWith[A](guards: Guard*)(action: => Try[A]): Try[A] = try {
+  protected def validateWith[A](guards: Guard*)(action: => Try[A]): Try[A] = try {
     guards find (_.isViolate) map (_.getException) match {
       case Some(error) => Failure(error)
       case None => action
@@ -26,7 +26,7 @@ trait Validation {
     case e: Throwable => Failure(new UnexpectedError(e))
   }
 
-  protected def Validate[A](guards: Guard*)(action: => A): Try[A] = try {
+  protected def validate[A](guards: Guard*)(action: => A): Try[A] = try {
     guards find (_.isViolate) map (_.getException) match {
       case Some(error) => Failure(error)
       case None => Success(action)
