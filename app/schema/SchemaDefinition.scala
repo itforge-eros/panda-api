@@ -2,8 +2,6 @@ package schema
 
 import io.circe.{Decoder, HCursor}
 import models._
-import models.connections.MemberDepartmentsConnection
-import models.edges.MemberDepartmentsEdge
 import models.enums.{Access, RequestStatus, ReviewEvent}
 import models.inputs._
 import sangria.macros.derive._
@@ -21,8 +19,6 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val departmentType:                  Type[Department]                            = deriveObjectType()
   implicit val roleType:                        Type[Role]                                  = deriveObjectType()
   implicit val permissionType:                  Type[Permission]                            = deriveObjectType()
-  implicit val memberDepartmentsConnection:     Type[MemberDepartmentsConnection]           = deriveObjectType()
-  implicit val memberDepartmentsEdge:           Type[MemberDepartmentsEdge]                 = deriveObjectType()
 
   implicit val accessEnum:                      EnumType[Access]                            = deriveEnumType()
   implicit val requestStatusEnum:               EnumType[RequestStatus]                     = deriveEnumType()

@@ -4,7 +4,6 @@ import java.util.UUID
 
 import entities.MemberEntity
 import henkan.convert.Syntax._
-import models.connections.MemberDepartmentsConnection
 import sangria.macros.derive._
 
 case class Member(id: UUID,
@@ -31,11 +30,6 @@ case class Member(id: UUID,
   @GraphQLField
   def roles(ctx: AppContext[Member]): List[Role] = authorize(ctx) { implicit member =>
     ctx.ctx.memberFacade.roles(id)
-  }
-
-  @GraphQLField
-  def departments(ctx: AppContext[Member]): MemberDepartmentsConnection = authorize(ctx) { implicit member =>
-    ???
   }
 
 }
