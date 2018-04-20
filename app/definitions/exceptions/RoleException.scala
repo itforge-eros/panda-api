@@ -13,7 +13,15 @@ object RoleException {
       with SafeException
 
   object CannotCreateRoleException
-    extends Exception("Cannot create role example.")
+    extends Exception("Cannot create role.")
+      with SafeException
+
+  object CannotAssignRoleException
+    extends Exception("Cannot assign role to member.")
+      with SafeException
+
+  object RoleAlreadyAssignedToMemberException
+    extends Exception("Role already assigned to member.")
       with SafeException
 
 }

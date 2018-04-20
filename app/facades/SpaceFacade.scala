@@ -7,21 +7,19 @@ import definitions.exceptions.AuthorizationException.NoPermissionException
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
 import definitions.exceptions.SpaceException.{CannotCreateSpaceException, CannotUpdateSpaceException, SpaceNameAlreadyTaken, SpaceNotFoundException}
 import entities.SpaceEntity
-import models.enums.Access
 import models.inputs.{CreateSpaceInput, UpdateSpaceInput}
 import models.{Member, Request, Reservation, Space}
 import persists.{DepartmentPersist, RequestPersist, ReservationPersist, SpacePersist}
 import utils.Guard
-import validators.AccessValidator
 
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
 
-class SpaceFacade(spacePersist: SpacePersist,
+class SpaceFacade(auth: AuthorizationFacade,
+                  spacePersist: SpacePersist,
                   requestPersist: RequestPersist,
                   reservationPersist: ReservationPersist,
-                  departmentPersist: DepartmentPersist,
-                  roleFacade: RoleFacade) extends BaseFacade {
+                  departmentPersist: DepartmentPersist) extends BaseFacade {
 
   def find(id: UUID): Try[Space] = validateWith() {
     spacePersist.find(id) toTry SpaceNotFoundException map Space.of
@@ -76,6 +74,7 @@ class SpaceFacade(spacePersist: SpacePersist,
 
   def update(input: UpdateSpaceInput)
             (implicit viewer: Member): Try[Space] = {
+    lazy val accesses = viewer.accesses(auth, maybeSpaceEntity.get.departmentId)
     lazy val maybeSpaceEntity = spacePersist.find(input.spaceId)
     lazy val updatedSpaceEntity = SpaceEntity(
       input.spaceId,
@@ -88,11 +87,10 @@ class SpaceFacade(spacePersist: SpacePersist,
       maybeSpaceEntity.get.createdAt,
       maybeSpaceEntity.get.departmentId
     )
-    implicit lazy val accesses: List[Access] = roleFacade.getAccesses(viewer.id, maybeSpaceEntity.get.departmentId).get
 
     validateWith(
       Guard(maybeSpaceEntity.isEmpty, SpaceNotFoundException),
-      Guard(!AccessValidator.memberCanUpdateSpace(viewer.id, maybeSpaceEntity.get.departmentId), NoPermissionException)
+      Guard(!auth.canUpdateSpace(accesses), NoPermissionException)
     ) {
       spacePersist.update(updatedSpaceEntity) match {
         case true => Success(updatedSpaceEntity) map Space.of

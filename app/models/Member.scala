@@ -3,6 +3,7 @@ package models
 import java.util.UUID
 
 import entities.MemberEntity
+import facades.AuthorizationFacade
 import henkan.convert.Syntax._
 import models.connections.MemberDepartmentConnection
 import models.enums.Access
@@ -43,12 +44,16 @@ case class Member(id: UUID,
 
   @GraphQLField
   def accesses(ctx: AppContext[Member])(departmentId: UUID): List[Access] = resolve {
-    ctx.ctx.roleFacade.getAccesses(departmentId, id)
+    ctx.ctx.authorizationFacade.accesses(departmentId, id)
   }
 
   @GraphQLField
   def isMe(ctx: AppContext[Member])(departmentId: UUID): Boolean = authorize(ctx) { implicit viewer =>
     Success(id == viewer.id)
+  }
+
+  def accesses(authorizationFacade: AuthorizationFacade, departmentId: UUID): List[Access] = {
+    authorizationFacade.accesses(id, departmentId).get
   }
 
 }

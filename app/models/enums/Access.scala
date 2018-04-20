@@ -40,4 +40,9 @@ object Access {
     override val name = "REVIEW_CREATE_ACCESS"
   }
 
+  @GraphQLName(RoleAssignAccess.name)
+  case object RoleAssignAccess extends Access {
+    override val name = "ROLE_ASSIGN_ACCESS"
+  }
+
 }

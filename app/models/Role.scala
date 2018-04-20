@@ -25,15 +25,12 @@ case class Role(id: UUID,
 
 object Role {
 
-  def of(roleEntity: RoleEntity): Role = {
-    roleEntity.permissions foreach println
-    Role(
-      roleEntity.id,
-      roleEntity.name,
-      roleEntity.description,
-      roleEntity.permissions map Permission.apply map (_.get),
-      roleEntity.departmentId
-    )
-  }
+  def of(roleEntity: RoleEntity): Role = Role(
+    roleEntity.id,
+    roleEntity.name,
+    roleEntity.description,
+    roleEntity.permissions map Permission.apply map (_.get),
+    roleEntity.departmentId
+  )
 
 }

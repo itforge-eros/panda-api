@@ -24,6 +24,7 @@ class MockPandaComponents(context: Context) extends BuiltInComponentsFromContext
   lazy val pandaContext: Option[Member] => PandaContext = (_: Option[Member]) => wire[PandaContext]
 
   lazy val authenticationFacade: AuthenticationFacade = wire[AuthenticationFacade]
+  lazy val authorizationFacade: AuthorizationFacade = wire[AuthorizationFacade]
   lazy val graphqlFacade: GraphqlFacade = wire[GraphqlFacade]
   lazy val spaceFacade: SpaceFacade = wire[SpaceFacade]
   lazy val memberFacade: MemberFacade = wire[MemberFacade]

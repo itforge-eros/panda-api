@@ -21,11 +21,12 @@ object Permission {
 
   object AdminAccessPermission
     extends Permission("ADMIN_PERMISSION", "Provides full access to any resources", List(
+      RoleAssignAccess,
       SpaceReadAccess,
       SpaceCreateAccess,
       SpaceUpdateAccess,
       RequestReadAccess,
-      RequestCreateAccess,
+      RequestCreateAccess
     ))
 
   object SpaceFullAccessPermission

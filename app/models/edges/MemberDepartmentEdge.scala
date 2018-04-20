@@ -11,17 +11,17 @@ case class MemberDepartmentEdge(@GraphQLExclude memberId: UUID,
 
   @GraphQLField
   def roles(ctx: AppContext[MemberDepartmentEdge]): List[Role] = resolve {
-    ctx.ctx.roleFacade.getRoles(memberId, node.id)
+    ctx.ctx.authorizationFacade.roles(memberId, node.id)
   }
 
   @GraphQLField
   def permissions(ctx: AppContext[MemberDepartmentEdge]): List[Permission] = resolve {
-    ctx.ctx.roleFacade.getPermission(memberId, node.id)
+    ctx.ctx.authorizationFacade.permissions(memberId, node.id)
   }
 
   @GraphQLField
   def accesses(ctx: AppContext[MemberDepartmentEdge]): List[Access] = resolve {
-    ctx.ctx.roleFacade.getAccesses(memberId, node.id)
+    ctx.ctx.authorizationFacade.accesses(memberId, node.id)
   }
 
 }

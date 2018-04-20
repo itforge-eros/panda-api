@@ -2,19 +2,22 @@ package facades
 
 import java.util.UUID
 
+import definitions.exceptions.AuthorizationException.NoPermissionException
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
-import definitions.exceptions.RoleException.{CannotCreateRoleException, RoleNameAlreadyTaken, RoleNotFoundException}
-import entities.RoleEntity
-import models.enums.Access
-import models.inputs.CreateRoleInput
-import models.{Member, Permission, Role}
-import persists.{DepartmentPersist, MemberPersist, RolePersist}
+import definitions.exceptions.MemberException.MemberNotFoundException
+import definitions.exceptions.RoleException._
+import entities.{MemberRoleEntity, RoleEntity}
+import models.inputs.{AssignRoleInput, CreateRoleInput}
+import models.{Member, Role}
+import persists.{DepartmentPersist, MemberPersist, MemberRolePersist, RolePersist}
 import utils.Guard
 
 import scala.util.{Failure, Success, Try}
 
-class RoleFacade(rolePersist: RolePersist,
+class RoleFacade(auth: AuthorizationFacade,
+                 rolePersist: RolePersist,
                  memberPersist: MemberPersist,
+                 memberRolePersist: MemberRolePersist,
                  departmentPersist: DepartmentPersist) extends BaseFacade {
 
   def find(id: UUID): Try[Role] = validateWith() {
@@ -51,22 +54,26 @@ class RoleFacade(rolePersist: RolePersist,
     }
   }
 
-  def getRoles(memberId: UUID, departmentId: UUID): Try[List[Role]] = validate() {
-    val departmentRoles = rolePersist.findByDepartmentId(departmentId)
-    val memberRoles = rolePersist.findByMemberId(memberId)
+  def assignRole(input: AssignRoleInput)
+                (implicit viewer: Member): Try[Role] = {
+    lazy val accesses = auth.accesses(viewer.id, maybeRoleEntity.get.departmentId).get
+    lazy val maybeRoleEntity = rolePersist.find(input.roleId)
+    lazy val memberRoleEntity = MemberRoleEntity(
+      input.memberId,
+      input.roleId
+    )
 
-    departmentRoles intersect memberRoles map Role.of
-  }
-
-  def getPermission(memberId: UUID, departmentId: UUID): Try[List[Permission]] = {
-    getRoles(memberId, departmentId) map { roles =>
-      roles flatMap (_.permissions) distinct
+    validateWith(
+      Guard(maybeRoleEntity.isEmpty, RoleNotFoundException),
+      Guard(memberPersist.find(input.memberId).isEmpty, MemberNotFoundException),
+      Guard(auth.canAssignRole(accesses), NoPermissionException),
+      Guard(memberRolePersist.find(input.memberId, input.roleId).isDefined, RoleAlreadyAssignedToMemberException)
+    ) {
+      memberRolePersist.insert(memberRoleEntity) match {
+        case true => Success(maybeRoleEntity.get) map Role.of
+        case false => Failure(CannotAssignRoleException)
+      }
     }
   }
-
-  def getAccesses(memberId: UUID, departmentId: UUID): Try[List[Access]] =
-    getPermission(memberId, departmentId) map { permissions =>
-      permissions flatMap (_.accesses) distinct
-    }
 
 }
