@@ -5,10 +5,11 @@ import java.util.UUID
 import definitions.exceptions.AuthorizationException.NoPermissionException
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
 import definitions.exceptions.MemberException.MemberNotFoundException
+import definitions.exceptions.PermissionException.PermissionNotFoundException
 import definitions.exceptions.RoleException._
 import entities.{MemberRoleEntity, RoleEntity}
 import models.inputs.{AssignRoleInput, CreateRoleInput}
-import models.{Member, Role}
+import models.{Member, Permission, Role}
 import persists.{DepartmentPersist, MemberPersist, MemberRolePersist, RolePersist}
 import utils.Guard
 
@@ -35,6 +36,7 @@ class RoleFacade(auth: AuthorizationFacade,
   def create(input: CreateRoleInput)
             (implicit viewer: Member): Try[Role] = {
     lazy val maybeDepartmentEntity = departmentPersist.find(input.departmentId)
+    lazy val undefinedPermission = input.permissions.find(Permission(_).isEmpty)
     lazy val roleEntity = RoleEntity(
       UUID.randomUUID(),
       input.name,
@@ -44,6 +46,7 @@ class RoleFacade(auth: AuthorizationFacade,
     )
 
     validateWith(
+      Guard(undefinedPermission.isDefined, new PermissionNotFoundException(undefinedPermission.get)),
       Guard(maybeDepartmentEntity.isEmpty, DepartmentNotFoundException),
       Guard(rolePersist.findByName(maybeDepartmentEntity.get.name, input.name).isDefined, RoleNameAlreadyTaken)
     ) {

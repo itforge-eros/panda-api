@@ -7,13 +7,13 @@ import sangria.macros.derive.GraphQLField
 trait RoleMutation extends BaseModel {
 
   @GraphQLField
-  def createRole(roleInput: CreateRoleInput)(ctx: AppContext[Unit]): Option[Role] = authorizeOption(ctx) { implicit viewer =>
-    ctx.ctx.roleFacade.create(roleInput)
+  def createRole(input: CreateRoleInput)(ctx: AppContext[Unit]): Option[Role] = authorizeOption(ctx) { implicit viewer =>
+    ctx.ctx.roleFacade.create(input)
   }
 
   @GraphQLField
-  def assignRole(roleInput: AssignRoleInput)(ctx: AppContext[Unit]): Option[Role] = authorizeOption(ctx) { implicit viewer =>
-    ctx.ctx.roleFacade.assignRole(roleInput)
+  def assignRole(input: AssignRoleInput)(ctx: AppContext[Unit]): Option[Role] = authorizeOption(ctx) { implicit viewer =>
+    ctx.ctx.roleFacade.assignRole(input)
   }
 
 }

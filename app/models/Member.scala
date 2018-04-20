@@ -48,7 +48,7 @@ case class Member(id: UUID,
   }
 
   @GraphQLField
-  def isMe(ctx: AppContext[Member])(departmentId: UUID): Boolean = authorize(ctx) { implicit viewer =>
+  def isMe(ctx: AppContext[Member]): Boolean = authorize(ctx) { implicit viewer =>
     Success(id == viewer.id)
   }
 

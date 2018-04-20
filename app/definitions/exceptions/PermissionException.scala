@@ -4,8 +4,8 @@ import definitions.exceptions.AppException.SafeException
 
 object PermissionException {
 
-  object PermissionNotFoundException
-    extends Exception("Permission not found.")
+  class PermissionNotFoundException(name: String)
+    extends Exception(s"Permission '$name' not found.")
       with SafeException
 
 }
