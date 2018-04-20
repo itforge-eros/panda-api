@@ -49,15 +49,25 @@ class RolePostgres(db: Database) extends RolePersist
        """ as rowParser.*
   }
 
-  override def insert(roleEntity: RoleEntity): Boolean = db.withConnection { implicit connection =>
+  override def insert(role: RoleEntity): Boolean = db.withConnection { implicit connection =>
     SQL"""
          INSERT INTO role VALUES (
-           ${roleEntity.id}::uuid,
-           ${roleEntity.name},
-           ${roleEntity.description},
-           ARRAY[${roleEntity.permissions}],
-           ${roleEntity.departmentId}::uuid
+           ${role.id}::uuid,
+           ${role.name},
+           ${role.description},
+           ARRAY[${role.permissions}],
+           ${role.departmentId}::uuid
          )
+       """ executeStatement()
+  }
+
+  override def update(role: RoleEntity): Boolean = db.withConnection { implicit connection =>
+    SQL"""
+        UPDATE role SET
+          name = ${role.name},
+          description = ${role.description},
+          permissions = ARRAY[${role.permissions}]
+        WHERE role.id = ${role.id}::uuid
        """ executeStatement()
   }
 

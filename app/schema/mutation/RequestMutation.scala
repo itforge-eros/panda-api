@@ -3,7 +3,7 @@ package schema.mutation
 import java.util.UUID
 
 import models.{BaseModel, Member, Request}
-import models.inputs.CreateRequestInput
+import models.inputs.{CancelRequestInput, CreateRequestInput}
 import sangria.macros.derive.GraphQLField
 
 import scala.language.postfixOps
@@ -16,8 +16,8 @@ trait RequestMutation extends BaseModel {
   }
 
   @GraphQLField
-  def cancelRequest(id: UUID)(ctx: AppContext[Unit]): Option[Member] = authorizeOption(ctx) { implicit viewer =>
-    ctx.ctx.requestFacade.cancel(id)
+  def cancelRequest(input: CancelRequestInput)(ctx: AppContext[Unit]): Option[Member] = authorizeOption(ctx) { implicit viewer =>
+    ctx.ctx.requestFacade.cancel(input)
   }
 
 }

@@ -16,5 +16,7 @@ trait RolePersist {
 
   def insert(roleEntity: RoleEntity): Boolean
 
+  def update(roleEntity: RoleEntity): Boolean
+
 }
 

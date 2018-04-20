@@ -9,7 +9,7 @@ import definitions.exceptions.SpaceException.CannotCreateSpaceException
 import entities.RequestEntity
 import models.enums.RequestStatus
 import models.enums.RequestStatus.Pending
-import models.inputs.CreateRequestInput
+import models.inputs.{CancelRequestInput, CreateRequestInput}
 import models.{Member, Request, Review}
 import persists.{RequestPersist, ReviewPersist, SpacePersist}
 import utils.Guard
@@ -58,15 +58,15 @@ class RequestFacade(requestPersist: RequestPersist,
     }
   }
 
-  def cancel(id: UUID)
+  def cancel(input: CancelRequestInput)
             (implicit viewer: Member): Try[Member] = {
-    lazy val maybeRequestEntity = requestPersist.find(id)
+    lazy val maybeRequestEntity = requestPersist.find(input.requestId)
 
     validateWith(
       Guard(maybeRequestEntity.isEmpty, RequestNotFoundException),
       Guard(!isMemberOwnRequest(viewer, maybeRequestEntity.get), NoPermissionException)
     ) {
-      requestPersist.setStatus(id, RequestStatus.Cancelled.name) match {
+      requestPersist.setStatus(input.requestId, RequestStatus.Cancelled.name) match {
         case true => Success(viewer)
         case false => Failure(CannotCancelRequestException)
       }

@@ -35,6 +35,8 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val createRoleInput:                 InputType[CreateRoleInput]                  = deriveInputObjectType()
   implicit val createMaterialInput:             InputType[CreateMaterialInput]              = deriveInputObjectType()
   implicit val updateSpaceInput:                InputType[UpdateSpaceInput]                 = deriveInputObjectType()
+  implicit val updateRoleInput:                 InputType[UpdateRoleInput]                  = deriveInputObjectType()
+  implicit val cancelRequestInput:              InputType[CancelRequestInput]               = deriveInputObjectType()
   implicit val assignRoleInput:                 InputType[AssignRoleInput]                  = deriveInputObjectType()
   implicit val multiLanguageStringInput:        InputType[MultiLanguageStringInput]         = deriveInputObjectType()
 

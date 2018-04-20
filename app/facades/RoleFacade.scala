@@ -8,7 +8,7 @@ import definitions.exceptions.MemberException.MemberNotFoundException
 import definitions.exceptions.PermissionException.PermissionNotFoundException
 import definitions.exceptions.RoleException._
 import entities.{MemberRoleEntity, RoleEntity}
-import models.inputs.{AssignRoleInput, CreateRoleInput}
+import models.inputs.{AssignRoleInput, CreateRoleInput, UpdateRoleInput}
 import models.{Member, Permission, Role}
 import persists.{DepartmentPersist, MemberPersist, MemberRolePersist, RolePersist}
 import utils.Guard
@@ -57,8 +57,31 @@ class RoleFacade(auth: AuthorizationFacade,
     }
   }
 
-  def assignRole(input: AssignRoleInput)
-                (implicit viewer: Member): Try[Role] = {
+  def update(input: UpdateRoleInput)
+            (implicit viewer: Member): Try[Role] = {
+    lazy val accesses = auth.accesses(viewer.id, maybeRoleEntity.get.departmentId).get
+    lazy val maybeRoleEntity = rolePersist.find(input.roleId)
+    lazy val updatedRoleEntity = RoleEntity(
+      input.roleId,
+      input.name,
+      input.description,
+      input.permissions,
+      maybeRoleEntity.get.departmentId
+    )
+
+    validateWith(
+      Guard(maybeRoleEntity.isEmpty, RoleNotFoundException),
+      Guard(!auth.canAssignRole(accesses), NoPermissionException)
+    ) {
+      rolePersist.update(updatedRoleEntity) match {
+        case true => Success(updatedRoleEntity) map Role.of
+        case false => Failure(CannotUpdateRoleException)
+      }
+    }
+  }
+
+  def assign(input: AssignRoleInput)
+            (implicit viewer: Member): Try[Role] = {
     lazy val accesses = auth.accesses(viewer.id, maybeRoleEntity.get.departmentId).get
     lazy val maybeRoleEntity = rolePersist.find(input.roleId)
     lazy val memberRoleEntity = MemberRoleEntity(
@@ -69,7 +92,7 @@ class RoleFacade(auth: AuthorizationFacade,
     validateWith(
       Guard(maybeRoleEntity.isEmpty, RoleNotFoundException),
       Guard(memberPersist.find(input.memberId).isEmpty, MemberNotFoundException),
-      Guard(auth.canAssignRole(accesses), NoPermissionException),
+      Guard(!auth.canAssignRole(accesses), NoPermissionException),
       Guard(memberRolePersist.find(input.memberId, input.roleId).isDefined, RoleAlreadyAssignedToMemberException)
     ) {
       memberRolePersist.insert(memberRoleEntity) match {
