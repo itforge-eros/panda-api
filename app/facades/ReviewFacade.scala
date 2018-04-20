@@ -4,29 +4,39 @@ import java.time.Instant
 import java.util.UUID
 
 import definitions.exceptions.AppException._
+import definitions.exceptions.AuthorizationException.NoPermissionException
 import definitions.exceptions.RequestException.{RequestAlreadyClosedException, RequestNotFoundException}
 import definitions.exceptions.ReviewException.{CannotCreateReviewException, ReviewNotFoundException}
+import definitions.exceptions.SpaceException.SpaceNotFoundException
 import entities.{RequestEntity, ReservationEntity, ReviewEntity}
 import models.enums.RequestStatus.{Completed, Failed, Pending}
 import models.enums.ReviewEvent
 import models.inputs.CreateReviewInput
 import models.{Member, Review}
-import persists.{RequestPersist, ReservationPersist, ReviewPersist}
+import persists._
+import utils.Guard
 
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
 
-class ReviewFacade(reviewPersist: ReviewPersist,
+class ReviewFacade(auth: AuthorizationFacade,
+                   reviewPersist: ReviewPersist,
                    requestPersist: RequestPersist,
-                   reservationPersist: ReservationPersist) extends BaseFacade {
+                   reservationPersist: ReservationPersist,
+                   spacePersist: SpacePersist) extends BaseFacade {
 
   def find(id: UUID): Try[Review] = validateWith() {
     reviewPersist.find(id) toTry ReviewNotFoundException map Review.of
   }
 
   def create(input: CreateReviewInput)
-            (implicit viewer: Member): Try[Review] = validateWith() {
-    val reviewEntity = ReviewEntity(
+            (implicit viewer: Member): Try[Review] = {
+    lazy val accesses = auth.accesses(viewer.id, maybeSpace.get.departmentId)
+    lazy val maybeSpace = requestPersist.find(input.requestId)
+      .toTry(RequestNotFoundException)
+      .map(_.spaceId)
+      .flatMap(spacePersist.find(_).toTry(SpaceNotFoundException))
+    lazy val reviewEntity = ReviewEntity(
       UUID.randomUUID(),
       input.body,
       input.event.name,
@@ -35,10 +45,15 @@ class ReviewFacade(reviewPersist: ReviewPersist,
       viewer.id
     )
 
-    findRequest(input.requestId) flatMap { requestEntity =>
-      requestEntity.status == Pending.name match {
-        case true => createReview(reviewEntity) map Review.of
-        case false => Failure(RequestAlreadyClosedException)
+    validateWith(
+      Guard(maybeSpace.isFailure, maybeSpace.failed.get),
+      Guard(!auth.canCreateReview(accesses.get), NoPermissionException)
+    ) {
+      findRequest(input.requestId) flatMap { requestEntity =>
+        requestEntity.status == Pending.name match {
+          case true => createReview(reviewEntity) map Review.of
+          case false => Failure(RequestAlreadyClosedException)
+        }
       }
     }
   }
@@ -97,6 +112,6 @@ class ReviewFacade(reviewPersist: ReviewPersist,
     reservations map reservationPersist.insert forall (_ == true)
   }
 
-  private def requiredApproval: Int = 3
+  private def requiredApproval: Int = 2
 
 }

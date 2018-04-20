@@ -5,7 +5,7 @@ import java.util.UUID
 
 import definitions.exceptions.AuthorizationException.NoPermissionException
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
-import definitions.exceptions.SpaceException.{CannotCreateSpaceException, CannotUpdateSpaceException, SpaceNameAlreadyTaken, SpaceNotFoundException}
+import definitions.exceptions.SpaceException._
 import entities.SpaceEntity
 import models.inputs.{CreateSpaceInput, UpdateSpaceInput}
 import models.{Member, Request, Reservation, Space}
@@ -74,7 +74,7 @@ class SpaceFacade(auth: AuthorizationFacade,
 
   def update(input: UpdateSpaceInput)
             (implicit viewer: Member): Try[Space] = {
-    lazy val accesses = viewer.accesses(auth, maybeSpaceEntity.get.departmentId)
+    lazy val accesses = auth.accesses(viewer.id, maybeSpaceEntity.get.departmentId)
     lazy val maybeSpaceEntity = spacePersist.find(input.spaceId)
     lazy val updatedSpaceEntity = SpaceEntity(
       input.spaceId,
@@ -90,7 +90,7 @@ class SpaceFacade(auth: AuthorizationFacade,
 
     validateWith(
       Guard(maybeSpaceEntity.isEmpty, SpaceNotFoundException),
-      Guard(!auth.canUpdateSpace(accesses), NoPermissionException)
+      Guard(!auth.canUpdateSpace(accesses.get), NoPermissionException)
     ) {
       spacePersist.update(updatedSpaceEntity) match {
         case true => Success(updatedSpaceEntity) map Space.of

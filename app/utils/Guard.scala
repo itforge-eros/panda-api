@@ -1,12 +1,12 @@
 package utils
 
-class Guard(condition: => Boolean, exception: => Exception) {
+class Guard(condition: => Boolean, exception: => Throwable) {
   def isViolate: Boolean = condition
-  def getException: Exception = exception
+  def getException: Throwable = exception
 }
 
 object Guard {
-  def apply(condition: => Boolean, exception: => Exception): Guard =
+  def apply(condition: => Boolean, exception: => Throwable): Guard =
     new Guard(condition, exception)
   def failed(exception: => Exception): Guard =
     new Guard(true, exception)

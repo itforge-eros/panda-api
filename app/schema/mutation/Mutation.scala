@@ -6,3 +6,4 @@ class Mutation extends DepartmentMutation
   with ReviewMutation
   with RoleMutation
   with MaterialMutation
+  with ProblemMutation

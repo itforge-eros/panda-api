@@ -23,6 +23,7 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val roleType:                        Type[Role]                                  = deriveObjectType()
   implicit val permissionType:                  Type[Permission]                            = deriveObjectType()
   implicit val materialType:                    Type[Material]                              = deriveObjectType()
+  implicit val problemType:                     Type[Problem]                               = deriveObjectType()
   implicit val multiLanguageString:             Type[MultiLanguageString]                   = deriveObjectType()
 
   implicit val memberDepartmentConnection:      Type[MemberDepartmentConnection]            = deriveObjectType()
@@ -34,6 +35,7 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val createDepartmentInput:           InputType[CreateDepartmentInput]            = deriveInputObjectType()
   implicit val createRoleInput:                 InputType[CreateRoleInput]                  = deriveInputObjectType()
   implicit val createMaterialInput:             InputType[CreateMaterialInput]              = deriveInputObjectType()
+  implicit val createProblemInput:              InputType[CreateProblemInput]               = deriveInputObjectType()
   implicit val updateSpaceInput:                InputType[UpdateSpaceInput]                 = deriveInputObjectType()
   implicit val updateRoleInput:                 InputType[UpdateRoleInput]                  = deriveInputObjectType()
   implicit val cancelRequestInput:              InputType[CancelRequestInput]               = deriveInputObjectType()

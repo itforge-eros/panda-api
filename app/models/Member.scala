@@ -52,10 +52,6 @@ case class Member(id: UUID,
     Success(id == viewer.id)
   }
 
-  def accesses(authorizationFacade: AuthorizationFacade, departmentId: UUID): List[Access] = {
-    authorizationFacade.accesses(id, departmentId).get
-  }
-
 }
 
 object Member {

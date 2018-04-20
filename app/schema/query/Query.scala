@@ -10,3 +10,4 @@ class Query extends AuthenticationQuery
   with RoleQuery
   with PermissionQuery
   with MaterialQuery
+  with ProblemQuery
