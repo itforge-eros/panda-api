@@ -18,4 +18,6 @@ trait SpacePersist {
 
   def insert(space: SpaceEntity): Boolean
 
+  def update(space: SpaceEntity): Boolean
+
 }

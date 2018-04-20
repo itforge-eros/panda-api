@@ -1,4 +1,4 @@
-package persists
+package persists.postgres
 
 import java.sql.{PreparedStatement, Types}
 import java.util.UUID
@@ -6,10 +6,11 @@ import java.util.UUID
 import anorm.Macro.ColumnNaming
 import anorm._
 import entities.{MaterialEntity, MultiLanguageString}
-import io.circe.{Decoder, _}
 import io.circe.generic.semiauto._
 import io.circe.parser.decode
 import io.circe.syntax._
+import io.circe.{Decoder, _}
+import persists.MaterialPersist
 import play.api.db.Database
 import utils.postgres.PostgresUtil
 

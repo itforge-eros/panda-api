@@ -4,7 +4,7 @@ import java.time.Instant
 import java.util.UUID
 
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
-import definitions.exceptions.SpaceException.{CannotCreateSpaceException, SpaceNameAlreadyTaken, SpaceNotFoundException}
+import definitions.exceptions.SpaceException.{CannotCreateSpaceException, CannotUpdateSpaceException, SpaceNameAlreadyTaken, SpaceNotFoundException}
 import entities.SpaceEntity
 import models.inputs.{CreateSpaceInput, UpdateSpaceInput}
 import models.{Member, Request, Reservation, Space}
@@ -71,7 +71,7 @@ class SpaceFacade(spacePersist: SpacePersist,
   }
 
   def update(input: UpdateSpaceInput)
-            (implicit viewer: Member): Try[Member] = {
+            (implicit viewer: Member): Try[Space] = {
     lazy val maybeSpaceEntity = spacePersist.find(input.spaceId)
     lazy val updatedSpaceEntity = SpaceEntity(
       input.spaceId,
@@ -88,8 +88,10 @@ class SpaceFacade(spacePersist: SpacePersist,
     validateWith(
       Guard(maybeSpaceEntity.isEmpty, SpaceNotFoundException)
     ) {
-      // TODO: implement update space
-      ???
+      spacePersist.update(updatedSpaceEntity) match {
+        case true => Success(updatedSpaceEntity) map Space.of
+        case false => Failure(CannotUpdateSpaceException)
+      }
     }
   }
 

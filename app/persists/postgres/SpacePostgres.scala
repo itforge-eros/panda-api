@@ -7,10 +7,12 @@ import anorm._
 import entities.SpaceEntity
 import persists.SpacePersist
 import play.api.db.Database
+import utils.postgres.PostgresUtil
 
 import scala.language.postfixOps
 
-class SpacePostgres(db: Database) extends SpacePersist {
+class SpacePostgres(db: Database) extends SpacePersist
+  with PostgresUtil {
 
   override def find(id: UUID): Option[SpaceEntity] = db.withConnection { implicit connection =>
     SQL"SELECT * FROM space WHERE id = $id::uuid" as rowParser.singleOpt
@@ -64,7 +66,20 @@ class SpacePostgres(db: Database) extends SpacePersist {
            ${space.createdAt},
            ${space.departmentId}::uuid
          )
-       """ executeInsert rowParser.singleOpt isDefined
+       """ executeStatement()
+  }
+
+  override def update(space: SpaceEntity): Boolean = db.withConnection { implicit connection =>
+    SQL"""
+        UPDATE space SET
+          name = ${space.name},
+          full_name = ${space.fullName},
+          description = ${space.description},
+          category = ${space.category},
+          capacity = ${space.capacity},
+          is_available = ${space.isAvailable}
+        WHERE space.id = ${space.id}::uuid
+       """ executeStatement()
   }
 
 

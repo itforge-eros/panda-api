@@ -16,4 +16,8 @@ object SpaceException {
     extends Exception("Cannot create space.")
       with SafeException
 
+  object CannotUpdateSpaceException
+    extends Exception("Cannot update space.")
+      with SafeException
+
 }
