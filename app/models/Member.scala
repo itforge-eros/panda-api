@@ -43,8 +43,8 @@ case class Member(id: UUID,
   }
 
   @GraphQLField
-  def accesses(ctx: AppContext[Member])(departmentId: UUID): List[Access] = resolve {
-    ctx.ctx.authorizationFacade.accesses(id, departmentId)
+  def accesses(ctx: AppContext[Member])(department: String): Option[List[Access]] = resolveOption {
+    ctx.ctx.authorizationFacade.accesses(id, department)
   }
 
   @GraphQLField
