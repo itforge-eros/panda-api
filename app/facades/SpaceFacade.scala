@@ -8,8 +8,8 @@ import definitions.exceptions.DepartmentException.DepartmentNotFoundException
 import definitions.exceptions.SpaceException._
 import entities.SpaceEntity
 import models.inputs.{CreateSpaceInput, UpdateSpaceInput}
-import models.{Member, Request, Reservation, Space}
-import persists.{DepartmentPersist, RequestPersist, ReservationPersist, SpacePersist}
+import models._
+import persists._
 import utils.Guard
 
 import scala.language.postfixOps
@@ -19,7 +19,8 @@ class SpaceFacade(auth: AuthorizationFacade,
                   spacePersist: SpacePersist,
                   requestPersist: RequestPersist,
                   reservationPersist: ReservationPersist,
-                  departmentPersist: DepartmentPersist) extends BaseFacade {
+                  departmentPersist: DepartmentPersist,
+                  problemPersist: ProblemPersist) extends BaseFacade {
 
   def find(id: UUID): Try[Space] = validateWith() {
     spacePersist.find(id) toTry SpaceNotFoundException map Space.of
@@ -37,13 +38,21 @@ class SpaceFacade(auth: AuthorizationFacade,
     spacePersist.findAll map Space.of
   }
 
-  def requests(id: UUID)
-              (implicit viewer: Member): Try[List[Request]] = validate() {
-    requestPersist.findBySpaceId(id) map Request.of
+  def requests(space: Space)
+              (implicit viewer: Member): Try[List[Request]] = {
+    lazy val maybeDepartmentEntity = departmentPersist.find(space.departmentId)
+
+    validate() {
+      requestPersist.findBySpaceId(space.id) map Request.of
+    }
   }
 
-  def reservations(id: UUID): Try[List[Reservation]] = validate() {
-    reservationPersist.findBySpaceId(id) map Reservation.of
+  def reservations(space: Space): Try[List[Reservation]] = validate() {
+    reservationPersist.findBySpaceId(space.id) map Reservation.of
+  }
+
+  def problems(space: Space): Try[List[Problem]] = validate() {
+    problemPersist.findBySpaceId(space.id) map Problem.of
   }
 
   def create(input: CreateSpaceInput)

@@ -44,7 +44,7 @@ case class Member(id: UUID,
 
   @GraphQLField
   def accesses(ctx: AppContext[Member])(departmentId: UUID): List[Access] = resolve {
-    ctx.ctx.authorizationFacade.accesses(departmentId, id)
+    ctx.ctx.authorizationFacade.accesses(id, departmentId)
   }
 
   @GraphQLField

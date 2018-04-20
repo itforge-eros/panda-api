@@ -16,6 +16,10 @@ class ProblemPostgres(db: Database) extends ProblemPersist
     SQL"SELECT * FROM problem WHERE id = $id::uuid" as rowParser.singleOpt
   }
 
+  override def findBySpaceId(spaceId: UUID): List[ProblemEntity] = db.withConnection { implicit connection =>
+    SQL"SELECT * FROM problem WHERE space_id = $spaceId::uuid" as rowParser.*
+  }
+
   override def create(problem: ProblemEntity): Boolean = db.withConnection { implicit connection =>
     SQL"""
         INSERT INTO problem VALUES (
