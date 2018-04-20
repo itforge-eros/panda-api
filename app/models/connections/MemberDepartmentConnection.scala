@@ -18,4 +18,9 @@ case class MemberDepartmentConnection(@GraphQLExclude memberId: UUID) extends Ba
     ctx.ctx.memberFacade.departments(memberId)
   }
 
+  @GraphQLField
+  def totalCount(ctx: AppContext[MemberDepartmentConnection]) = {
+    nodes(ctx).length
+  }
+
 }
