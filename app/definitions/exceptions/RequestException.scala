@@ -22,5 +22,6 @@ object RequestException {
 
   class NegativePeriodException(range: Range)
     extends Exception(s"Invalid period. Period must be positive. Got [${range.start}, ${range.end}).")
+      with SafeException
 
 }
