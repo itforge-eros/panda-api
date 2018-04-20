@@ -10,4 +10,9 @@ trait DepartmentQuery extends BaseModel {
     ctx.ctx.departmentFacade.findByName(name)
   }
 
+  @GraphQLField
+  def departments(ctx: AppContext[Unit]): List[Department] = resolve {
+    ctx.ctx.departmentFacade.findAll
+  }
+
 }

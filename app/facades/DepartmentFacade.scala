@@ -22,6 +22,10 @@ class DepartmentFacade(departmentPersist: DepartmentPersist,
     departmentPersist.find(id) toTry DepartmentNotFoundException map Department.of
   }
 
+  def findAll: Try[List[Department]] = validate() {
+    departmentPersist.findAll map Department.of
+  }
+
   def findByName(name: String): Try[Department] = validateWith() {
     departmentPersist.findByName(name) toTry DepartmentNotFoundException map Department.of
   }

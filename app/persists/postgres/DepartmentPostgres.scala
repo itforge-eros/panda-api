@@ -16,6 +16,10 @@ class DepartmentPostgres(db: Database) extends DepartmentPersist
     SQL"SELECT * FROM department WHERE id = $id::uuid" as rowParser.singleOpt
   }
 
+  override def findAll: List[DepartmentEntity] = db.withConnection { implicit connection =>
+    SQL"SELECT * FROM department" as rowParser.*
+  }
+
   override def findByName(name: String): Option[DepartmentEntity] = db.withConnection { implicit connection =>
     SQL"SELECT * FROM department WHERE name ILIKE $name" as rowParser.singleOpt
   }

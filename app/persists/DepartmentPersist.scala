@@ -8,6 +8,8 @@ trait DepartmentPersist {
 
   def find(id: UUID): Option[DepartmentEntity]
 
+  def findAll: List[DepartmentEntity]
+
   def findByName(name: String): Option[DepartmentEntity]
 
   def findByMemberId(id: UUID): List[DepartmentEntity]
