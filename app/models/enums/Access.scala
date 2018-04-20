@@ -2,23 +2,42 @@ package models.enums
 
 import sangria.macros.derive.GraphQLName
 
-sealed trait Access
+sealed trait Access {
+
+  val name: String
+
+}
 
 object Access {
 
-  @GraphQLName("SPACE_READ_ACCESS")
-  case object SpaceReadAccess extends Access
+  @GraphQLName(SpaceReadAccess.name)
+  case object SpaceReadAccess extends Access {
+    override val name = "SPACE_READ_ACCESS"
+  }
 
-  @GraphQLName("SPACE_CREATE_ACCESS")
-  case object SpaceCreateAccess extends Access
+  @GraphQLName(SpaceCreateAccess.name)
+  case object SpaceCreateAccess extends Access {
+    override val name = "SPACE_CREATE_ACCESS"
+  }
 
-  @GraphQLName("REQUEST_READ_ACCESS")
-  case object RequestReadAccess extends Access
+  @GraphQLName(SpaceUpdateAccess.name)
+  case object SpaceUpdateAccess extends Access {
+    override val name = "SPACE_UPDATE_ACCESS"
+  }
 
-  @GraphQLName("REQUEST_CREATE_ACCESS")
-  case object RequestCreateAccess extends Access
+  @GraphQLName(RequestReadAccess.name)
+  case object RequestReadAccess extends Access {
+    override val name = "REQUEST_READ_ACCESS"
+  }
 
-  @GraphQLName("REQUEST_REVIEW_ACCESS")
-  case object RequestReviewAccess extends Access
+  @GraphQLName(RequestCreateAccess.name)
+  case object RequestCreateAccess extends Access {
+    override val name = "REQUEST_CREATE_ACCESS"
+  }
+
+  @GraphQLName(ReviewCreateAccess.name)
+  case object ReviewCreateAccess extends Access {
+    override val name = "REVIEW_CREATE_ACCESS"
+  }
 
 }

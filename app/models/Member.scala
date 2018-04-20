@@ -5,8 +5,10 @@ import java.util.UUID
 import entities.MemberEntity
 import henkan.convert.Syntax._
 import models.connections.MemberDepartmentConnection
-import models.edges.MemberDepartmentEdge
+import models.enums.Access
 import sangria.macros.derive._
+
+import scala.util.Success
 
 case class Member(id: UUID,
                   username: String,
@@ -37,6 +39,16 @@ case class Member(id: UUID,
   @GraphQLField
   def departments(ctx: AppContext[Member]): MemberDepartmentConnection = {
     MemberDepartmentConnection(id)
+  }
+
+  @GraphQLField
+  def accesses(ctx: AppContext[Member])(departmentId: UUID): List[Access] = resolve {
+    ctx.ctx.roleFacade.getAccesses(departmentId, id)
+  }
+
+  @GraphQLField
+  def isMe(ctx: AppContext[Member])(departmentId: UUID): Boolean = authorize(ctx) { implicit viewer =>
+    Success(id == viewer.id)
   }
 
 }
