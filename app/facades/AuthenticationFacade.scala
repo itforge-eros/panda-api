@@ -4,14 +4,13 @@ import java.time.Instant
 import java.util.UUID
 
 import definitions.AppSecurity
-import definitions.exceptions.AppException._
 import definitions.exceptions.AuthorizationException.WrongUsernameOrPasswordException
 import definitions.exceptions.InternalException.UnspecifiedSecretKeyException
 import definitions.exceptions.MemberException.MemberNotFoundException
 import entities.{ExistingMemberEntity, MemberEntity}
-import models.{Member, MemberWithToken}
+import models.{Identity, Member, MemberWithToken}
 import pdi.jwt.{JwtCirce, JwtClaim}
-import persists.MemberPersist
+import persists.{AuthenticationPersist, MemberPersist}
 import play.api.Configuration
 import services.AuthenticationService
 
@@ -19,12 +18,19 @@ import scala.util.Try
 
 class AuthenticationFacade(memberPersist: MemberPersist,
                            authenticationService: AuthenticationService,
+                           authenticationPersist: AuthenticationPersist,
                            configuration: Configuration) extends BaseFacade {
 
   def findById(id: UUID): Try[Member] = validateWith() {
     memberPersist.find(id)
       .toTry(MemberNotFoundException)
       .map(Member.of)
+  }
+
+  def getIdentity(member: Member): Identity = {
+    val relations = authenticationPersist.findByMemberId(member.id)
+
+    new Identity(member, relations)
   }
 
 

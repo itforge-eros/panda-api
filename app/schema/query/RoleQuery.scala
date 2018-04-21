@@ -8,7 +8,7 @@ import sangria.macros.derive.GraphQLField
 trait RoleQuery extends BaseModel {
 
   @GraphQLField
-  def role(id: UUID)(ctx: AppContext[Unit]): Option[Role] = authorizeOption(ctx) { implicit viewer =>
+  def role(id: UUID)(ctx: AppContext[Unit]): Option[Role] = authorizeOption(ctx) { implicit identity =>
     ctx.ctx.roleFacade.find(id)
   }
 

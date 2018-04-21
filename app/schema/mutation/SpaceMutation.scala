@@ -7,12 +7,12 @@ import sangria.macros.derive.GraphQLField
 trait SpaceMutation extends BaseModel {
 
   @GraphQLField
-  def createSpace(input: CreateSpaceInput)(ctx: AppContext[Unit]): Option[Space] = authorizeOption(ctx) { implicit viewer =>
+  def createSpace(input: CreateSpaceInput)(ctx: AppContext[Unit]): Option[Space] = authorizeOption(ctx) { implicit identity =>
     ctx.ctx.spaceFacade.create(input)
   }
 
   @GraphQLField
-  def updateSpace(input: UpdateSpaceInput)(ctx: AppContext[Unit]): Option[Space] = authorizeOption(ctx) { implicit viewer =>
+  def updateSpace(input: UpdateSpaceInput)(ctx: AppContext[Unit]): Option[Space] = authorizeOption(ctx) { implicit identity =>
     ctx.ctx.spaceFacade.update(input)
   }
 

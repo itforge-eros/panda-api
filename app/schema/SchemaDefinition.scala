@@ -24,7 +24,7 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val permissionType:                  Type[Permission]                            = deriveObjectType()
   implicit val materialType:                    Type[Material]                              = deriveObjectType()
   implicit val problemType:                     Type[Problem]                               = deriveObjectType()
-  implicit val multiLanguageString:             Type[MultiLanguageString]                   = deriveObjectType()
+  implicit val multiLanguageStringType:         Type[MultiLanguageString]                   = deriveObjectType()
 
   implicit val memberDepartmentConnection:      Type[MemberDepartmentConnection]            = deriveObjectType()
   implicit val memberDepartmentEdge:            Type[MemberDepartmentEdge]                  = deriveObjectType()

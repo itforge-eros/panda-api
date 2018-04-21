@@ -77,6 +77,7 @@ abstract class BaseSpec extends AsyncWordSpec
 
   private lazy val appSecretKey = context.initialConfiguration.get[String]("play.http.secret.key")
 
-  implicit protected val headers: List[(String, String)] = List(("Authorization", s"Bearer $token"))
+//  implicit protected val headers: List[(String, String)] = List(("Authorization", s"Bearer $token"))
+  implicit protected val headers: List[(String, String)] = Nil
 
 }

@@ -9,7 +9,7 @@ import definitions.exceptions.ProblemException.{CannotCreateProblemException, Pr
 import definitions.exceptions.SpaceException.SpaceNotFoundException
 import entities.ProblemEntity
 import models.inputs.CreateProblemInput
-import models.{Member, Problem}
+import models.{Identity, Member, Problem}
 import persists.{ProblemPersist, SpacePersist}
 import utils.Guard
 
@@ -20,8 +20,8 @@ class ProblemFacade(auth: AuthorizationFacade,
                     problemPersist: ProblemPersist) extends BaseFacade {
 
   def find(id: UUID)
-          (implicit viewer: Member): Try[Problem] = {
-    lazy val accesses = auth.accesses(viewer.id, maybeSpaceEntity.get.departmentId)
+          (implicit identity: Identity): Try[Problem] = {
+    lazy val accesses = auth.accesses(identity.viewer.id, maybeSpaceEntity.get.departmentId)
     lazy val maybeProblemEntity = problemPersist.find(id)
     lazy val maybeSpaceEntity = maybeProblemEntity
       .map(_.spaceId)

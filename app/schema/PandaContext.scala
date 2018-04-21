@@ -1,15 +1,13 @@
 package schema
 
 import facades._
-import models.Member
-import persists._
+import models.Identity
 import schema.mutation.Mutation
 import schema.query.Query
-import services.AuthenticationService
 
 case class PandaContext(query: Query,
                         mutation: Mutation,
-                        member: Option[Member],
+                        identity: Option[Identity],
                         authenticationFacade: AuthenticationFacade,
                         authorizationFacade: AuthorizationFacade,
                         spaceFacade: SpaceFacade,

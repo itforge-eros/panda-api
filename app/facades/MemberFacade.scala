@@ -26,16 +26,18 @@ class MemberFacade(memberPersist: MemberPersist,
     memberPersist.findByUsername(username) toTry MemberNotFoundException map Member.of
   }
 
-  def requests(id: UUID)(implicit viewer: Member): Try[List[Request]] = validate(
-    Guard(viewer.id != id, NoPermissionException)
+  def requests(id: UUID)
+              (implicit identity: Identity): Try[List[Request]] = validate(
+    Guard(identity.viewer.id != id, NoPermissionException)
   ) {
-    requestPersist.findByClientId(viewer.id) map Request.of
+    requestPersist.findByClientId(identity.viewer.id) map Request.of
   }
 
-  def reviews(id: UUID)(implicit viewer: Member): Try[List[Review]] = validate(
-    Guard(viewer.id != id, NoPermissionException)
+  def reviews(id: UUID)
+             (implicit identity: Identity): Try[List[Review]] = validate(
+    Guard(identity.viewer.id != id, NoPermissionException)
   ) {
-    reviewPersist.findByReviewerId(viewer.id) map Review.of
+    reviewPersist.findByReviewerId(identity.viewer.id) map Review.of
   }
 
   def reservations(id: UUID): Try[List[Reservation]] = validate() {

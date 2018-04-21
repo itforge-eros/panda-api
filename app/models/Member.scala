@@ -18,12 +18,12 @@ case class Member(id: UUID,
                   email: String) extends BaseModel {
 
   @GraphQLField
-  def requests(ctx: AppContext[Member]): List[Request] = authorize(ctx) { implicit viewer =>
+  def requests(ctx: AppContext[Member]): List[Request] = authorize(ctx) { implicit identity =>
     ctx.ctx.memberFacade.requests(id)
   }
 
   @GraphQLField
-  def reviews(ctx: AppContext[Member]): List[Review] = authorize(ctx) { implicit viewer =>
+  def reviews(ctx: AppContext[Member]): List[Review] = authorize(ctx) { implicit identity =>
     ctx.ctx.memberFacade.reviews(id)
   }
 
@@ -39,7 +39,7 @@ case class Member(id: UUID,
 
   @GraphQLField
   def departments(ctx: AppContext[Member]): MemberDepartmentConnection = {
-    MemberDepartmentConnection(id)
+    MemberDepartmentConnection(ctx.ctx.authenticationFacade.getIdentity(this))
   }
 
   @GraphQLField
@@ -48,8 +48,8 @@ case class Member(id: UUID,
   }
 
   @GraphQLField
-  def isMe(ctx: AppContext[Member]): Boolean = authorize(ctx) { implicit viewer =>
-    Success(id == viewer.id)
+  def isMe(ctx: AppContext[Member]): Boolean = authorize(ctx) { implicit identity =>
+    Success(id == identity.viewer.id)
   }
 
 }

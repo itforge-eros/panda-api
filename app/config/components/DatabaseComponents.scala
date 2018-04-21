@@ -22,6 +22,7 @@ trait DatabaseComponents extends DBComponents
   lazy val memberRolePersist: MemberRolePersist = wire[MemberRolePostgres]
   lazy val materialPersist: MaterialPersist = wire[MaterialPostgres]
   lazy val problemPersist: ProblemPersist = wire[ProblemPostgres]
+  lazy val authenticationPersist: AuthenticationPersist = wire[AuthenticationPostgres]
 
   applicationEvolutions
 

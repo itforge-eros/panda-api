@@ -4,7 +4,7 @@ import com.softwaremill.macwire.wire
 import config.components.{GraphqlComponents, ServiceComponents}
 import controllers.{AssetsComponents, GraphqlController}
 import facades._
-import models.Member
+import models.{Identity, Member}
 import play.api.ApplicationLoader.Context
 import play.api.i18n.I18nComponents
 import play.api.routing.Router
@@ -21,7 +21,7 @@ class MockPandaComponents(context: Context) extends BuiltInComponentsFromContext
   with NoHttpFiltersComponents {
 
   lazy val routePrefix: String = "/"
-  lazy val pandaContext: Option[Member] => PandaContext = (_: Option[Member]) => wire[PandaContext]
+  lazy val pandaContext: Option[Identity] => PandaContext = (_: Option[Identity]) => wire[PandaContext]
 
   lazy val authenticationFacade: AuthenticationFacade = wire[AuthenticationFacade]
   lazy val authorizationFacade: AuthorizationFacade = wire[AuthorizationFacade]

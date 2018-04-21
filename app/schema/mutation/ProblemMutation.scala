@@ -7,7 +7,7 @@ import sangria.macros.derive.GraphQLField
 trait ProblemMutation extends BaseModel {
 
   @GraphQLField
-  def createProblem(input: CreateProblemInput)(ctx: AppContext[Unit]): Option[Problem] = authorizeOption(ctx) { implicit viewer =>
+  def createProblem(input: CreateProblemInput)(ctx: AppContext[Unit]): Option[Problem] = authorizeOption(ctx) { implicit identity =>
     ctx.ctx.problemFacade.create(input)
   }
 

@@ -9,7 +9,7 @@ import definitions.exceptions.PermissionException.PermissionNotFoundException
 import definitions.exceptions.RoleException._
 import entities.{MemberRoleEntity, RoleEntity}
 import models.inputs.{AssignRoleInput, CreateRoleInput, UpdateRoleInput}
-import models.{Member, Permission, Role}
+import models.{Identity, Member, Permission, Role}
 import persists.{DepartmentPersist, MemberPersist, MemberRolePersist, RolePersist}
 import utils.Guard
 
@@ -34,7 +34,7 @@ class RoleFacade(auth: AuthorizationFacade,
   }
 
   def create(input: CreateRoleInput)
-            (implicit viewer: Member): Try[Role] = {
+            (implicit identity: Identity): Try[Role] = {
     lazy val maybeDepartmentEntity = departmentPersist.find(input.departmentId)
     lazy val undefinedPermission = input.permissions.find(Permission(_).isEmpty)
     lazy val roleEntity = RoleEntity(
@@ -58,8 +58,8 @@ class RoleFacade(auth: AuthorizationFacade,
   }
 
   def update(input: UpdateRoleInput)
-            (implicit viewer: Member): Try[Role] = {
-    lazy val accesses = auth.accesses(viewer.id, maybeRoleEntity.get.departmentId).get
+            (implicit identity: Identity): Try[Role] = {
+    lazy val accesses = auth.accesses(identity.viewer.id, maybeRoleEntity.get.departmentId).get
     lazy val maybeRoleEntity = rolePersist.find(input.roleId)
     lazy val updatedRoleEntity = RoleEntity(
       input.roleId,
@@ -81,8 +81,8 @@ class RoleFacade(auth: AuthorizationFacade,
   }
 
   def assign(input: AssignRoleInput)
-            (implicit viewer: Member): Try[Role] = {
-    lazy val accesses = auth.accesses(viewer.id, maybeRoleEntity.get.departmentId).get
+            (implicit identity: Identity): Try[Role] = {
+    lazy val accesses = auth.accesses(identity.viewer.id, maybeRoleEntity.get.departmentId).get
     lazy val maybeRoleEntity = rolePersist.find(input.roleId)
     lazy val memberRoleEntity = MemberRoleEntity(
       input.memberId,

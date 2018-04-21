@@ -2,9 +2,11 @@ package spec.configs
 
 import java.util.UUID
 
+import com.softwaremill.macwire.wire
 import entities.{MemberEntity, SpaceEntity}
 import org.scalamock.scalatest.MockFactory
 import persists._
+import persists.postgres.AuthenticationPostgres
 import spec.data.{MemberData, SpaceData}
 
 trait MockDatabaseComponents extends MockFactory {
@@ -34,5 +36,6 @@ trait MockDatabaseComponents extends MockFactory {
   lazy val memberRolePersist: MemberRolePersist = mock[MemberRolePersist]
   lazy val materialPersist: MaterialPersist = mock[MaterialPersist]
   lazy val problemPersist: ProblemPersist = mock[ProblemPersist]
+  lazy val authenticationPersist: AuthenticationPersist = mock[AuthenticationPersist]
 
 }

@@ -7,7 +7,7 @@ import sangria.macros.derive.GraphQLField
 trait ReviewMutation extends BaseModel {
 
   @GraphQLField
-  def createReview(input: CreateReviewInput)(ctx: AppContext[Unit]): Option[Review] = authorizeOption(ctx) { implicit viewer =>
+  def createReview(input: CreateReviewInput)(ctx: AppContext[Unit]): Option[Review] = authorizeOption(ctx) { implicit identity =>
     ctx.ctx.reviewFacade.create(input)
   }
 

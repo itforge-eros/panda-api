@@ -1,27 +1,25 @@
 package models.edges
 
-import java.util.UUID
-
+import models._
 import models.enums.Access
-import models.{BaseModel, Department, Permission, Role}
 import sangria.macros.derive.{GraphQLExclude, GraphQLField}
 
-case class MemberDepartmentEdge(@GraphQLExclude memberId: UUID,
+case class MemberDepartmentEdge(@GraphQLExclude identity: Identity,
                                 node: Department) extends BaseModel {
 
   @GraphQLField
-  def roles(ctx: AppContext[MemberDepartmentEdge]): List[Role] = resolve {
-    ctx.ctx.authorizationFacade.roles(memberId, node.id)
+  def roles(ctx: AppContext[MemberDepartmentEdge]): List[Role] = {
+    identity.department(node.id).get.roles
   }
 
   @GraphQLField
-  def permissions(ctx: AppContext[MemberDepartmentEdge]): List[Permission] = resolve {
-    ctx.ctx.authorizationFacade.permissions(memberId, node.id)
+  def permissions(ctx: AppContext[MemberDepartmentEdge]): List[Permission] = {
+    identity.department(node.id).get.permissions
   }
 
   @GraphQLField
-  def accesses(ctx: AppContext[MemberDepartmentEdge]): List[Access] = resolve {
-    ctx.ctx.authorizationFacade.accesses(memberId, node.id)
+  def accesses(ctx: AppContext[MemberDepartmentEdge]): List[Access] = {
+    identity.department(node.id).get.accesses
   }
 
 }

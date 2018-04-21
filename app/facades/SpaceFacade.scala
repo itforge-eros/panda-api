@@ -39,7 +39,7 @@ class SpaceFacade(auth: AuthorizationFacade,
   }
 
   def requests(space: Space)
-              (implicit viewer: Member): Try[List[Request]] = {
+              (implicit identity: Identity): Try[List[Request]] = {
     lazy val maybeDepartmentEntity = departmentPersist.find(space.departmentId)
 
     validate() {
@@ -56,7 +56,7 @@ class SpaceFacade(auth: AuthorizationFacade,
   }
 
   def create(input: CreateSpaceInput)
-            (implicit viewer: Member): Try[Space] = {
+            (implicit identity: Identity): Try[Space] = {
     lazy val maybeDepartmentEntity = departmentPersist.find(input.departmentId)
     lazy val spaceEntity = SpaceEntity(
       UUID.randomUUID(),
@@ -82,8 +82,8 @@ class SpaceFacade(auth: AuthorizationFacade,
   }
 
   def update(input: UpdateSpaceInput)
-            (implicit viewer: Member): Try[Space] = {
-    lazy val accesses = auth.accesses(viewer.id, maybeSpaceEntity.get.departmentId)
+            (implicit identity: Identity): Try[Space] = {
+    lazy val accesses = auth.accesses(identity.viewer.id, maybeSpaceEntity.get.departmentId)
     lazy val maybeSpaceEntity = spacePersist.find(input.spaceId)
     lazy val updatedSpaceEntity = SpaceEntity(
       input.spaceId,

@@ -43,7 +43,7 @@ class DepartmentFacade(departmentPersist: DepartmentPersist,
   }
 
   def create(input: CreateDepartmentInput)
-            (implicit viewer: Member): Try[Department] = validateWith(
+            (implicit identity: Identity): Try[Department] = validateWith(
     Guard(departmentPersist.findByName(input.name).isDefined, DepartmentNameAlreadyTaken)
   ) {
     val departmentId = UUID.randomUUID()
@@ -63,7 +63,7 @@ class DepartmentFacade(departmentPersist: DepartmentPersist,
       departmentId
     )
     lazy val ownerMemberRoleEntity = MemberRoleEntity(
-      viewer.id,
+      identity.viewer.id,
       roleId
     )
 

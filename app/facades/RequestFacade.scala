@@ -10,7 +10,7 @@ import entities.RequestEntity
 import models.enums.RequestStatus
 import models.enums.RequestStatus.Pending
 import models.inputs.{CancelRequestInput, CreateRequestInput}
-import models.{Member, Request, Review}
+import models.{Identity, Member, Request, Review}
 import persists.{RequestPersist, ReviewPersist, SpacePersist}
 import utils.Guard
 import validators.RequestValidator.positiveRequestPeriod
@@ -24,20 +24,20 @@ class RequestFacade(requestPersist: RequestPersist,
                     spacePersist: SpacePersist) extends BaseFacade {
 
   def find(id: UUID)
-          (implicit viewer: Member): Try[Request] = validateWith() {
+          (implicit identity: Identity): Try[Request] = validateWith() {
     requestPersist.find(id)
       .toTry(RequestNotFoundException)
-      .filterElse(isMemberOwnRequest(viewer, _))(NoPermissionException)
+      .filterElse(isMemberOwnRequest(identity.viewer, _))(NoPermissionException)
       .map(Request.of)
   }
 
   def reviews(id: UUID)
-             (implicit viewer: Member): Try[List[Review]] = validate() {
+             (implicit identity: Identity): Try[List[Review]] = validate() {
     reviewPersist.findByRequestId(id) map Review.of
   }
 
   def create(input: CreateRequestInput)
-            (implicit viewer: Member): Try[Request] = validateWith(
+            (implicit identity: Identity): Try[Request] = validateWith(
     spaceExist(spacePersist.find(input.spaceId)),
     positiveRequestPeriod(input.period.toRange)
   ) {
@@ -49,7 +49,7 @@ class RequestFacade(requestPersist: RequestPersist,
       Pending.name,
       Instant.now(),
       input.spaceId,
-      viewer.id
+      identity.viewer.id
     )
 
     requestPersist.insert(requestEntity) match {
@@ -59,15 +59,15 @@ class RequestFacade(requestPersist: RequestPersist,
   }
 
   def cancel(input: CancelRequestInput)
-            (implicit viewer: Member): Try[Member] = {
+            (implicit identity: Identity): Try[Member] = {
     lazy val maybeRequestEntity = requestPersist.find(input.requestId)
 
     validateWith(
       Guard(maybeRequestEntity.isEmpty, RequestNotFoundException),
-      Guard(!isMemberOwnRequest(viewer, maybeRequestEntity.get), NoPermissionException)
+      Guard(!isMemberOwnRequest(identity.viewer, maybeRequestEntity.get), NoPermissionException)
     ) {
       requestPersist.setStatus(input.requestId, RequestStatus.Cancelled.name) match {
-        case true => Success(viewer)
+        case true => Success(identity.viewer)
         case false => Failure(CannotCancelRequestException)
       }
     }

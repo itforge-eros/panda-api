@@ -3,7 +3,7 @@ package config.components
 import com.softwaremill.macwire.wire
 import controllers.{AssetsComponents, GraphqlController}
 import facades._
-import models.Member
+import models.{Identity, Member}
 import play.api.ApplicationLoader.Context
 import play.api.{BuiltInComponentsFromContext, LoggerConfigurator, NoHttpFiltersComponents}
 import play.api.i18n.I18nComponents
@@ -22,7 +22,7 @@ class PandaComponents(context: Context) extends BuiltInComponentsFromContext(con
   with CORSComponents {
 
   lazy val routePrefix: String = "/"
-  lazy val pandaContext: Option[Member] => PandaContext = (_: Option[Member]) => wire[PandaContext]
+  lazy val pandaContext: Option[Identity] => PandaContext = (_: Option[Identity]) => wire[PandaContext]
 
   lazy val authenticationFacade: AuthenticationFacade = wire[AuthenticationFacade]
   lazy val authorizationFacade: AuthorizationFacade = wire[AuthorizationFacade]

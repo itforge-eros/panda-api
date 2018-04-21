@@ -4,7 +4,7 @@ import definitions.exceptions.AuthorizationException.{JwtDecodingException, Malf
 import definitions.exceptions.HttpException.UnexpectedError
 import definitions.{AppSecurity, Handlers}
 import facades.AuthenticationFacade
-import models.Member
+import models.{Identity, Member}
 import pdi.jwt.{JwtCirce, JwtClaim}
 import play.api.libs.circe.Circe
 import play.api.mvc._
@@ -23,7 +23,7 @@ trait CustomAction extends TryResults
     override protected def executionContext: ExecutionContext = ec
     override def invokeBlock[A](request: Request[A], block: GraphqlRequest[A] => Future[Result]): Future[Result] = {
       findMember(request) flatMapFuture { member =>
-        block(GraphqlRequest(request, member))
+        block(GraphqlRequest(request, member map authenticationFacade.getIdentity))
       } recoverWith Handlers.graphqlAction
     }
   }
@@ -48,7 +48,7 @@ trait CustomAction extends TryResults
   }
 
   private def authorize(claim: JwtClaim): Option[Member] = {
-    claim.subject
+      claim.subject
       .flatMap(maybeUuid)
       .flatMap(authenticationFacade.findById(_).toOption)
   }
@@ -69,7 +69,7 @@ trait CustomAction extends TryResults
 
 
   case class GraphqlRequest[A](request: Request[A],
-                               viewer: Option[Member]) extends WrappedRequest[A](request)
+                               identity: Option[Identity]) extends WrappedRequest[A](request)
 
   protected val authenticationFacade: AuthenticationFacade
 

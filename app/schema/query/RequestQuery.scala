@@ -10,7 +10,7 @@ import scala.util.Try
 trait RequestQuery extends BaseModel {
 
   @GraphQLField
-  def request(id: UUID)(ctx: AppContext[Unit]): Option[Request] = authorizeOption(ctx) { implicit viewer =>
+  def request(id: UUID)(ctx: AppContext[Unit]): Option[Request] = authorizeOption(ctx) { implicit identity =>
     ctx.ctx.requestFacade.find(id)
   }
 

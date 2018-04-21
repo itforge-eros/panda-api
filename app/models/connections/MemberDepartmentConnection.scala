@@ -1,21 +1,19 @@
 package models.connections
 
-import java.util.UUID
-
-import models.{BaseModel, Department}
 import models.edges.MemberDepartmentEdge
+import models.{BaseModel, Department, Identity}
 import sangria.macros.derive.{GraphQLExclude, GraphQLField}
 
-case class MemberDepartmentConnection(@GraphQLExclude memberId: UUID) extends BaseModel {
+case class MemberDepartmentConnection(@GraphQLExclude identity: Identity) extends BaseModel {
 
   @GraphQLField
   def edges(ctx: AppContext[MemberDepartmentConnection]): List[MemberDepartmentEdge] = {
-    nodes(ctx) map (MemberDepartmentEdge(memberId, _))
+    nodes(ctx) map (MemberDepartmentEdge(identity, _))
   }
 
   @GraphQLField
-  def nodes(ctx: AppContext[MemberDepartmentConnection]): List[Department] = resolve {
-    ctx.ctx.memberFacade.departments(memberId)
+  def nodes(ctx: AppContext[MemberDepartmentConnection]): List[Department] = {
+    identity.departments
   }
 
   @GraphQLField
