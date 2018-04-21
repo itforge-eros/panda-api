@@ -4,8 +4,8 @@ import java.util.UUID
 
 import anorm.SqlParser._
 import anorm._
-import entities.{DepartmentEntity, MemberEntity, RoleEntity}
-import persists.{AuthenticationPersist, MemberDepartmentRelationEntity}
+import entities.{DepartmentEntity, MemberDepartmentRelationEntity, MemberEntity, RoleEntity}
+import persists.AuthenticationPersist
 import play.api.db.Database
 
 class AuthenticationPostgres(db: Database) extends AuthenticationPersist {
