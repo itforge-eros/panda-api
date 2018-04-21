@@ -12,4 +12,6 @@ trait MaterialPersist {
 
   def create(materialEntity: MaterialEntity): Boolean
 
+  def delete(id: UUID): Boolean
+
 }

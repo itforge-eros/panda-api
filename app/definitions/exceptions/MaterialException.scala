@@ -12,4 +12,8 @@ object MaterialException {
     extends Exception("Cannot create material.")
       with SafeException
 
+  object CannotDeleteMaterialException
+    extends Exception("Cannot delete material.")
+      with SafeException
+
 }

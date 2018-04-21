@@ -65,4 +65,9 @@ object Access {
     override val name = "MATERIAL_CREATE_ACCESS"
   }
 
+  @GraphQLName(MaterialDeleteAccess.name)
+  case object MaterialDeleteAccess extends Access {
+    override val name = "MATERIAL_DELETE_ACCESS"
+  }
+
 }

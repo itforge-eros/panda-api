@@ -21,17 +21,23 @@ class MaterialPostgres(db: Database) extends MaterialPersist
     SQL"SELECT * FROM material WHERE id = $id::uuid" as rowParser.singleOpt
   }
 
-  override def findByDepartmentId(departmentId: UUID) = db.withConnection { implicit connection =>
+  override def findByDepartmentId(departmentId: UUID): List[MaterialEntity] = db.withConnection { implicit connection =>
     SQL"SELECT * FROM material WHERE department_id=$departmentId::uuid" as rowParser.*
   }
 
-  override def create(entity: MaterialEntity) = db.withConnection { implicit connection =>
+  override def create(entity: MaterialEntity): Boolean = db.withConnection { implicit connection =>
     SQL"""
         INSERT INTO material VALUES (
           ${entity.id}::uuid,
           ${entity.name},
           ${entity.departmentId}::uuid
         )
+       """ executeStatement()
+  }
+
+  override def delete(id: UUID): Boolean = db.withConnection { implicit connection =>
+    SQL"""
+        DELETE FROM material WHERE id = $id::uuid
        """ executeStatement()
   }
 

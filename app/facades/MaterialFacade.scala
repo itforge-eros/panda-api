@@ -4,11 +4,11 @@ import java.util.UUID
 
 import definitions.exceptions.AuthorizationException.NoPermissionException
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
-import definitions.exceptions.MaterialException.{CannotCreateMaterialException, MaterialNotFoundException}
+import definitions.exceptions.MaterialException.{CannotCreateMaterialException, CannotDeleteMaterialException, MaterialNotFoundException}
 import entities.{MaterialEntity, MultiLanguageString}
-import models.enums.Access.MaterialCreateAccess
-import models.inputs.CreateMaterialInput
-import models.{Identity, Material}
+import models.enums.Access.{MaterialCreateAccess, MaterialDeleteAccess}
+import models.inputs.{CreateMaterialInput, DeleteMaterialInput}
+import models.{Department, Identity, Material}
 import persists.{DepartmentPersist, MaterialPersist}
 import utils.Guard
 
@@ -38,6 +38,23 @@ class MaterialFacade(auth: AuthorizationFacade,
       materialPersist.create(materialEntity) match {
         case true => Success(materialEntity) map Material.of
         case false => Failure(CannotCreateMaterialException)
+      }
+    }
+  }
+
+  def delete(input: DeleteMaterialInput)
+            (implicit identity: Identity): Try[Department] = {
+    lazy val resource = identity.department(maybeMaterial.get.departmentId).get
+    lazy val maybeMaterial = materialPersist.find(input.materialId)
+    lazy val department = departmentPersist.find(maybeMaterial.get.departmentId).get
+
+    validateWith(
+      Guard(maybeMaterial.isEmpty, MaterialNotFoundException),
+      Guard(!auth.hasAccess(MaterialDeleteAccess)(resource.accesses), NoPermissionException)
+    ) {
+      materialPersist.delete(input.materialId) match {
+        case true => Success(department) map Department.of
+        case false => Failure(CannotDeleteMaterialException)
       }
     }
   }
