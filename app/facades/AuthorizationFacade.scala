@@ -5,7 +5,7 @@ import java.util.UUID
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
 import models.{Permission, Role}
 import models.enums.Access
-import models.enums.Access.{ProblemReadAccess, ReviewCreateAccess, RoleAssignAccess, SpaceUpdateAccess}
+import models.enums.Access._
 import persists.{DepartmentPersist, RolePersist}
 
 import scala.util.Try
@@ -13,10 +13,7 @@ import scala.util.Try
 class AuthorizationFacade(rolePersist: RolePersist,
                           departmentPersist: DepartmentPersist) extends BaseFacade {
 
-  val canUpdateSpace: List[Access] => Boolean = getAccessValidator(SpaceUpdateAccess)
-  val canAssignRole: List[Access] => Boolean = getAccessValidator(RoleAssignAccess)
-  val canCreateReview: List[Access] => Boolean = getAccessValidator(ReviewCreateAccess)
-  val canReadProblem: List[Access] => Boolean = getAccessValidator(ProblemReadAccess)
+  def hasAccess(access: Access)(accesses: List[Access]): Boolean = getAccessValidator(access)(accesses)
 
   def roles(memberId: UUID, departmentId: UUID): Try[List[Role]] = validate() {
     val departmentRoles = rolePersist.findByDepartmentId(departmentId)

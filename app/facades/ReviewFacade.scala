@@ -3,16 +3,16 @@ package facades
 import java.time.Instant
 import java.util.UUID
 
-import definitions.exceptions.AppException._
 import definitions.exceptions.AuthorizationException.NoPermissionException
 import definitions.exceptions.RequestException.{RequestAlreadyClosedException, RequestNotFoundException}
 import definitions.exceptions.ReviewException.{CannotCreateReviewException, ReviewNotFoundException}
 import definitions.exceptions.SpaceException.SpaceNotFoundException
 import entities.{RequestEntity, ReservationEntity, ReviewEntity}
+import models.enums.Access.ReviewCreateAccess
 import models.enums.RequestStatus.{Completed, Failed, Pending}
 import models.enums.ReviewEvent
 import models.inputs.CreateReviewInput
-import models.{Identity, Member, Review}
+import models.{Identity, Review}
 import persists._
 import utils.Guard
 
@@ -31,7 +31,7 @@ class ReviewFacade(auth: AuthorizationFacade,
 
   def create(input: CreateReviewInput)
             (implicit identity: Identity): Try[Review] = {
-    lazy val accesses = auth.accesses(identity.viewer.id, maybeSpace.get.departmentId)
+    lazy val resource = identity.department(maybeSpace.get.departmentId).get
     lazy val maybeSpace = requestPersist.find(input.requestId)
       .toTry(RequestNotFoundException)
       .map(_.spaceId)
@@ -47,7 +47,7 @@ class ReviewFacade(auth: AuthorizationFacade,
 
     validateWith(
       Guard(maybeSpace.isFailure, maybeSpace.failed.get),
-      Guard(!auth.canCreateReview(accesses.get), NoPermissionException)
+      Guard(!auth.hasAccess(ReviewCreateAccess)(resource.accesses), NoPermissionException)
     ) {
       findRequest(input.requestId) flatMap { requestEntity =>
         requestEntity.status == Pending.name match {

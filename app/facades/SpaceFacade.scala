@@ -9,6 +9,7 @@ import definitions.exceptions.SpaceException._
 import entities.SpaceEntity
 import models.inputs.{CreateSpaceInput, UpdateSpaceInput}
 import models._
+import models.enums.Access.{RoleUpdateAccess, SpaceUpdateAccess}
 import persists._
 import utils.Guard
 
@@ -83,7 +84,7 @@ class SpaceFacade(auth: AuthorizationFacade,
 
   def update(input: UpdateSpaceInput)
             (implicit identity: Identity): Try[Space] = {
-    lazy val accesses = auth.accesses(identity.viewer.id, maybeSpaceEntity.get.departmentId)
+    lazy val resource = identity.department(maybeSpaceEntity.get.departmentId).get
     lazy val maybeSpaceEntity = spacePersist.find(input.spaceId)
     lazy val updatedSpaceEntity = SpaceEntity(
       input.spaceId,
@@ -99,7 +100,7 @@ class SpaceFacade(auth: AuthorizationFacade,
 
     validateWith(
       Guard(maybeSpaceEntity.isEmpty, SpaceNotFoundException),
-      Guard(!auth.canUpdateSpace(accesses.get), NoPermissionException)
+      Guard(!auth.hasAccess(SpaceUpdateAccess)(resource.accesses), NoPermissionException)
     ) {
       spacePersist.update(updatedSpaceEntity) match {
         case true => Success(updatedSpaceEntity) map Space.of

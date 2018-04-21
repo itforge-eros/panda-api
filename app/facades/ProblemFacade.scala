@@ -8,6 +8,7 @@ import definitions.exceptions.HttpException.UnexpectedError
 import definitions.exceptions.ProblemException.{CannotCreateProblemException, ProblemNotFoundException}
 import definitions.exceptions.SpaceException.SpaceNotFoundException
 import entities.ProblemEntity
+import models.enums.Access.ProblemReadAccess
 import models.inputs.CreateProblemInput
 import models.{Identity, Member, Problem}
 import persists.{ProblemPersist, SpacePersist}
@@ -21,7 +22,7 @@ class ProblemFacade(auth: AuthorizationFacade,
 
   def find(id: UUID)
           (implicit identity: Identity): Try[Problem] = {
-    lazy val accesses = auth.accesses(identity.viewer.id, maybeSpaceEntity.get.departmentId)
+    lazy val resource = identity.department(maybeSpaceEntity.get.departmentId).get
     lazy val maybeProblemEntity = problemPersist.find(id)
     lazy val maybeSpaceEntity = maybeProblemEntity
       .map(_.spaceId)
@@ -31,7 +32,7 @@ class ProblemFacade(auth: AuthorizationFacade,
     validate(
       Guard(maybeProblemEntity.isEmpty, ProblemNotFoundException),
       Guard(maybeSpaceEntity.isFailure, new UnexpectedError(maybeSpaceEntity.failed.get)),
-      Guard(!auth.canReadProblem(accesses.get), NoPermissionException)
+      Guard(!auth.hasAccess(ProblemReadAccess)(resource.accesses), NoPermissionException)
     ) {
       problemPersist.find(id) map Problem.of get
     }

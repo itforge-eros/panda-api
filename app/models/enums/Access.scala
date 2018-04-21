@@ -40,6 +40,16 @@ object Access {
     override val name = "REVIEW_CREATE_ACCESS"
   }
 
+  @GraphQLName(RoleCreateAccess.name)
+  case object RoleCreateAccess extends Access {
+    override val name = "ROLE_CREATE_ACCESS"
+  }
+
+  @GraphQLName(RoleUpdateAccess.name)
+  case object RoleUpdateAccess extends Access {
+    override val name = "ROLE_UPDATE_ACCESS"
+  }
+
   @GraphQLName(RoleAssignAccess.name)
   case object RoleAssignAccess extends Access {
     override val name = "ROLE_ASSIGN_ACCESS"
@@ -48,6 +58,11 @@ object Access {
   @GraphQLName(ProblemReadAccess.name)
   case object ProblemReadAccess extends Access {
     override val name = "PROBLEM_READ_ACCESS"
+  }
+
+  @GraphQLName(MaterialCreateAccess.name)
+  case object MaterialCreateAccess extends Access {
+    override val name = "MATERIAL_CREATE_ACCESS"
   }
 
 }

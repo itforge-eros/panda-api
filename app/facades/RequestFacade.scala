@@ -4,8 +4,8 @@ import java.time.Instant
 import java.util.UUID
 
 import definitions.exceptions.AuthorizationException.NoPermissionException
-import definitions.exceptions.RequestException.{CannotCancelRequestException, CannotCreateRequestException, RequestNotFoundException}
-import definitions.exceptions.SpaceException.CannotCreateSpaceException
+import definitions.exceptions.RequestException.{CannotCancelRequestException, RequestNotFoundException}
+import definitions.exceptions.SpaceException.{CannotCreateSpaceException, SpaceNotFoundException}
 import entities.RequestEntity
 import models.enums.RequestStatus
 import models.enums.RequestStatus.Pending
@@ -14,7 +14,6 @@ import models.{Identity, Member, Request, Review}
 import persists.{RequestPersist, ReviewPersist, SpacePersist}
 import utils.Guard
 import validators.RequestValidator.positiveRequestPeriod
-import validators.SpaceValidator.spaceExist
 
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
@@ -38,7 +37,7 @@ class RequestFacade(requestPersist: RequestPersist,
 
   def create(input: CreateRequestInput)
             (implicit identity: Identity): Try[Request] = validateWith(
-    spaceExist(spacePersist.find(input.spaceId)),
+    Guard(spacePersist.find(input.spaceId).isEmpty, SpaceNotFoundException),
     positiveRequestPeriod(input.period.toRange)
   ) {
     lazy val requestEntity = RequestEntity(

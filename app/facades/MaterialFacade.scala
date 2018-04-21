@@ -2,28 +2,39 @@ package facades
 
 import java.util.UUID
 
+import definitions.exceptions.AuthorizationException.NoPermissionException
+import definitions.exceptions.DepartmentException.DepartmentNotFoundException
 import definitions.exceptions.MaterialException.{CannotCreateMaterialException, MaterialNotFoundException}
 import entities.{MaterialEntity, MultiLanguageString}
-import models.Material
+import models.enums.Access.MaterialCreateAccess
 import models.inputs.CreateMaterialInput
-import persists.MaterialPersist
+import models.{Identity, Material}
+import persists.{DepartmentPersist, MaterialPersist}
+import utils.Guard
 
 import scala.util.{Failure, Success, Try}
 
-class MaterialFacade(materialPersist: MaterialPersist) extends BaseFacade {
+class MaterialFacade(auth: AuthorizationFacade,
+                     materialPersist: MaterialPersist,
+                     departmentPersist: DepartmentPersist) extends BaseFacade {
 
   def find(id: UUID): Try[Material] = validateWith() {
     materialPersist.find(id) toTry MaterialNotFoundException map Material.of
   }
 
-  def create(input: CreateMaterialInput): Try[Material] = {
+  def create(input: CreateMaterialInput)
+            (implicit identity: Identity): Try[Material] = {
+    lazy val resource = identity.department(input.departmentId).get
     lazy val materialEntity = MaterialEntity(
       UUID.randomUUID(),
       MultiLanguageString.of(input.name),
       input.departmentId
     )
 
-    validateWith() {
+    validateWith(
+      Guard(departmentPersist.find(input.departmentId).isEmpty, DepartmentNotFoundException),
+      Guard(!auth.hasAccess(MaterialCreateAccess)(resource.accesses), NoPermissionException)
+    ) {
       materialPersist.create(materialEntity) match {
         case true => Success(materialEntity) map Material.of
         case false => Failure(CannotCreateMaterialException)
