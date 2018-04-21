@@ -28,7 +28,11 @@ object Permission {
       RequestCreateAccess,
       ReviewCreateAccess,
       RoleAssignAccess,
-      ProblemReadAccess
+      RoleUpdateAccess,
+      RoleAssignAccess,
+      ProblemReadAccess,
+      MaterialCreateAccess,
+      MaterialDeleteAccess
     ))
 
   object SpaceFullAccessPermission
