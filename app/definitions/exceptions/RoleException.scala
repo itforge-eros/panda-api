@@ -28,8 +28,16 @@ object RoleException {
     extends Exception("Cannot assign role to member.")
       with SafeException
 
+  object CannotRevokeRoleException
+    extends Exception("Cannot revoke role from member exception")
+      with SafeException
+
   object RoleAlreadyAssignedToMemberException
     extends Exception("Role already assigned to member.")
+      with SafeException
+
+  object CannotRevokeUnassignedMemberFromRoleException
+    extends Exception("Cannot revoke unassigned member from role.")
       with SafeException
 
 }

@@ -10,4 +10,6 @@ trait MemberRolePersist {
 
   def insert(memberRoleEntity: MemberRoleEntity): Boolean
 
+  def delete(memberId: UUID, roleId: UUID): Boolean
+
 }

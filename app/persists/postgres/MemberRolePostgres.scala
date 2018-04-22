@@ -29,6 +29,12 @@ class MemberRolePostgres(db: Database) extends MemberRolePersist
        """ executeStatement()
   }
 
+  override def delete(memberId: UUID, roleId: UUID): Boolean = db.withConnection { implicit connection =>
+    SQL"""
+        DELETE FROM member_role WHERE member_id = $memberId::uuid AND role_id = $roleId::uuid
+       """ executeStatement()
+  }
+
 
   private lazy val rowParser =
     Macro.namedParser[MemberRoleEntity](ColumnNaming.SnakeCase)

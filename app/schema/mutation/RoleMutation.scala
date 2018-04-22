@@ -1,7 +1,7 @@
 package schema.mutation
 
 import models.{BaseModel, Department, Role}
-import models.inputs.{AssignRoleInput, CreateRoleInput, DeleteRoleInput, UpdateRoleInput}
+import models.inputs._
 import sangria.macros.derive.GraphQLField
 
 trait RoleMutation extends BaseModel {
@@ -24,6 +24,11 @@ trait RoleMutation extends BaseModel {
   @GraphQLField
   def assignRole(input: AssignRoleInput)(ctx: AppContext[Unit]): Option[Role] = authorizeOption(ctx) { implicit identity =>
     ctx.ctx.roleFacade.assign(input)
+  }
+
+  @GraphQLField
+  def revokeRole(input: RevokeRoleInput)(ctx: AppContext[Unit]): Option[Role] = authorizeOption(ctx) { implicit identity =>
+    ctx.ctx.roleFacade.revoke(input)
   }
 
 }

@@ -9,7 +9,7 @@ import definitions.exceptions.PermissionException.PermissionNotFoundException
 import definitions.exceptions.RoleException._
 import entities.{MemberRoleEntity, RoleEntity}
 import models.enums.Access.{RoleAssignAccess, RoleCreateAccess, RoleDeleteAccess, RoleUpdateAccess}
-import models.inputs.{AssignRoleInput, CreateRoleInput, DeleteRoleInput, UpdateRoleInput}
+import models.inputs._
 import models._
 import persists.{DepartmentPersist, MemberPersist, MemberRolePersist, RolePersist}
 import utils.Guard
@@ -118,6 +118,22 @@ class RoleFacade(auth: AuthorizationFacade,
       Guard(memberRolePersist.find(input.memberId, input.roleId).isDefined, RoleAlreadyAssignedToMemberException)
     ) {
       memberRolePersist.insert(memberRoleEntity) match {
+        case true => Success(maybeRoleEntity.get) map Role.of
+        case false => Failure(CannotAssignRoleException)
+      }
+    }
+  }
+
+  def revoke(input: RevokeRoleInput)(implicit identity: Identity): Try[Role] = {
+    lazy val resource = identity.department(maybeRoleEntity.get.departmentId).get
+    lazy val maybeRoleEntity = rolePersist.find(input.roleId)
+    lazy val maybeMemberRoleEntity = memberRolePersist.find(input.memberId, input.roleId)
+
+    validateWith(
+      Guard(maybeRoleEntity.isEmpty, RoleNotFoundException),
+      Guard(maybeMemberRoleEntity.isEmpty, CannotRevokeUnassignedMemberFromRoleException)
+    ) {
+      memberRolePersist.delete(input.memberId, input.roleId) match {
         case true => Success(maybeRoleEntity.get) map Role.of
         case false => Failure(CannotAssignRoleException)
       }
