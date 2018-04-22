@@ -27,7 +27,7 @@ object Permission {
       RequestReadAccess,
       RequestCreateAccess,
       ReviewCreateAccess,
-      RoleAssignAccess,
+      RoleCreateAccess,
       RoleUpdateAccess,
       RoleAssignAccess,
       ProblemReadAccess,
