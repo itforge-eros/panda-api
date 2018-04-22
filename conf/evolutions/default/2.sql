@@ -8,11 +8,11 @@ CREATE TABLE space (
   name                  varchar(64) NOT NULL,
   full_name             varchar(64) NOT NULL,
   description           text,
-  category              VARCHAR(64) NOT NULL DEFAULT 'CLASSROOM',
+  category              VARCHAR(64) NOT NULL,
   capacity              positive_int,
   is_available          boolean NOT NULL,
   created_at            timestamp NOT NULL,
-  department_id         uuid NOT NULL references department (id) ON DELETE CASCADE 
+  department_id         uuid NOT NULL references department (id) ON DELETE CASCADE
 );
 
 CREATE UNIQUE INDEX unique_space_name

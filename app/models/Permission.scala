@@ -12,9 +12,12 @@ object Permission {
   val values: List[Permission] = List(
     AdminAccessPermission,
     SpaceFullAccessPermission,
-    SpaceReadOnlyAccessPermission,
-    RequestCreateAccessPermission,
-    RequestApprovalAccessPermission
+    SpaceReadOnlyPermission,
+    RequestCreatePermission,
+    ReviewCreatePermission,
+    RoleFullAccessPermission,
+    MaterialFullAccessPermission,
+    ProblemReadPermission
   )
 
   def apply(s: String): Option[Permission] = values.find(s equalsIgnoreCase _.name)
@@ -29,6 +32,7 @@ object Permission {
       ReviewCreateAccess,
       RoleCreateAccess,
       RoleUpdateAccess,
+      RoleDeleteAccess,
       RoleAssignAccess,
       ProblemReadAccess,
       MaterialCreateAccess,
@@ -37,26 +41,47 @@ object Permission {
 
   object SpaceFullAccessPermission
     extends Permission("SPACE_FULL_ACCESS_PERMISSION", "Provides full access to spaces", List(
+      SpaceReadAccess,
       SpaceCreateAccess,
-      SpaceUpdateAccess,
-      SpaceReadAccess
+      SpaceUpdateAccess
     ))
 
-  object SpaceReadOnlyAccessPermission
+  object SpaceReadOnlyPermission
     extends Permission("SPACE_READ_ONLY_PERMISSION", "Provides read only access to spaces", List(
       SpaceReadAccess
     ))
 
-  object RequestCreateAccessPermission
+  object RequestCreatePermission
     extends Permission("REQUEST_CREATE_PERMISSION", "Provides request creation access", List(
-      RequestCreateAccess,
-      RequestReadAccess,
-      SpaceReadAccess
+      SpaceReadAccess,
+      RequestCreateAccess
     ))
 
-  object RequestApprovalAccessPermission
+  object ReviewCreatePermission
     extends Permission("REVIEW_CREATE_PERMISSION", "Provides review creation access", List(
+      SpaceReadAccess,
+      RequestReadAccess,
       ReviewCreateAccess
+    ))
+
+  object RoleFullAccessPermission
+    extends Permission("ROLE_FULL_ACCESS_PERMISSION", "Provides full access to roles", List(
+      RoleCreateAccess,
+      RoleUpdateAccess,
+      RoleDeleteAccess,
+      RoleAssignAccess
+    ))
+
+  object MaterialFullAccessPermission
+    extends Permission("MATERIAL_FULL_ACCESS_PERMISSION", "Provides full access to materials", List(
+      MaterialCreateAccess,
+      MaterialDeleteAccess
+    ))
+
+  object ProblemReadPermission
+    extends Permission("PROBLEM_READ_PERMISSION", "Provides read access to materials", List(
+      SpaceReadAccess,
+      ProblemReadAccess
     ))
 
 }

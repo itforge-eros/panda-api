@@ -71,6 +71,10 @@ class RolePostgres(db: Database) extends RolePersist
        """ executeStatement()
   }
 
+  override def delete(id: UUID): Boolean = db.withConnection { implicit connection =>
+    SQL"DELETE FROM role WHERE id = $id::uuid" executeStatement()
+  }
+
 
   private lazy val rowParser =
     Macro.namedParser[RoleEntity](ColumnNaming.SnakeCase)

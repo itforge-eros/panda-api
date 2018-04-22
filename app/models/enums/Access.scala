@@ -50,6 +50,11 @@ object Access {
     override val name = "ROLE_UPDATE_ACCESS"
   }
 
+  @GraphQLName(RoleDeleteAccess.name)
+  case object RoleDeleteAccess extends Access {
+    override val name = "ROLE_DELETE_ACCESS"
+  }
+
   @GraphQLName(RoleAssignAccess.name)
   case object RoleAssignAccess extends Access {
     override val name = "ROLE_ASSIGN_ACCESS"

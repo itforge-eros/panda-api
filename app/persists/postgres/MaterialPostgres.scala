@@ -36,9 +36,7 @@ class MaterialPostgres(db: Database) extends MaterialPersist
   }
 
   override def delete(id: UUID): Boolean = db.withConnection { implicit connection =>
-    SQL"""
-        DELETE FROM material WHERE id = $id::uuid
-       """ executeStatement()
+    SQL"DELETE FROM material WHERE id = $id::uuid"executeStatement()
   }
 
 

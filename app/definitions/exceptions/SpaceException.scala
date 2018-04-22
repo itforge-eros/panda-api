@@ -24,4 +24,12 @@ object SpaceException {
     extends Exception("Space category not found.")
       with SafeException
 
+  object InvalidSpaceNameException
+    extends Exception("Invalid space name. Only [A-Z], [a-z], [0-9], '-', '_' and '.' allowed and has at least 1 character.")
+      with SafeException
+
+  object InvalidSpaceFullNameException
+    extends Exception("Invalid space full name. Must has at least 1 character.")
+      with SafeException
+
 }

@@ -8,9 +8,9 @@ import definitions.exceptions.MemberException.MemberNotFoundException
 import definitions.exceptions.PermissionException.PermissionNotFoundException
 import definitions.exceptions.RoleException._
 import entities.{MemberRoleEntity, RoleEntity}
-import models.enums.Access.{RoleAssignAccess, RoleCreateAccess, RoleUpdateAccess}
-import models.inputs.{AssignRoleInput, CreateRoleInput, UpdateRoleInput}
-import models.{Identity, Member, Permission, Role}
+import models.enums.Access.{RoleAssignAccess, RoleCreateAccess, RoleDeleteAccess, RoleUpdateAccess}
+import models.inputs.{AssignRoleInput, CreateRoleInput, DeleteRoleInput, UpdateRoleInput}
+import models._
 import persists.{DepartmentPersist, MemberPersist, MemberRolePersist, RolePersist}
 import utils.Guard
 
@@ -64,6 +64,7 @@ class RoleFacade(auth: AuthorizationFacade,
             (implicit identity: Identity): Try[Role] = {
     lazy val resource = identity.department(maybeRoleEntity.get.departmentId).get
     lazy val maybeRoleEntity = rolePersist.find(input.roleId)
+    lazy val undefinedPermission = input.permissions.find(Permission(_).isEmpty)
     lazy val updatedRoleEntity = RoleEntity(
       input.roleId,
       input.name,
@@ -73,12 +74,30 @@ class RoleFacade(auth: AuthorizationFacade,
     )
 
     validateWith(
+      Guard(undefinedPermission.isDefined, new PermissionNotFoundException(undefinedPermission.get)),
       Guard(maybeRoleEntity.isEmpty, RoleNotFoundException),
       Guard(!auth.hasAccess(RoleUpdateAccess)(resource.accesses), NoPermissionException)
     ) {
       rolePersist.update(updatedRoleEntity) match {
         case true => Success(updatedRoleEntity) map Role.of
         case false => Failure(CannotUpdateRoleException)
+      }
+    }
+  }
+
+  def delete(input: DeleteRoleInput)
+            (implicit identity: Identity): Try[Department] = {
+    lazy val resource = identity.department(maybeRoleEntity.get.departmentId).get
+    lazy val maybeRoleEntity = rolePersist.find(input.roleId)
+    lazy val departmentEntity = departmentPersist.find(maybeRoleEntity.get.departmentId).get
+
+    validateWith(
+      Guard(maybeRoleEntity.isEmpty, RoleNotFoundException),
+      Guard(!auth.hasAccess(RoleDeleteAccess)(resource.accesses), NoPermissionException)
+    ) {
+      rolePersist.delete(input.roleId) match {
+        case true => Success(departmentEntity) map Department.of
+        case false => Failure(CannotDeleteRoleException)
       }
     }
   }

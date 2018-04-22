@@ -3,7 +3,7 @@ package facades
 import java.util.UUID
 
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
-import models.{Permission, Role}
+import models.{Identity, Permission, Role}
 import models.enums.Access
 import models.enums.Access._
 import persists.{DepartmentPersist, RolePersist}

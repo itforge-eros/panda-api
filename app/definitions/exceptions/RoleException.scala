@@ -20,6 +20,10 @@ object RoleException {
     extends Exception("Cannot update role.")
       with SafeException
 
+  object CannotDeleteRoleException
+    extends Exception("Cannot delete role.")
+      with SafeException
+
   object CannotAssignRoleException
     extends Exception("Cannot assign role to member.")
       with SafeException

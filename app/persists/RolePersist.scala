@@ -18,5 +18,7 @@ trait RolePersist {
 
   def update(roleEntity: RoleEntity): Boolean
 
+  def delete(id: UUID): Boolean
+
 }
 

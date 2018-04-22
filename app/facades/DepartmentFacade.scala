@@ -2,7 +2,7 @@ package facades
 
 import java.util.UUID
 
-import definitions.exceptions.DepartmentException.{CannotCreateDepartmentException, DepartmentNameAlreadyTaken, DepartmentNotFoundException}
+import definitions.exceptions.DepartmentException._
 import entities.{DepartmentEntity, MemberRoleEntity, RoleEntity}
 import models.Permission.AdminAccessPermission
 import models.inputs.CreateDepartmentInput
@@ -44,6 +44,9 @@ class DepartmentFacade(departmentPersist: DepartmentPersist,
 
   def create(input: CreateDepartmentInput)
             (implicit identity: Identity): Try[Department] = validateWith(
+    Guard(!isDepartmentNameValid(input.name), InvalidDepartmentNameException),
+    Guard(input.fullEnglishName.isEmpty, InvalidDepartmentFullNameException),
+    Guard(input.fullThaiName.isEmpty, InvalidDepartmentFullNameException),
     Guard(departmentPersist.findByName(input.name).isDefined, DepartmentNameAlreadyTaken)
   ) {
     val departmentId = UUID.randomUUID()
@@ -73,6 +76,11 @@ class DepartmentFacade(departmentPersist: DepartmentPersist,
       case true => Success(departmentEntity) map Department.of
       case false => Failure(CannotCreateDepartmentException)
     }
+  }
+
+
+  private def isDepartmentNameValid(name: String): Boolean = {
+    raw"^[a-zA-Z0-9._-]+$$".r.findFirstIn(name).isDefined
   }
 
 }
