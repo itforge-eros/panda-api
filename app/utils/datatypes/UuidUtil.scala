@@ -30,12 +30,14 @@ object UuidUtil {
     val buffer = ByteBuffer.wrap(new Array[Byte](16))
     buffer.putLong(uuid.getMostSignificantBits)
     buffer.putLong(uuid.getLeastSignificantBits)
+
     new String(base62.encode(buffer.array()))
 }
 
   def uuidFromBase62(str: String): UUID = {
     val bytes = BigInt(base62.decode(str.getBytes())).toByteArray
     val buffer = ByteBuffer.wrap(bytes)
+
     try new UUID(buffer.getLong, buffer.getLong) catch {
       case _: BufferUnderflowException => throw new IllegalArgumentException()
     }

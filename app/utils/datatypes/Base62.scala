@@ -10,7 +10,7 @@ class Base62(alphabet: Array[Byte]) {
   }
 
   def decode(encoded: Array[Byte]): Array[Byte] = {
-    val prepared = translate(encoded, lookup)
+    val prepared = translate(encoded, lookupTable)
     convert(prepared, Base62.TARGET_BASE, Base62.STANDARD_BASE)
   }
 
@@ -19,41 +19,28 @@ class Base62(alphabet: Array[Byte]) {
   }
 
   private def convert(message: Array[Byte], sourceBase: Int, targetBase: Int) = {
-
     val estimatedLength = estimateOutputLength(message.length, sourceBase, targetBase)
     val out = new ByteArrayOutputStream(estimatedLength)
     var source = message
-    while ( {
-      source.length > 0
-    }) {
+    while (source.length > 0) {
       val quotient = new ByteArrayOutputStream(source.length)
       var remainder = 0
       var i = 0
-      while ( {
-        i < source.length
-      }) {
+      while (i < source.length) {
         val accumulator = (source(i) & 0xFF) + remainder * sourceBase
         val digit = (accumulator - (accumulator % targetBase)) / targetBase
         remainder = accumulator % targetBase
         if (quotient.size > 0 || digit > 0) quotient.write(digit)
-
-        {
-          i += 1; i - 1
-        }
+        i += 1; i - 1
       }
       out.write(remainder)
       source = quotient.toByteArray
     }
 
     var i = 0
-    while ( {
-      i < message.length - 1 && message(i) == 0
-    }) {
+    while (i < message.length - 1 && message(i) == 0) {
       out.write(0)
-
-      {
-        i += 1; i - 1
-      }
+      i += 1; i - 1
     }
     out.toByteArray.reverse
   }
@@ -61,10 +48,15 @@ class Base62(alphabet: Array[Byte]) {
   private def estimateOutputLength(inputLength: Int, sourceBase: Int, targetBase: Int) = Math.ceil((Math.log(sourceBase) / Math.log(targetBase)) * inputLength).toInt
 
   private def createLookupTable: Array[Byte] = {
-    alphabet.indices map (_ & 0xFF) map (_.toByte) toArray
+    val lookup = new Array[Byte](256)
+    alphabet.indices foreach { i =>
+      lookup(alphabet(i)) = (i & 0xFF).toByte
+    }
+
+    lookup
   }
 
-  private val lookup = createLookupTable
+  private val lookupTable = createLookupTable
 
 }
 
