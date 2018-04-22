@@ -31,7 +31,7 @@ class Base62(alphabet: Array[Byte]) {
         val digit = (accumulator - (accumulator % targetBase)) / targetBase
         remainder = accumulator % targetBase
         if (quotient.size > 0 || digit > 0) quotient.write(digit)
-        i += 1; i - 1
+        i += 1
       }
       out.write(remainder)
       source = quotient.toByteArray
@@ -40,8 +40,9 @@ class Base62(alphabet: Array[Byte]) {
     var i = 0
     while (i < message.length - 1 && message(i) == 0) {
       out.write(0)
-      i += 1; i - 1
+      i += 1
     }
+
     out.toByteArray.reverse
   }
 

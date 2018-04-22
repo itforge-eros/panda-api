@@ -10,6 +10,7 @@ import entities.SpaceEntity
 import models.inputs.{CreateSpaceInput, UpdateSpaceInput}
 import models._
 import models.enums.Access.{RoleUpdateAccess, SpaceUpdateAccess}
+import models.enums.SpaceCategory
 import persists._
 import utils.Guard
 
@@ -72,6 +73,7 @@ class SpaceFacade(auth: AuthorizationFacade,
     )
 
     validateWith(
+      Guard(SpaceCategory.apply(input.category.name).isEmpty, SpaceCategoryNotFoundException),
       Guard(maybeDepartmentEntity.isEmpty, DepartmentNotFoundException),
       Guard(spacePersist.findByName(maybeDepartmentEntity.get.name, input.name).isDefined, SpaceNameAlreadyTaken)
     ) {

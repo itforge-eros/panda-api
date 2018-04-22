@@ -12,7 +12,7 @@ CREATE TABLE space (
   capacity              positive_int,
   is_available          boolean NOT NULL,
   created_at            timestamp NOT NULL,
-  department_id         uuid NOT NULL references department (id)
+  department_id         uuid NOT NULL references department (id) ON DELETE CASCADE 
 );
 
 CREATE UNIQUE INDEX unique_space_name

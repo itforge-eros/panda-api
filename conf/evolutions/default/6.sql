@@ -7,8 +7,8 @@ CREATE TABLE reservation (
   date                  date NOT NULL,
   period                int4range NOT NULL,
   is_attended           boolean NOT NULL,
-  space_id              uuid NOT NULL REFERENCES space (id),
-  client_id             uuid NOT NULL REFERENCES member (id),
+  space_id              uuid NOT NULL REFERENCES space (id) ON DELETE SET NULL,
+  client_id             uuid NOT NULL REFERENCES member (id) ON DELETE RESTRICT,
 
   EXCLUDE USING gist (space_id WITH =, date WITH =, period WITH &&)
 );

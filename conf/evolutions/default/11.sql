@@ -5,7 +5,7 @@ CREATE TABLE problem (
   title                 varchar(64) NOT NULL,
   body                  text NOT NULL,
   is_read               boolean NOT NULL,
-  space_id              uuid NOT NULL REFERENCES space (id)
+  space_id              uuid NOT NULL REFERENCES space (id) ON DELETE CASCADE
 );
 
 # --- !Downs

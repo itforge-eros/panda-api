@@ -7,8 +7,8 @@ CREATE TABLE review (
   body                  text,
   event                 review_event NOT NULL,
   created_at            timestamp NOT NULL,
-  request_id            uuid NOT NULL REFERENCES request (id),
-  reviewer_id           uuid NOT NULL REFERENCES member (id)
+  request_id            uuid NOT NULL REFERENCES request (id) ON DELETE RESTRICT,
+  reviewer_id           uuid NOT NULL REFERENCES member (id) ON DELETE RESTRICT
 );
 
 # --- !Downs

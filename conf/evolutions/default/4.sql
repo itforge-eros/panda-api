@@ -9,8 +9,8 @@ CREATE TABLE request (
   period                int4range NOT NULL,
   status                request_status NOT NULL,
   created_at            timestamp NOT NULL,
-  space_id              uuid NOT NULL REFERENCES space (id),
-  client_id             uuid NOT NULL REFERENCES member (id)
+  space_id              uuid NOT NULL REFERENCES space (id) ON DELETE SET NULL,
+  client_id             uuid NOT NULL REFERENCES member (id) ON DELETE RESTRICT
 );
 
 # --- !Downs
