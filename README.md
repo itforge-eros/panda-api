@@ -9,12 +9,12 @@ We are happy to let you become part of the project.
 
 ## Prerequisite
 
-1. Install [sbt](https://www.scala-sbt.org/index.html)
+1. Install [sbt](https://www.scala-sbt.org)
 ```bash
 $ brew install sbt
 ```
 
-2. Install PostgreSQL
+2. Install [PostgreSQL](https://www.postgresql.org)
 ```bash
 $ brew install postgresql
 ```
@@ -26,12 +26,14 @@ $ brew install postgresql
 $ brew services start postgresql
 ```
 
-2. Run the script to create user and development database in PostgreSQL
+2. Create user and database in PostgreSQL
 ```bash
-$ ./script/setup-database development
+$ createuser -s panda-api
+$ dropdb --if-exists "panda-database"
+$ createdb "panda-database" -O panda-api -E utf8
 ```
 
-3. Start a server. sbt will automatically download the required version of sbt in this project, then install all dependencies.
+3. Start the server.
 ```
 $ sbt run
 ```
