@@ -5,7 +5,9 @@ CREATE TABLE department (
   name                  varchar(64) NOT NULL,
   full_english_name     varchar(64) NOT NULL,
   full_thai_name        varchar(64) NOT NULL,
-  description           text
+  description           text,
+  created_at            timestamp NOT NULL,
+  updated_at            timestamp NOT NULL
 );
 
 CREATE UNIQUE INDEX unique_department_name

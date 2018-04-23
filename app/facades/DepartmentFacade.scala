@@ -1,5 +1,6 @@
 package facades
 
+import java.time.Instant
 import java.util.UUID
 
 import definitions.exceptions.DepartmentException._
@@ -56,7 +57,9 @@ class DepartmentFacade(departmentPersist: DepartmentPersist,
       input.name,
       input.fullEnglishName,
       input.fullThaiName,
-      input.description
+      input.description,
+      Instant.now(),
+      Instant.now()
     )
     lazy val ownerRoleEntity = RoleEntity(
       roleId,

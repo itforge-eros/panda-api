@@ -31,7 +31,9 @@ class DepartmentPostgres(db: Database) extends DepartmentPersist
           department.name,
           department.full_english_name,
           department.full_thai_name,
-          department.description
+          department.description,
+          department.created_at,
+          department.updated_at
         FROM department
         JOIN role ON role.department_id = department.id
         JOIN member_role ON member_role.member_id = $id::uuid
@@ -45,7 +47,9 @@ class DepartmentPostgres(db: Database) extends DepartmentPersist
           ${departmentEntity.name},
           ${departmentEntity.fullEnglishName},
           ${departmentEntity.fullThaiName},
-          ${departmentEntity.description}
+          ${departmentEntity.description},
+          ${departmentEntity.createdAt},
+          ${departmentEntity.updatedAt}
         )
        """ executeStatement()
   }

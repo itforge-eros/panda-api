@@ -1,5 +1,6 @@
 package models
 
+import java.time.Instant
 import java.util.UUID
 
 import entities.DepartmentEntity
@@ -10,7 +11,9 @@ case class Department(id: UUID,
                       name: String,
                       fullEnglishName: String,
                       fullThaiName: String,
-                      description: Option[String]) extends BaseModel {
+                      description: Option[String],
+                      createdAt: Instant,
+                      updatedAt: Instant) extends BaseModel {
 
   @GraphQLField
   def roles(ctx: AppContext[Department]): List[Role] = authorize(ctx) { implicit identity =>

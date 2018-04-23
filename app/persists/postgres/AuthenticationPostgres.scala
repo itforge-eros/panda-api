@@ -1,5 +1,6 @@
 package persists.postgres
 
+import java.time.Instant
 import java.util.UUID
 
 import anorm.SqlParser._
@@ -30,7 +31,9 @@ class AuthenticationPostgres(db: Database) extends AuthenticationPersist {
         departmentName ~
         departmentFullEnglishName ~
         departmentFullThaiName ~
-        departmentDescription
+        departmentDescription ~
+        departmentCreatedAt ~
+        departmentUpdatedAt
       => MemberDepartmentRelationEntity(
         MemberEntity(
           memberId,
@@ -51,7 +54,9 @@ class AuthenticationPostgres(db: Database) extends AuthenticationPersist {
           departmentName,
           departmentFullEnglishName,
           departmentFullThaiName,
-          departmentDescription
+          departmentDescription,
+          departmentCreatedAt,
+          departmentUpdatedAt
         )
       )
     }
@@ -71,7 +76,9 @@ class AuthenticationPostgres(db: Database) extends AuthenticationPersist {
     str("department.name") ~
     str("department.full_english_name") ~
     str("department.full_thai_name") ~
-    get[Option[String]]("department.description")
+    get[Option[String]]("department.description") ~
+    get[Instant]("department.created_at") ~
+    get[Instant]("department.updated_at")
   }
 
 }
