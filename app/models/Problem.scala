@@ -1,5 +1,6 @@
 package models
 
+import java.time.Instant
 import java.util.UUID
 
 import entities.ProblemEntity
@@ -10,6 +11,7 @@ case class Problem(id: UUID,
                    title: String,
                    body: String,
                    isRead: Boolean,
+                   createdAt: Instant,
                    @GraphQLExclude spaceId: UUID) extends BaseModel {
 
   def space(ctx: AppContext[Problem]) = resolve {

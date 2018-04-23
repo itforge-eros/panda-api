@@ -115,7 +115,8 @@ class RoleFacade(auth: AuthorizationFacade,
     lazy val maybeRoleEntity = rolePersist.find(input.roleId)
     lazy val memberRoleEntity = MemberRoleEntity(
       input.memberId,
-      input.roleId
+      input.roleId,
+      Instant.now()
     )
 
     validateWith(

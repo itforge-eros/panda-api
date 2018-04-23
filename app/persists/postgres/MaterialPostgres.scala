@@ -30,6 +30,7 @@ class MaterialPostgres(db: Database) extends MaterialPersist
         INSERT INTO material VALUES (
           ${entity.id}::uuid,
           ${entity.name},
+          ${entity.createdAt},
           ${entity.departmentId}::uuid
         )
        """ executeStatement()

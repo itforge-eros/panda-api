@@ -24,7 +24,8 @@ class MemberRolePostgres(db: Database) extends MemberRolePersist
     SQL"""
         INSERT INTO member_role VALUES (
           ${memberRoleEntity.memberId}::uuid,
-          ${memberRoleEntity.roleId}::uuid
+          ${memberRoleEntity.roleId}::uuid,
+          ${memberRoleEntity.createdAt}
         )
        """ executeStatement()
   }

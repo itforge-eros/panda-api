@@ -72,7 +72,8 @@ class DepartmentFacade(departmentPersist: DepartmentPersist,
     )
     lazy val ownerMemberRoleEntity = MemberRoleEntity(
       identity.viewer.id,
-      roleId
+      roleId,
+      Instant.now()
     )
 
     departmentPersist.insert(departmentEntity) &

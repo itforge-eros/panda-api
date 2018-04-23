@@ -27,6 +27,7 @@ class ProblemPostgres(db: Database) extends ProblemPersist
           ${problem.title},
           ${problem.body},
           ${problem.isRead},
+          ${problem.createdAt},
           ${problem.spaceId}::uuid
         )
        """ executeStatement()

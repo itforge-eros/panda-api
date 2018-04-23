@@ -42,8 +42,6 @@ class SpaceFacade(auth: AuthorizationFacade,
 
   def requests(space: Space)
               (implicit identity: Identity): Try[List[Request]] = {
-    lazy val maybeDepartmentEntity = departmentPersist.find(space.departmentId)
-
     validate() {
       requestPersist.findBySpaceId(space.id) map Request.of
     }
@@ -65,6 +63,7 @@ class SpaceFacade(auth: AuthorizationFacade,
       input.name,
       input.fullName,
       input.description,
+      input.tags,
       input.category.name,
       input.capacity,
       input.isAvailable,
@@ -96,6 +95,7 @@ class SpaceFacade(auth: AuthorizationFacade,
       input.name,
       input.fullName,
       input.description,
+      input.tags,
       input.category.name,
       input.capacity,
       input.isAvailable,

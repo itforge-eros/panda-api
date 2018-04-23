@@ -8,6 +8,7 @@ CREATE TABLE space (
   name                  varchar(64) NOT NULL,
   full_name             varchar(64) NOT NULL,
   description           text,
+  tags                  varchar(64)[] NOT NULL,
   category              varchar(64) NOT NULL,
   capacity              positive_int,
   is_available          boolean NOT NULL,

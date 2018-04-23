@@ -1,5 +1,6 @@
 package facades
 
+import java.time.Instant
 import java.util.UUID
 
 import definitions.exceptions.AuthorizationException
@@ -45,6 +46,7 @@ class ProblemFacade(auth: AuthorizationFacade,
       input.title,
       input.body,
       isRead = true,
+      Instant.now(),
       input.spaceId
     )
 

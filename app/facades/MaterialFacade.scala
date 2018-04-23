@@ -1,5 +1,6 @@
 package facades
 
+import java.time.Instant
 import java.util.UUID
 
 import definitions.exceptions.AuthorizationException.NoPermissionException
@@ -28,7 +29,8 @@ class MaterialFacade(auth: AuthorizationFacade,
     lazy val materialEntity = MaterialEntity(
       UUID.randomUUID(),
       MultiLanguageString.of(input.name),
-      input.departmentId
+      input.departmentId,
+      Instant.now()
     )
 
     validateWith(
