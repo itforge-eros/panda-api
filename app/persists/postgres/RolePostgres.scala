@@ -23,6 +23,8 @@ class RolePostgres(db: Database) extends RolePersist
           role.name,
           role.description,
           role.permissions,
+          role.created_at,
+          role.updated_at,
           role.department_id
         FROM role
         JOIN department ON role.department_id = department.id
@@ -42,6 +44,8 @@ class RolePostgres(db: Database) extends RolePersist
           role.name,
           role.description,
           role.permissions,
+          role.created_at,
+          role.updated_at,
           role.department_id
         FROM role
         JOIN member_role ON role.id = member_role.role_id
@@ -56,6 +60,8 @@ class RolePostgres(db: Database) extends RolePersist
            ${role.name},
            ${role.description},
            ARRAY[${role.permissions}],
+           ${role.createdAt},
+           ${role.updatedAt},
            ${role.departmentId}::uuid
          )
        """ executeStatement()
@@ -66,7 +72,8 @@ class RolePostgres(db: Database) extends RolePersist
         UPDATE role SET
           name = ${role.name},
           description = ${role.description},
-          permissions = ARRAY[${role.permissions}]
+          permissions = ARRAY[${role.permissions}],
+          updated_at = ${role.updatedAt}
         WHERE role.id = ${role.id}::uuid
        """ executeStatement()
   }

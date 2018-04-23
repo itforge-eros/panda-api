@@ -5,11 +5,13 @@ CREATE TABLE role (
   name                  varchar(64) NOT NULL,
   description           text,
   permissions           varchar(64)[] NOT NULL,
+  created_at            timestamp NOT NULL,
+  updated_at            timestamp NOT NULL,
   department_id         uuid NOT NULL REFERENCES department (id) ON DELETE CASCADE
 );
 
 CREATE UNIQUE INDEX unique_role_name
-  ON space (department_id, lower(name));
+  ON role (department_id, lower(name));
 
 # --- !Downs
 

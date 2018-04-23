@@ -66,6 +66,8 @@ class DepartmentFacade(departmentPersist: DepartmentPersist,
       "Administrators",
       Some("An owner of the department"),
       List(AdminAccessPermission.name),
+      Instant.now(),
+      Instant.now(),
       departmentId
     )
     lazy val ownerMemberRoleEntity = MemberRoleEntity(

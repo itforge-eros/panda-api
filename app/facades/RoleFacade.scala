@@ -1,5 +1,6 @@
 package facades
 
+import java.time.Instant
 import java.util.UUID
 
 import definitions.exceptions.AuthorizationException.NoPermissionException
@@ -44,6 +45,8 @@ class RoleFacade(auth: AuthorizationFacade,
       input.name,
       input.description,
       input.permissions.distinct,
+      Instant.now(),
+      Instant.now(),
       input.departmentId
     )
 
@@ -70,13 +73,17 @@ class RoleFacade(auth: AuthorizationFacade,
       input.name,
       input.description,
       input.permissions,
+      maybeRoleEntity.get.createdAt,
+      Instant.now(),
       maybeRoleEntity.get.departmentId
     )
 
     validateWith(
       Guard(undefinedPermission.isDefined, new PermissionNotFoundException(undefinedPermission.get)),
       Guard(maybeRoleEntity.isEmpty, RoleNotFoundException),
-      Guard(!auth.hasAccess(RoleUpdateAccess)(resource.accesses), NoPermissionException)
+      Guard(!auth.hasAccess(RoleUpdateAccess)(resource.accesses), NoPermissionException),
+      Guard(input.name != maybeRoleEntity.get.name
+        && rolePersist.findByDepartmentId(maybeRoleEntity.get.departmentId).exists(input.name == _.name), RoleNameAlreadyTaken)
     ) {
       rolePersist.update(updatedRoleEntity) match {
         case true => Success(updatedRoleEntity) map Role.of

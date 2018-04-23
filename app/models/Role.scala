@@ -1,5 +1,6 @@
 package models
 
+import java.time.Instant
 import java.util.UUID
 
 import entities.RoleEntity
@@ -9,6 +10,8 @@ case class Role(id: UUID,
                 name: String,
                 description: Option[String],
                 permissions: List[Permission],
+                createdAt: Instant,
+                updatedAt: Instant,
                 @GraphQLExclude departmentId: UUID) extends BaseModel {
 
   @GraphQLField
@@ -30,6 +33,8 @@ object Role {
     roleEntity.name,
     roleEntity.description,
     roleEntity.permissions map Permission.apply map (_.get),
+    roleEntity.createdAt,
+    roleEntity.updatedAt,
     roleEntity.departmentId
   )
 

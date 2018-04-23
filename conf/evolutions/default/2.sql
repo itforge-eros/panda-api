@@ -1,6 +1,6 @@
 # --- !Ups
 
-CREATE DOMAIN positive_int AS INT
+CREATE DOMAIN positive_int AS int
   CHECK(VALUE >= 0);
 
 CREATE TABLE space (

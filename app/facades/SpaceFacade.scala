@@ -108,7 +108,9 @@ class SpaceFacade(auth: AuthorizationFacade,
       Guard(!isSpaceNameValid(input.name), InvalidSpaceNameException),
       Guard(input.fullName.isEmpty, InvalidSpaceFullNameException),
       Guard(maybeSpaceEntity.isEmpty, SpaceNotFoundException),
-      Guard(!auth.hasAccess(SpaceUpdateAccess)(resource.accesses), NoPermissionException)
+      Guard(!auth.hasAccess(SpaceUpdateAccess)(resource.accesses), NoPermissionException),
+      Guard(input.name != maybeSpaceEntity.get.name
+        && spacePersist.findByDepartmentId(maybeSpaceEntity.get.departmentId).exists(input.name == _.name), SpaceNameAlreadyTaken)
     ) {
       spacePersist.update(updatedSpaceEntity) match {
         case true => Success(updatedSpaceEntity) map Space.of

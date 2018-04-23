@@ -29,6 +29,8 @@ class AuthenticationPostgres(db: Database) extends AuthenticationPersist {
         roleName ~
         roleDescription ~
         rolePermissions ~
+        roleCreatedAt ~
+        roleUpdatedAt ~
         departmentId ~
         departmentName ~
         departmentFullEnglishName ~
@@ -51,6 +53,8 @@ class AuthenticationPostgres(db: Database) extends AuthenticationPersist {
           roleName,
           roleDescription,
           rolePermissions,
+          roleCreatedAt,
+          roleUpdatedAt,
           departmentId
         ),
         DepartmentEntity(
@@ -78,6 +82,8 @@ class AuthenticationPostgres(db: Database) extends AuthenticationPersist {
     str("role.name") ~
     get[Option[String]]("role.description") ~
     get[List[String]]("role.permissions") ~
+    get[Instant]("role.created_at") ~
+    get[Instant]("role.updated_at") ~
     get[UUID]("department.id") ~
     str("department.name") ~
     str("department.full_english_name") ~
