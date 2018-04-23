@@ -28,9 +28,7 @@ $ brew services start postgresql
 
 2. Create user and database in PostgreSQL
 ```bash
-$ createuser -s panda-api
-$ dropdb --if-exists "panda-database"
-$ createdb "panda-database" -O panda-api -E utf8
+$ ./script/setup-postgresql
 ```
 
 3. Start the server.
