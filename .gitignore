@@ -1,6 +1,7 @@
 # Generated File
 logs/
 target/
+data/
 
 # Package File
 *.jar
