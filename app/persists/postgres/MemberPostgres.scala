@@ -25,7 +25,9 @@ class MemberPostgres(db: Database) extends MemberPersist {
           member.username,
           member.first_name,
           member.last_name,
-          member.email
+          member.email,
+          member.created_at,
+          member.updated_at
         FROM member
         JOIN member_role ON member.id = member_role.member_id
         WHERE role_id = $roleId::uuid
@@ -39,7 +41,9 @@ class MemberPostgres(db: Database) extends MemberPersist {
           ${member.username},
           ${member.firstName},
           ${member.lastName},
-          ${member.email}
+          ${member.email},
+          ${member.createdAt},
+          ${member.updatedAt}
         )
        """ executeInsert rowParser.singleOpt
   }

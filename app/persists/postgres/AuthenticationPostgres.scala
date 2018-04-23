@@ -23,6 +23,8 @@ class AuthenticationPostgres(db: Database) extends AuthenticationPersist {
         memberFirstName ~
         memberLastName ~
         memberEmail ~
+        memberCreatedAt ~
+        memberUpdatedAt ~
         roleId ~
         roleName ~
         roleDescription ~
@@ -40,7 +42,9 @@ class AuthenticationPostgres(db: Database) extends AuthenticationPersist {
           memberUsername,
           memberFirstName,
           memberLastName,
-          memberEmail
+          memberEmail,
+          memberCreatedAt,
+          memberUpdatedAt
         ),
         RoleEntity(
           roleId,
@@ -68,6 +72,8 @@ class AuthenticationPostgres(db: Database) extends AuthenticationPersist {
     str("member.first_name") ~
     str("member.last_name") ~
     str("member.email") ~
+    get[Instant]("member.created_at") ~
+    get[Instant]("member.updated_at") ~
     get[UUID]("role.id") ~
     str("role.name") ~
     get[Option[String]]("role.description") ~

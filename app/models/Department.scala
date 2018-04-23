@@ -5,15 +5,15 @@ import java.util.UUID
 
 import entities.DepartmentEntity
 import henkan.convert.Syntax._
-import sangria.macros.derive.GraphQLField
+import sangria.macros.derive.{GraphQLExclude, GraphQLField}
 
 case class Department(id: UUID,
                       name: String,
                       fullEnglishName: String,
                       fullThaiName: String,
                       description: Option[String],
-                      createdAt: Instant,
-                      updatedAt: Instant) extends BaseModel {
+                      @GraphQLExclude createdAt: Instant,
+                      @GraphQLExclude updatedAt: Instant) extends BaseModel {
 
   @GraphQLField
   def roles(ctx: AppContext[Department]): List[Role] = authorize(ctx) { implicit identity =>

@@ -1,9 +1,9 @@
 package models
 
+import java.time.Instant
 import java.util.UUID
 
 import entities.MemberEntity
-import facades.AuthorizationFacade
 import henkan.convert.Syntax._
 import models.connections.MemberDepartmentConnection
 import models.enums.Access
@@ -15,7 +15,9 @@ case class Member(id: UUID,
                   username: String,
                   firstName: String,
                   lastName: String,
-                  email: String) extends BaseModel {
+                  email: String,
+                  @GraphQLExclude createdAt: Instant,
+                  @GraphQLExclude updatedAt: Instant) extends BaseModel {
 
   @GraphQLField
   def requests(ctx: AppContext[Member]): List[Request] = authorize(ctx) { implicit identity =>

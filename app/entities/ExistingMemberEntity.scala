@@ -1,5 +1,6 @@
 package entities
 
+import java.time.Instant
 import java.util.UUID
 
 case class ExistingMemberEntity(username: String,
@@ -12,7 +13,9 @@ case class ExistingMemberEntity(username: String,
     username,
     firstName,
     lastName,
-    email
+    email,
+    Instant.now(),
+    Instant.now()
   )
 
 }
