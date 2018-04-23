@@ -1,7 +1,0 @@
-#!/bin/bash
-
-echo "Setting up local postgresql database"
-createuser -s panda-api
-dropdb --if-exists "panda-api-development"
-createdb "panda-api-development" -O panda-api -E utf8
-echo "Done"

@@ -5,7 +5,7 @@ An API of **KMITL Online Space Reservation System**, aka _Panda Project_.
 
 # Contributing
 
-We are happy to let you become part of the project.
+This instruction assumes you already have brew and docker installed
 
 ## Prerequisite
 
@@ -14,21 +14,16 @@ We are happy to let you become part of the project.
 $ brew install sbt
 ```
 
-2. Install [PostgreSQL](https://www.postgresql.org)
-```bash
-$ brew install postgresql
+## Start the Server
+
+1. Start PostgreSQL
+```
+$ make start
 ```
 
-## Start a Server
-
-1. Make sure PostgreSQL server is started at localhost:5432
-```bash
-$ brew services start postgresql
+2. Create local development database
 ```
-
-2. Create user and database in PostgreSQL
-```bash
-$ ./script/setup-postgresql
+$ make createdb
 ```
 
 3. Start the server.
