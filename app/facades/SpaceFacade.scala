@@ -69,6 +69,7 @@ class SpaceFacade(auth: AuthorizationFacade,
       input.capacity,
       input.isAvailable,
       Instant.now(),
+      Instant.now(),
       input.departmentId
     )
 
@@ -99,6 +100,7 @@ class SpaceFacade(auth: AuthorizationFacade,
       input.capacity,
       input.isAvailable,
       maybeSpaceEntity.get.createdAt,
+      Instant.now(),
       maybeSpaceEntity.get.departmentId
     )
 

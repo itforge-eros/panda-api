@@ -12,6 +12,7 @@ CREATE TABLE space (
   capacity              positive_int,
   is_available          boolean NOT NULL,
   created_at            timestamp NOT NULL,
+  updated_at            timestamp NOT NULL,
   department_id         uuid NOT NULL references department (id) ON DELETE CASCADE
 );
 

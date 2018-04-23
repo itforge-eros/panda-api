@@ -37,6 +37,7 @@ class SpacePostgres(db: Database) extends SpacePersist
           space.capacity,
           space.is_available,
           space.created_at,
+          space.updated_at,
           space.department_id
         FROM space
         JOIN department ON space.department_id = department.id
@@ -64,6 +65,7 @@ class SpacePostgres(db: Database) extends SpacePersist
            ${space.capacity},
            ${space.isAvailable},
            ${space.createdAt},
+           ${space.updatedAt},
            ${space.departmentId}::uuid
          )
        """ executeStatement()
@@ -77,7 +79,8 @@ class SpacePostgres(db: Database) extends SpacePersist
           description = ${space.description},
           category = ${space.category},
           capacity = ${space.capacity},
-          is_available = ${space.isAvailable}
+          is_available = ${space.isAvailable},
+          updated_at = ${space.updatedAt}
         WHERE space.id = ${space.id}::uuid
        """ executeStatement()
   }

@@ -11,4 +11,5 @@ case class SpaceEntity(id: UUID,
                        capacity: Option[Int],
                        isAvailable: Boolean,
                        createdAt: Instant,
+                       updatedAt: Instant,
                        departmentId: UUID)

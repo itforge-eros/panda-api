@@ -15,6 +15,7 @@ case class Space(id: UUID,
                  capacity: Option[Int],
                  isAvailable: Boolean,
                  createdAt: Instant,
+                 updatedAt: Instant,
                  @GraphQLExclude departmentId: UUID) extends BaseModel {
 
   @GraphQLField
@@ -50,6 +51,7 @@ object Space {
     entity.capacity,
     entity.isAvailable,
     entity.createdAt,
+    entity.updatedAt,
     entity.departmentId
   )
 
