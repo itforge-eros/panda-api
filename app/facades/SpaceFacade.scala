@@ -153,7 +153,7 @@ class SpaceFacade(auth: AuthorizationFacade,
                              capacity: Option[Int]) {
 
     def this(tokens: List[SearchToken]) = this(
-      tokens.filter(_.key == "query").map(_.value).mkString(" "),
+      tokens.filter(_.key == "query").map(_.value).mkString(" | "),
       tokens.find(_.key == "space").map(_.value),
       tokens.find(_.key == "department").map(_.value),
       tokens.find(_.key == "tags").map(_.value.split(",").toList).getOrElse(Nil),
