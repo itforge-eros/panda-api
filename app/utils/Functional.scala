@@ -5,7 +5,7 @@ import scala.util.{Failure, Success, Try}
 
 trait Functional {
 
-  implicit class TryHelpers[A](t: Try[A]) {
+  implicit class TryHelper[A](t: Try[A]) {
 
     def toFuture: Future[A] = Future.fromTry(t)
 
@@ -21,7 +21,7 @@ trait Functional {
 
   }
 
-  implicit class OptionHelpers[A](option: Option[A]) {
+  implicit class OptionHelper[A](option: Option[A]) {
 
     def flatMapEither[B](f: A => Either[Exception, B]): Option[B] = option match {
       case Some(value) => f(value).right.toOption
@@ -40,6 +40,12 @@ trait Functional {
       option.foreach(tap(f))
       option
     }
+
+  }
+
+  implicit class StringHelper(s: String) {
+
+    def toIntOption: Option[Int] = Try(s.toInt).toOption
 
   }
 

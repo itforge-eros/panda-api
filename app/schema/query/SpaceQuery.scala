@@ -22,4 +22,9 @@ trait SpaceQuery extends BaseModel {
     name map ctx.ctx.spaceFacade.searchByName getOrElse Success(Nil)
   }
 
+  @GraphQLField
+  def search(query: String)(ctx: AppContext[Unit]): List[Space] = resolve {
+    ctx.ctx.spaceFacade.search(query)
+  }
+
 }

@@ -8,7 +8,7 @@ import sangria.execution.Executor
 import sangria.marshalling.circe.{CirceInputUnmarshaller, CirceResultMarshaller}
 import sangria.parser.QueryParser
 import schema.{PandaContext, SchemaDefinition}
-import utils.Functional.TryHelpers
+import utils.Functional.TryHelper
 import utils.graphql.GraphqlQuery
 import utils.graphql.GraphqlUtil.forceStringToObject
 

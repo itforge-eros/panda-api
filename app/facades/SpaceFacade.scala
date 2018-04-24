@@ -22,7 +22,8 @@ class SpaceFacade(auth: AuthorizationFacade,
                   requestPersist: RequestPersist,
                   reservationPersist: ReservationPersist,
                   departmentPersist: DepartmentPersist,
-                  problemPersist: ProblemPersist) extends BaseFacade {
+                  problemPersist: ProblemPersist,
+                  searchPersist: SearchPersist) extends BaseFacade {
 
   def find(id: UUID): Try[Space] = validateWith() {
     spacePersist.find(id) toTry SpaceNotFoundException map Space.of
@@ -34,6 +35,25 @@ class SpaceFacade(auth: AuthorizationFacade,
 
   def searchByName(name: String): Try[List[Space]] = validate() {
     spacePersist.searchByName(name) map Space.of
+  }
+
+  def search(query: String): Try[List[Space]] = validate() {
+    val tokens = query.split(" ").toList flatMap { token =>
+      token.split(":").toList match {
+        case key :: value :: Nil => Some(SearchToken(key, value))
+        case queryString :: Nil => Some(SearchToken("query", queryString))
+        case _ => None
+      }
+    }
+    val search = new SearchStatement(tokens)
+    println(search)
+
+    searchPersist.space(
+      search.query,
+      search.department,
+      search.tags,
+      search.capacity
+    ) map Space.of
   }
 
   def findAll: Try[List[Space]] = validate() {
@@ -122,6 +142,24 @@ class SpaceFacade(auth: AuthorizationFacade,
 
   private def isSpaceNameValid(name: String): Boolean = {
     raw"^[a-zA-Z0-9._-]+$$".r.findFirstIn(name).isDefined
+  }
+
+  case class SearchToken(key: String, value: String)
+
+  case class SearchStatement(query: String,
+                             spaceName: Option[String],
+                             department: Option[String],
+                             tags: List[String],
+                             capacity: Option[Int]) {
+
+    def this(tokens: List[SearchToken]) = this(
+      tokens.filter(_.key == "query").map(_.value).mkString(" "),
+      tokens.find(_.key == "space").map(_.value),
+      tokens.find(_.key == "department").map(_.value),
+      tokens.find(_.key == "tags").map(_.value.split(",").toList).getOrElse(Nil),
+      tokens.find(_.key == "capacity").flatMap(_.value.toIntOption)
+    )
+
   }
 
 }
