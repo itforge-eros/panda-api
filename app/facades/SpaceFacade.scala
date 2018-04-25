@@ -7,10 +7,10 @@ import definitions.exceptions.AuthorizationException.NoPermissionException
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
 import definitions.exceptions.SpaceException._
 import entities.SpaceEntity
-import models.inputs.{CreateSpaceInput, UpdateSpaceInput}
 import models._
-import models.enums.Access.{RoleUpdateAccess, SpaceUpdateAccess}
+import models.enums.Access.SpaceUpdateAccess
 import models.enums.SpaceCategory
+import models.inputs.{CreateSpaceInput, UpdateSpaceInput}
 import persists._
 import utils.Guard
 
@@ -45,8 +45,7 @@ class SpaceFacade(auth: AuthorizationFacade,
         case _ => None
       }
     }
-    val search = new SearchStatement(tokens)
-    println(search)
+    val search = SearchStatement(tokens)
 
     searchPersist.space(
       search.query,
@@ -147,14 +146,14 @@ class SpaceFacade(auth: AuthorizationFacade,
   case class SearchToken(key: String, value: String)
 
   case class SearchStatement(query: String,
-                             spaceName: Option[String],
                              department: Option[String],
                              tags: List[String],
-                             capacity: Option[Int]) {
+                             capacity: Option[Int])
 
-    def this(tokens: List[SearchToken]) = this(
+  object SearchStatement {
+
+    def apply(tokens: List[SearchToken]): SearchStatement = SearchStatement(
       tokens.filter(_.key == "query").map(_.value).mkString(" | "),
-      tokens.find(_.key == "space").map(_.value),
       tokens.find(_.key == "department").map(_.value),
       tokens.find(_.key == "tags").map(_.value.split(",").toList).getOrElse(Nil),
       tokens.find(_.key == "capacity").flatMap(_.value.toIntOption)

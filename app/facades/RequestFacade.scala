@@ -7,6 +7,7 @@ import definitions.exceptions.AuthorizationException.NoPermissionException
 import definitions.exceptions.RequestException.{CannotCancelRequestException, RequestNotFoundException}
 import definitions.exceptions.SpaceException.{CannotCreateSpaceException, SpaceNotFoundException}
 import entities.RequestEntity
+import models.enums.Access.RequestReadAccess
 import models.enums.RequestStatus
 import models.enums.RequestStatus.Pending
 import models.inputs.{CancelRequestInput, CreateRequestInput}
@@ -18,16 +19,24 @@ import validators.RequestValidator.positiveRequestPeriod
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
 
-class RequestFacade(requestPersist: RequestPersist,
+class RequestFacade(auth: AuthorizationFacade,
+                    requestPersist: RequestPersist,
                     reviewPersist: ReviewPersist,
                     spacePersist: SpacePersist) extends BaseFacade {
 
   def find(id: UUID)
-          (implicit identity: Identity): Try[Request] = validateWith() {
-    requestPersist.find(id)
-      .toTry(RequestNotFoundException)
-      .filterElse(isMemberOwnRequest(identity.viewer, _))(NoPermissionException)
-      .map(Request.of)
+          (implicit identity: Identity): Try[Request] = {
+    lazy val resource = identity.department(maybeSpaceEntity.get.departmentId).get
+    lazy val maybeSpaceEntity = spacePersist.find(maybeRequestEntity.get.spaceId)
+    lazy val maybeRequestEntity = requestPersist.find(id)
+
+    validateWith(
+      Guard(maybeRequestEntity.isEmpty, RequestNotFoundException),
+      Guard(!isMemberOwnRequest(identity.viewer, maybeRequestEntity.get)
+        && !auth.hasAccess(RequestReadAccess)(resource.accesses), NoPermissionException)
+    ) {
+      requestPersist.find(id) toTry RequestNotFoundException map Request.of
+    }
   }
 
   def reviews(id: UUID)
