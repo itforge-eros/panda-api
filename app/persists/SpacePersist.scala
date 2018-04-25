@@ -20,4 +20,6 @@ trait SpacePersist {
 
   def update(space: SpaceEntity): Boolean
 
+  def delete(id: UUID): Boolean
+
 }

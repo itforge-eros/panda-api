@@ -8,9 +8,9 @@ import definitions.exceptions.DepartmentException.DepartmentNotFoundException
 import definitions.exceptions.SpaceException._
 import entities.SpaceEntity
 import models._
-import models.enums.Access.SpaceUpdateAccess
+import models.enums.Access.{SpaceDeleteAccess, SpaceUpdateAccess}
 import models.enums.SpaceCategory
-import models.inputs.{CreateSpaceInput, UpdateSpaceInput}
+import models.inputs.{CreateSpaceInput, DeleteSpaceInput, UpdateSpaceInput}
 import persists._
 import utils.Guard
 
@@ -134,6 +134,23 @@ class SpaceFacade(auth: AuthorizationFacade,
       spacePersist.update(updatedSpaceEntity) match {
         case true => Success(updatedSpaceEntity) map Space.of
         case false => Failure(CannotUpdateSpaceException)
+      }
+    }
+  }
+
+  def delete(input: DeleteSpaceInput)
+            (implicit identity: Identity): Try[Department] = {
+    lazy val resource = identity.department(departmentEntity.id).get
+    lazy val maybeSpaceEntity = spacePersist.find(input.spaceId)
+    lazy val departmentEntity = departmentPersist.find(maybeSpaceEntity.get.departmentId).get
+
+    validateWith(
+      Guard(maybeSpaceEntity.isEmpty, SpaceNotFoundException),
+      Guard(!auth.hasAccess(SpaceDeleteAccess)(resource.accesses), NoPermissionException)
+    ) {
+      spacePersist.delete(input.spaceId) match {
+        case true => Success(departmentEntity) map Department.of
+        case false => Failure(CannotDeleteSpaceException)
       }
     }
   }

@@ -88,6 +88,12 @@ class SpacePostgres(db: Database) extends SpacePersist
        """ executeStatement()
   }
 
+  override def delete(id: UUID): Boolean = db.withConnection { implicit connection =>
+    SQL"""
+        DELETE FROM space WHERE id = $id::uuid
+       """ executeStatement()
+  }
+
 
   private lazy val rowParser =
     Macro.namedParser[SpaceEntity](ColumnNaming.SnakeCase)

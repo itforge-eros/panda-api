@@ -25,6 +25,11 @@ object Access {
     override val name = "SPACE_UPDATE_ACCESS"
   }
 
+  @GraphQLName(SpaceDeleteAccess.name)
+  case object SpaceDeleteAccess extends Access {
+    override val name = "SPACE_DELETE_ACCESS"
+  }
+
   @GraphQLName(RequestReadAccess.name)
   case object RequestReadAccess extends Access {
     override val name = "REQUEST_READ_ACCESS"

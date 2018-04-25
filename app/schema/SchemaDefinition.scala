@@ -31,6 +31,7 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val createDepartmentInput:           InputType[CreateDepartmentInput]            = deriveInputObjectType()
   implicit val createSpaceInput:                InputType[CreateSpaceInput]                 = deriveInputObjectType()
   implicit val updateSpaceInput:                InputType[UpdateSpaceInput]                 = deriveInputObjectType()
+  implicit val deleteSpaceInput:                InputType[DeleteSpaceInput]                 = deriveInputObjectType()
   implicit val createRequestInput:              InputType[CreateRequestInput]               = deriveInputObjectType()
   implicit val cancelRequestInput:              InputType[CancelRequestInput]               = deriveInputObjectType()
   implicit val createReviewInput:               InputType[CreateReviewInput]                = deriveInputObjectType()

@@ -27,6 +27,7 @@ object Permission {
       SpaceReadAccess,
       SpaceCreateAccess,
       SpaceUpdateAccess,
+      SpaceDeleteAccess,
       RequestReadAccess,
       RequestCreateAccess,
       ReviewCreateAccess,
@@ -44,7 +45,8 @@ object Permission {
     extends Permission("SPACE_FULL_ACCESS_PERMISSION", "Provides full access to spaces", List(
       SpaceReadAccess,
       SpaceCreateAccess,
-      SpaceUpdateAccess
+      SpaceUpdateAccess,
+      SpaceDeleteAccess
     ))
 
   object SpaceReadOnlyPermission

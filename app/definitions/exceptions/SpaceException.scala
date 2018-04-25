@@ -20,6 +20,10 @@ object SpaceException {
     extends Exception("Cannot update space.")
       with SafeException
 
+  object CannotDeleteSpaceException
+    extends Exception("Cannot delete space.")
+      with SafeException
+
   object SpaceCategoryNotFoundException
     extends Exception("Space category not found.")
       with SafeException
