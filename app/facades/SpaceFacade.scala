@@ -94,6 +94,7 @@ class SpaceFacade(auth: AuthorizationFacade,
     validateWith(
       Guard(!isSpaceNameValid(input.name), InvalidSpaceNameException),
       Guard(input.fullName.isEmpty, InvalidSpaceFullNameException),
+      Guard(!input.tags.forall(isSpaceTagValid), InvalidSpaceTag),
       Guard(SpaceCategory(input.category.name).isEmpty, SpaceCategoryNotFoundException),
       Guard(maybeDepartmentEntity.isEmpty, DepartmentNotFoundException),
       Guard(spacePersist.findByName(maybeDepartmentEntity.get.name, input.name).isDefined, SpaceNameAlreadyTaken)
@@ -126,6 +127,7 @@ class SpaceFacade(auth: AuthorizationFacade,
     validateWith(
       Guard(!isSpaceNameValid(input.name), InvalidSpaceNameException),
       Guard(input.fullName.isEmpty, InvalidSpaceFullNameException),
+      Guard(!input.tags.forall(isSpaceTagValid), InvalidSpaceTag),
       Guard(maybeSpaceEntity.isEmpty, SpaceNotFoundException),
       Guard(!auth.hasAccess(SpaceUpdateAccess)(resource.accesses), NoPermissionException),
       Guard(input.name != maybeSpaceEntity.get.name
@@ -161,6 +163,10 @@ class SpaceFacade(auth: AuthorizationFacade,
 
   private def isSpaceNameValid(name: String): Boolean = {
     raw"^[a-zA-Z0-9._-]+$$".r.findFirstIn(name).isDefined
+  }
+
+  private def isSpaceTagValid(tag: String): Boolean = {
+    raw"^[a-z0-9-]+$$".r.findFirstIn(tag).isDefined
   }
 
   case class SearchToken(key: String, value: String)

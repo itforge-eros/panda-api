@@ -36,4 +36,8 @@ object SpaceException {
     extends Exception("Invalid space full name. Must has at least 1 character.")
       with SafeException
 
+  object InvalidSpaceTag
+    extends Exception("Invalid space tag. Only [a-z], [0-9] and '-' allowed and has at least 1 character.")
+      with SafeException
+
 }
