@@ -34,6 +34,7 @@ object Permission {
       RoleUpdateAccess,
       RoleDeleteAccess,
       RoleAssignAccess,
+      RoleRevokeAccess,
       ProblemReadAccess,
       MaterialCreateAccess,
       MaterialDeleteAccess
@@ -69,7 +70,8 @@ object Permission {
       RoleCreateAccess,
       RoleUpdateAccess,
       RoleDeleteAccess,
-      RoleAssignAccess
+      RoleAssignAccess,
+      RoleRevokeAccess
     ))
 
   object MaterialFullAccessPermission

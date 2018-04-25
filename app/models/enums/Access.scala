@@ -60,6 +60,11 @@ object Access {
     override val name = "ROLE_ASSIGN_ACCESS"
   }
 
+  @GraphQLName(RoleRevokeAccess.name)
+  case object RoleRevokeAccess extends Access {
+    override val name = "ROLE_REVOKE_ACCESS"
+  }
+
   @GraphQLName(ProblemReadAccess.name)
   case object ProblemReadAccess extends Access {
     override val name = "PROBLEM_READ_ACCESS"

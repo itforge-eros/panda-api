@@ -9,7 +9,7 @@ import definitions.exceptions.MemberException.MemberNotFoundException
 import definitions.exceptions.PermissionException.PermissionNotFoundException
 import definitions.exceptions.RoleException._
 import entities.{MemberRoleEntity, RoleEntity}
-import models.enums.Access.{RoleAssignAccess, RoleCreateAccess, RoleDeleteAccess, RoleUpdateAccess}
+import models.enums.Access._
 import models.inputs._
 import models._
 import persists.{DepartmentPersist, MemberPersist, MemberRolePersist, RolePersist}
@@ -139,7 +139,8 @@ class RoleFacade(auth: AuthorizationFacade,
 
     validateWith(
       Guard(maybeRoleEntity.isEmpty, RoleNotFoundException),
-      Guard(maybeMemberRoleEntity.isEmpty, CannotRevokeUnassignedMemberFromRoleException)
+      Guard(maybeMemberRoleEntity.isEmpty, CannotRevokeUnassignedMemberFromRoleException),
+      Guard(!auth.hasAccess(RoleRevokeAccess)(resource.accesses), NoPermissionException)
     ) {
       memberRolePersist.delete(input.memberId, input.roleId) match {
         case true => Success(maybeRoleEntity.get) map Role.of
