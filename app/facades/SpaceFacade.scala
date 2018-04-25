@@ -143,10 +143,13 @@ class SpaceFacade(auth: AuthorizationFacade,
     lazy val resource = identity.department(departmentEntity.id).get
     lazy val maybeSpaceEntity = spacePersist.find(input.spaceId)
     lazy val departmentEntity = departmentPersist.find(maybeSpaceEntity.get.departmentId).get
+    lazy val requests = requestPersist.findBySpaceId(maybeSpaceEntity.get.id)
+    lazy val reservations = requestPersist.findBySpaceId(maybeSpaceEntity.get.id)
 
     validateWith(
       Guard(maybeSpaceEntity.isEmpty, SpaceNotFoundException),
-      Guard(!auth.hasAccess(SpaceDeleteAccess)(resource.accesses), NoPermissionException)
+      Guard(!auth.hasAccess(SpaceDeleteAccess)(resource.accesses), NoPermissionException),
+      Guard(requests.nonEmpty || reservations.nonEmpty, CannotDeleteSpaceException)
     ) {
       spacePersist.delete(input.spaceId) match {
         case true => Success(departmentEntity) map Department.of
