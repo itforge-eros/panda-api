@@ -5,7 +5,7 @@ import io.circe.Decoder
 import models._
 import models.connections.MemberDepartmentConnection
 import models.edges.MemberDepartmentEdge
-import models.enums.{Access, RequestStatus, ReviewEvent, SpaceCategory}
+import models.enums.{Access, RequestStatus, ReviewEvent}
 import models.inputs._
 import sangria.macros.derive._
 import sangria.schema.{EnumType, Schema}
@@ -48,10 +48,8 @@ object SchemaDefinition extends GraphqlUtil[PandaContext] {
   implicit val accessEnum:                      EnumType[Access]                            = deriveEnumType()
   implicit val requestStatusEnum:               EnumType[RequestStatus]                     = deriveEnumType()
   implicit val reviewEventEnum:                 EnumType[ReviewEvent]                       = deriveEnumType()
-  implicit val spaceCategory:                   EnumType[SpaceCategory]                     = deriveEnumType()
 
   implicit val reviewEventDecoder: Decoder[ReviewEvent] = getDecoder(ReviewEvent(_).get)
-  implicit val spaceCategoryDecoder: Decoder[SpaceCategory] = getDecoder(SpaceCategory(_).get)
 
   val queryType: Type[Unit] = deriveContextObjectType(_.query)
   val mutationType: Type[Unit] = deriveContextObjectType(_.mutation)

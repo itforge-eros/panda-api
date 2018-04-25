@@ -34,7 +34,6 @@ class SpacePostgres(db: Database) extends SpacePersist
           space.full_name,
           space.description,
           space.tags,
-          space.category,
           space.capacity,
           space.is_available,
           space.created_at,
@@ -63,7 +62,6 @@ class SpacePostgres(db: Database) extends SpacePersist
            ${space.fullName},
            ${space.description},
            ARRAY[${space.tags}],
-           ${space.category},
            ${space.capacity},
            ${space.isAvailable},
            ${space.createdAt},
@@ -80,7 +78,6 @@ class SpacePostgres(db: Database) extends SpacePersist
           full_name = ${space.fullName},
           description = ${space.description},
           tags = ARRAY[${space.tags}],
-          category = ${space.category},
           capacity = ${space.capacity},
           is_available = ${space.isAvailable},
           updated_at = ${space.updatedAt}

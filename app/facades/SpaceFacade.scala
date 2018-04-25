@@ -9,7 +9,6 @@ import definitions.exceptions.SpaceException._
 import entities.SpaceEntity
 import models._
 import models.enums.Access.{SpaceDeleteAccess, SpaceUpdateAccess}
-import models.enums.SpaceCategory
 import models.inputs.{CreateSpaceInput, DeleteSpaceInput, UpdateSpaceInput}
 import persists._
 import utils.Guard
@@ -83,7 +82,6 @@ class SpaceFacade(auth: AuthorizationFacade,
       input.fullName,
       input.description,
       input.tags,
-      input.category.name,
       input.capacity,
       input.isAvailable,
       Instant.now(),
@@ -95,7 +93,6 @@ class SpaceFacade(auth: AuthorizationFacade,
       Guard(!isSpaceNameValid(input.name), InvalidSpaceNameException),
       Guard(input.fullName.isEmpty, InvalidSpaceFullNameException),
       Guard(!input.tags.forall(isSpaceTagValid), InvalidSpaceTag),
-      Guard(SpaceCategory(input.category.name).isEmpty, SpaceCategoryNotFoundException),
       Guard(maybeDepartmentEntity.isEmpty, DepartmentNotFoundException),
       Guard(spacePersist.findByName(maybeDepartmentEntity.get.name, input.name).isDefined, SpaceNameAlreadyTaken)
     ) {
@@ -116,7 +113,6 @@ class SpaceFacade(auth: AuthorizationFacade,
       input.fullName,
       input.description,
       input.tags,
-      input.category.name,
       input.capacity,
       input.isAvailable,
       maybeSpaceEntity.get.createdAt,

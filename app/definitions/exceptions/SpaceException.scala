@@ -24,10 +24,6 @@ object SpaceException {
     extends Exception("Cannot delete space.")
       with SafeException
 
-  object SpaceCategoryNotFoundException
-    extends Exception("Space category not found.")
-      with SafeException
-
   object InvalidSpaceNameException
     extends Exception("Invalid space name. Only [A-Z], [a-z], [0-9], '-', '_' and '.' allowed and has at least 1 character.")
       with SafeException

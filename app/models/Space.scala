@@ -4,7 +4,6 @@ import java.time.Instant
 import java.util.UUID
 
 import entities.SpaceEntity
-import models.enums.SpaceCategory
 import sangria.macros.derive._
 
 case class Space(id: UUID,
@@ -12,7 +11,6 @@ case class Space(id: UUID,
                  fullName: String,
                  description: Option[String],
                  tags: List[String],
-                 category: SpaceCategory,
                  capacity: Option[Int],
                  isAvailable: Boolean,
                  createdAt: Instant,
@@ -49,7 +47,6 @@ object Space {
     entity.fullName,
     entity.description,
     entity.tags,
-    SpaceCategory(entity.category).get,
     entity.capacity,
     entity.isAvailable,
     entity.createdAt,
