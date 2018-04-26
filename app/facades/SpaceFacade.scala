@@ -12,7 +12,6 @@ import models.enums.Access.{SpaceDeleteAccess, SpaceImageUploadAccess, SpaceUpda
 import models.inputs.{CreateSpaceInput, DeleteSpaceInput, UpdateSpaceInput, UploadSpaceImageInput}
 import persists._
 import utils.Guard
-import utils.datatypes.UuidUtil
 import utils.datatypes.UuidUtil.uuidToBase62
 
 import scala.language.postfixOps

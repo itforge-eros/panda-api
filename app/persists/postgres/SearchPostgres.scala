@@ -24,7 +24,7 @@ class SearchPostgres(db: Database) extends SearchPersist {
           spaces.created_at,
           spaces.updated_at,
           spaces.department_id,
-         	ts_rank(document, to_tsquery($query)) + fuzzy_score / 40 as total_score
+         	ts_rank(document, to_tsquery($query)) + fuzzy_score / 40 + spaces.available_duration/1000000 AS total_score
         FROM (
          	SELECT
          		to_tsvector(space.name) ||
@@ -32,8 +32,8 @@ class SearchPostgres(db: Database) extends SearchPersist {
          		to_tsvector(array_to_string(space.tags, ' ')) ||
          		to_tsvector(department.name) ||
          		to_tsvector(department.full_english_name) ||
-         		to_tsvector(department.full_thai_name) as document,
-         		similarity(space.name, $query) as fuzzy_score,
+         		to_tsvector(department.full_thai_name) AS document,
+         		similarity(space.name, $query) AS fuzzy_score,
             space.id,
             space.name,
             space.full_name,
@@ -43,7 +43,13 @@ class SearchPostgres(db: Database) extends SearchPersist {
             space.is_available,
             space.created_at,
             space.updated_at,
-            space.department_id
+            space.department_id,
+            coalesce((
+              SELECT 24 - (sum(upper(period) - lower(period)))
+              FROM reservation
+              WHERE space_id = space.id
+              GROUP BY space_id
+            ), 24) AS available_duration
          	FROM space
          	JOIN department ON department.id = space.department_id
          	WHERE space.capacity >= ${capacity.getOrElse(0): Int}
@@ -53,7 +59,7 @@ class SearchPostgres(db: Database) extends SearchPersist {
          	AND ARRAY[$tags]::varchar[] <@ space.tags
          	AND space.is_available = true
         ) AS spaces
-        WHERE ts_rank(document, to_tsquery($query)) + fuzzy_score / 40 > 0
+        WHERE ts_rank(document, to_tsquery($query)) + fuzzy_score / 40 + spaces.available_duration/1000000 > 0
         ORDER BY total_score DESC;
        """ as rowParser.*
   }
