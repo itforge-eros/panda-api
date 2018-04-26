@@ -8,15 +8,18 @@ import definitions.exceptions.DepartmentException.DepartmentNotFoundException
 import definitions.exceptions.SpaceException._
 import entities.SpaceEntity
 import models._
-import models.enums.Access.{SpaceDeleteAccess, SpaceUpdateAccess}
-import models.inputs.{CreateSpaceInput, DeleteSpaceInput, UpdateSpaceInput}
+import models.enums.Access.{SpaceDeleteAccess, SpaceImageUploadAccess, SpaceUpdateAccess}
+import models.inputs.{CreateSpaceInput, DeleteSpaceInput, UpdateSpaceInput, UploadSpaceImageInput}
 import persists._
 import utils.Guard
+import utils.datatypes.UuidUtil
+import utils.datatypes.UuidUtil.uuidToBase62
 
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
 
 class SpaceFacade(auth: AuthorizationFacade,
+                  imageUploadFacade: ImageUploadFacade,
                   spacePersist: SpacePersist,
                   requestPersist: RequestPersist,
                   reservationPersist: ReservationPersist,
@@ -154,6 +157,19 @@ class SpaceFacade(auth: AuthorizationFacade,
         case true => Success(departmentEntity) map Department.of
         case false => Failure(CannotDeleteSpaceException)
       }
+    }
+  }
+
+  def uploadImage(input: UploadSpaceImageInput)
+                 (implicit identity: Identity): Try[String] = {
+    lazy val resource = identity.department(maybeSpaceEntity.get.departmentId).get
+    lazy val maybeSpaceEntity = spacePersist.find(input.spaceId)
+
+    validate(
+      Guard(maybeSpaceEntity.isEmpty, SpaceNotFoundException),
+      Guard(!auth.hasAccess(SpaceImageUploadAccess)(resource.accesses), NoPermissionException)
+    ) {
+      imageUploadFacade.createSpaceUploadSignUrl(uuidToBase62(input.spaceId))
     }
   }
 

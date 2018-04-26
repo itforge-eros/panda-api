@@ -37,6 +37,7 @@ class PandaComponents(context: Context) extends BuiltInComponentsFromContext(con
   lazy val permissionFacade: PermissionFacade = wire[PermissionFacade]
   lazy val materialFacade: MaterialFacade = wire[MaterialFacade]
   lazy val problemFacade: ProblemFacade = wire[ProblemFacade]
+  lazy val imageUploadFacade: ImageUploadFacade = wire[ImageUploadFacade]
 
   lazy val graphqlController: GraphqlController = wire[GraphqlController]
   lazy val router: Router = wire[Routes]

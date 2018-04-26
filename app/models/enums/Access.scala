@@ -30,6 +30,11 @@ object Access {
     override val name = "SPACE_DELETE_ACCESS"
   }
 
+  @GraphQLName(SpaceImageUploadAccess.name)
+  case object SpaceImageUploadAccess extends Access {
+    override val name = "SPACE_IMAGE_UPLOAD_ACCESS"
+  }
+
   @GraphQLName(RequestReadAccess.name)
   case object RequestReadAccess extends Access {
     override val name = "REQUEST_READ_ACCESS"

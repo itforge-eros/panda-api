@@ -28,6 +28,7 @@ object Permission {
       SpaceCreateAccess,
       SpaceUpdateAccess,
       SpaceDeleteAccess,
+      SpaceImageUploadAccess,
       RequestReadAccess,
       RequestCreateAccess,
       ReviewCreateAccess,
@@ -46,7 +47,8 @@ object Permission {
       SpaceReadAccess,
       SpaceCreateAccess,
       SpaceUpdateAccess,
-      SpaceDeleteAccess
+      SpaceDeleteAccess,
+      SpaceImageUploadAccess
     ))
 
   object SpaceReadOnlyPermission

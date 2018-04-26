@@ -5,6 +5,7 @@ import java.util.UUID
 
 import entities.SpaceEntity
 import sangria.macros.derive._
+import utils.datatypes.UuidUtil
 
 case class Space(id: UUID,
                  name: String,
@@ -16,6 +17,11 @@ case class Space(id: UUID,
                  createdAt: Instant,
                  updatedAt: Instant,
                  @GraphQLExclude departmentId: UUID) extends BaseModel {
+
+  @GraphQLField
+  def images(ctx: AppContext[Space]): List[String] = {
+    s"https://storage.googleapis.com/itforge/panda/images/spaces/${UuidUtil.uuidToBase62(id)}/1.jpg" :: Nil
+  }
 
   @GraphQLField
   def department(ctx: AppContext[Space]): Department = resolve {

@@ -1,8 +1,10 @@
 package schema.mutation
 
 import models.{BaseModel, Department, Space}
-import models.inputs.{CreateSpaceInput, DeleteSpaceInput, UpdateSpaceInput}
+import models.inputs.{CreateSpaceInput, DeleteSpaceInput, UpdateSpaceInput, UploadSpaceImageInput}
 import sangria.macros.derive.GraphQLField
+
+import scala.util.Success
 
 trait SpaceMutation extends BaseModel {
 
@@ -19,6 +21,11 @@ trait SpaceMutation extends BaseModel {
   @GraphQLField
   def deleteSpace(input: DeleteSpaceInput)(ctx: AppContext[Unit]): Option[Department] = authorizeOption(ctx) { implicit identity =>
     ctx.ctx.spaceFacade.delete(input)
+  }
+
+  @GraphQLField
+  def uploadSpaceImage(input: UploadSpaceImageInput)(ctx: AppContext[Unit]): Option[String] = authorizeOption(ctx) { implicit identity =>
+    ctx.ctx.spaceFacade.uploadImage(input)
   }
 
 }
