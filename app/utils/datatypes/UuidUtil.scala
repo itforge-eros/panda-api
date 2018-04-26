@@ -32,7 +32,7 @@ object UuidUtil {
     buffer.putLong(uuid.getLeastSignificantBits)
 
     new String(base62.encode(buffer.array()))
-}
+  }
 
   def uuidFromBase62(str: String): UUID = {
     val bytes = BigInt(base62.decode(str.getBytes())).toByteArray

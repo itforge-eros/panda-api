@@ -5,7 +5,7 @@ import java.util.UUID
 
 import entities.ProblemEntity
 import henkan.convert.Syntax._
-import sangria.macros.derive.GraphQLExclude
+import sangria.macros.derive.{GraphQLExclude, GraphQLField}
 
 case class Problem(id: UUID,
                    title: String,
@@ -14,7 +14,8 @@ case class Problem(id: UUID,
                    createdAt: Instant,
                    @GraphQLExclude spaceId: UUID) extends BaseModel {
 
-  def space(ctx: AppContext[Problem]) = resolve {
+  @GraphQLField
+  def space(ctx: AppContext[Problem]): Space = resolve {
     ctx.ctx.spaceFacade.find(spaceId)
   }
 
