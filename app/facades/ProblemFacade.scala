@@ -24,7 +24,7 @@ class ProblemFacade(auth: AuthorizationFacade,
 
   def find(id: UUID)
           (implicit identity: Identity): Try[Problem] = {
-    lazy val resource = identity.department(maybeSpaceEntity.get.departmentId).get
+    lazy val accesses = identity.accesses(maybeSpaceEntity.get.departmentId)
     lazy val maybeProblemEntity = problemPersist.find(id)
     lazy val maybeSpaceEntity = maybeProblemEntity
       .map(_.spaceId)
@@ -34,7 +34,7 @@ class ProblemFacade(auth: AuthorizationFacade,
     validate(
       Guard(maybeProblemEntity.isEmpty, ProblemNotFoundException),
       Guard(maybeSpaceEntity.isFailure, new UnexpectedError(maybeSpaceEntity.failed.get)),
-      Guard(!auth.hasAccess(ProblemReadAccess)(resource.accesses), NoPermissionException)
+      Guard(!auth.hasAccess(ProblemReadAccess)(accesses), NoPermissionException)
     ) {
       problemPersist.find(id) map Problem.of get
     }
@@ -63,7 +63,7 @@ class ProblemFacade(auth: AuthorizationFacade,
 
   def update(input: UpdateProblemInput)
             (implicit identity: Identity): Try[Problem] = {
-    lazy val resource = identity.department(maybeSpaceEntity.get.departmentId).get
+    lazy val accesses = identity.accesses(maybeSpaceEntity.get.departmentId)
     lazy val maybeProblemEntity = problemPersist.find(input.problemId)
     lazy val maybeSpaceEntity = maybeProblemEntity
       .map(_.spaceId)
@@ -73,7 +73,7 @@ class ProblemFacade(auth: AuthorizationFacade,
 
     validateWith(
       Guard(maybeProblemEntity.isEmpty, ProblemNotFoundException),
-      Guard(!auth.hasAccess(ProblemUpdateAccess)(resource.accesses), NoPermissionException)
+      Guard(!auth.hasAccess(ProblemUpdateAccess)(accesses), NoPermissionException)
     ) {
       problemPersist.update(updatedSpaceEntity) match {
         case true => Success(updatedSpaceEntity) map Problem.of

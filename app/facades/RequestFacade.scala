@@ -26,14 +26,14 @@ class RequestFacade(auth: AuthorizationFacade,
 
   def find(id: UUID)
           (implicit identity: Identity): Try[Request] = {
-    lazy val resource = identity.department(maybeSpaceEntity.get.departmentId).get
+    lazy val accesses = identity.accesses(maybeSpaceEntity.get.departmentId)
     lazy val maybeSpaceEntity = spacePersist.find(maybeRequestEntity.get.spaceId)
     lazy val maybeRequestEntity = requestPersist.find(id)
 
     validateWith(
       Guard(maybeRequestEntity.isEmpty, RequestNotFoundException),
       Guard(!isMemberOwnRequest(identity.viewer, maybeRequestEntity.get)
-        && !auth.hasAccess(RequestReadAccess)(resource.accesses), NoPermissionException)
+        && !auth.hasAccess(RequestReadAccess)(accesses), NoPermissionException)
     ) {
       requestPersist.find(id) toTry RequestNotFoundException map Request.of
     }

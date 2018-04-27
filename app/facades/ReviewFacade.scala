@@ -31,7 +31,7 @@ class ReviewFacade(auth: AuthorizationFacade,
 
   def create(input: CreateReviewInput)
             (implicit identity: Identity): Try[Review] = {
-    lazy val resource = identity.department(maybeSpace.get.departmentId).get
+    lazy val accesses = identity.accesses(maybeSpace.get.departmentId)
     lazy val maybeSpace = requestPersist.find(input.requestId)
       .toTry(RequestNotFoundException)
       .map(_.spaceId)
@@ -47,7 +47,7 @@ class ReviewFacade(auth: AuthorizationFacade,
 
     validateWith(
       Guard(maybeSpace.isFailure, maybeSpace.failed.get),
-      Guard(!auth.hasAccess(ReviewCreateAccess)(resource.accesses), NoPermissionException)
+      Guard(!auth.hasAccess(ReviewCreateAccess)(accesses), NoPermissionException)
     ) {
       findRequest(input.requestId) flatMap { requestEntity =>
         requestEntity.status == Pending.name match {

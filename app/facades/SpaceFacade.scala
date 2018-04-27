@@ -8,7 +8,7 @@ import definitions.exceptions.DepartmentException.DepartmentNotFoundException
 import definitions.exceptions.SpaceException._
 import entities.SpaceEntity
 import models._
-import models.enums.Access.{SpaceDeleteAccess, SpaceImageUploadAccess, SpaceUpdateAccess}
+import models.enums.Access.{SpaceCreateAccess, SpaceDeleteAccess, SpaceImageUploadAccess, SpaceUpdateAccess}
 import models.inputs.{CreateSpaceInput, DeleteSpaceInput, UpdateSpaceInput, UploadSpaceImageInput}
 import persists._
 import utils.Guard
@@ -83,6 +83,7 @@ class SpaceFacade(auth: AuthorizationFacade,
 
   def create(input: CreateSpaceInput)
             (implicit identity: Identity): Try[Space] = {
+    lazy val accesses = identity.accesses(maybeDepartmentEntity.get.id)
     lazy val maybeDepartmentEntity = departmentPersist.find(input.departmentId)
     lazy val spaceEntity = SpaceEntity(
       UUID.randomUUID(),
@@ -101,6 +102,7 @@ class SpaceFacade(auth: AuthorizationFacade,
       Guard(!isSpaceNameValid(input.name), InvalidSpaceNameException),
       Guard(input.fullName.isEmpty, InvalidSpaceFullNameException),
       Guard(!input.tags.forall(isSpaceTagValid), InvalidSpaceTag),
+      Guard(!auth.hasAccess(SpaceCreateAccess)(accesses), NoPermissionException),
       Guard(maybeDepartmentEntity.isEmpty, DepartmentNotFoundException),
       Guard(spacePersist.findByName(maybeDepartmentEntity.get.name, input.name).isDefined, SpaceNameAlreadyTaken)
     ) {
@@ -113,7 +115,7 @@ class SpaceFacade(auth: AuthorizationFacade,
 
   def update(input: UpdateSpaceInput)
             (implicit identity: Identity): Try[Space] = {
-    lazy val resource = identity.department(maybeSpaceEntity.get.departmentId).get
+    lazy val accesses = identity.accesses(maybeSpaceEntity.get.departmentId)
     lazy val maybeSpaceEntity = spacePersist.find(input.spaceId)
     lazy val updatedSpaceEntity = SpaceEntity(
       input.spaceId,
@@ -133,7 +135,7 @@ class SpaceFacade(auth: AuthorizationFacade,
       Guard(input.fullName.isEmpty, InvalidSpaceFullNameException),
       Guard(!input.tags.forall(isSpaceTagValid), InvalidSpaceTag),
       Guard(maybeSpaceEntity.isEmpty, SpaceNotFoundException),
-      Guard(!auth.hasAccess(SpaceUpdateAccess)(resource.accesses), NoPermissionException),
+      Guard(!auth.hasAccess(SpaceUpdateAccess)(accesses), NoPermissionException),
       Guard(input.name != maybeSpaceEntity.get.name
         && spacePersist.findByDepartmentId(maybeSpaceEntity.get.departmentId).exists(input.name == _.name), SpaceNameAlreadyTaken)
     ) {
@@ -146,7 +148,7 @@ class SpaceFacade(auth: AuthorizationFacade,
 
   def delete(input: DeleteSpaceInput)
             (implicit identity: Identity): Try[Department] = {
-    lazy val resource = identity.department(departmentEntity.id).get
+    lazy val accesses = identity.accesses(departmentEntity.id)
     lazy val maybeSpaceEntity = spacePersist.find(input.spaceId)
     lazy val departmentEntity = departmentPersist.find(maybeSpaceEntity.get.departmentId).get
     lazy val requests = requestPersist.findBySpaceId(maybeSpaceEntity.get.id)
@@ -155,7 +157,7 @@ class SpaceFacade(auth: AuthorizationFacade,
 
     validateWith(
       Guard(maybeSpaceEntity.isEmpty, SpaceNotFoundException),
-      Guard(!auth.hasAccess(SpaceDeleteAccess)(resource.accesses), NoPermissionException),
+      Guard(!auth.hasAccess(SpaceDeleteAccess)(accesses), NoPermissionException),
       Guard(requests.nonEmpty || reservations.nonEmpty || problems.nonEmpty, CannotDeleteSpaceException)
     ) {
       spacePersist.delete(input.spaceId) match {
@@ -167,12 +169,12 @@ class SpaceFacade(auth: AuthorizationFacade,
 
   def uploadImage(input: UploadSpaceImageInput)
                  (implicit identity: Identity): Try[String] = {
-    lazy val resource = identity.department(maybeSpaceEntity.get.departmentId).get
+    lazy val accesses = identity.accesses(maybeSpaceEntity.get.departmentId)
     lazy val maybeSpaceEntity = spacePersist.find(input.spaceId)
 
     validate(
       Guard(maybeSpaceEntity.isEmpty, SpaceNotFoundException),
-      Guard(!auth.hasAccess(SpaceImageUploadAccess)(resource.accesses), NoPermissionException)
+      Guard(!auth.hasAccess(SpaceImageUploadAccess)(accesses), NoPermissionException)
     ) {
       imageUploadFacade.createSpaceUploadSignUrl(uuidToBase62(input.spaceId))
     }

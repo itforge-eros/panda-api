@@ -37,7 +37,7 @@ class RoleFacade(auth: AuthorizationFacade,
 
   def create(input: CreateRoleInput)
             (implicit identity: Identity): Try[Role] = {
-    lazy val resource = identity.department(maybeDepartmentEntity.get.id).get
+    lazy val accesses = identity.accesses(maybeDepartmentEntity.get.id)
     lazy val maybeDepartmentEntity = departmentPersist.find(input.departmentId)
     lazy val undefinedPermission = input.permissions.find(Permission(_).isEmpty)
     lazy val roleEntity = RoleEntity(
@@ -53,7 +53,7 @@ class RoleFacade(auth: AuthorizationFacade,
     validateWith(
       Guard(undefinedPermission.isDefined, new PermissionNotFoundException(undefinedPermission.get)),
       Guard(maybeDepartmentEntity.isEmpty, DepartmentNotFoundException),
-      Guard(!auth.hasAccess(RoleCreateAccess)(resource.accesses), NoPermissionException),
+      Guard(!auth.hasAccess(RoleCreateAccess)(accesses), NoPermissionException),
       Guard(rolePersist.findByName(maybeDepartmentEntity.get.name, input.name).isDefined, RoleNameAlreadyTaken)
     ) {
       rolePersist.insert(roleEntity) match {
@@ -65,7 +65,7 @@ class RoleFacade(auth: AuthorizationFacade,
 
   def update(input: UpdateRoleInput)
             (implicit identity: Identity): Try[Role] = {
-    lazy val resource = identity.department(maybeRoleEntity.get.departmentId).get
+    lazy val accesses = identity.accesses(maybeRoleEntity.get.departmentId)
     lazy val maybeRoleEntity = rolePersist.find(input.roleId)
     lazy val undefinedPermission = input.permissions.find(Permission(_).isEmpty)
     lazy val updatedRoleEntity = RoleEntity(
@@ -81,7 +81,7 @@ class RoleFacade(auth: AuthorizationFacade,
     validateWith(
       Guard(undefinedPermission.isDefined, new PermissionNotFoundException(undefinedPermission.get)),
       Guard(maybeRoleEntity.isEmpty, RoleNotFoundException),
-      Guard(!auth.hasAccess(RoleUpdateAccess)(resource.accesses), NoPermissionException),
+      Guard(!auth.hasAccess(RoleUpdateAccess)(accesses), NoPermissionException),
       Guard(input.name != maybeRoleEntity.get.name
         && rolePersist.findByDepartmentId(maybeRoleEntity.get.departmentId).exists(input.name == _.name), RoleNameAlreadyTaken)
     ) {
@@ -94,13 +94,13 @@ class RoleFacade(auth: AuthorizationFacade,
 
   def delete(input: DeleteRoleInput)
             (implicit identity: Identity): Try[Department] = {
-    lazy val resource = identity.department(maybeRoleEntity.get.departmentId).get
+    lazy val accesses = identity.accesses(maybeRoleEntity.get.departmentId)
     lazy val maybeRoleEntity = rolePersist.find(input.roleId)
     lazy val departmentEntity = departmentPersist.find(maybeRoleEntity.get.departmentId).get
 
     validateWith(
       Guard(maybeRoleEntity.isEmpty, RoleNotFoundException),
-      Guard(!auth.hasAccess(RoleDeleteAccess)(resource.accesses), NoPermissionException)
+      Guard(!auth.hasAccess(RoleDeleteAccess)(accesses), NoPermissionException)
     ) {
       rolePersist.delete(input.roleId) match {
         case true => Success(departmentEntity) map Department.of
@@ -111,7 +111,7 @@ class RoleFacade(auth: AuthorizationFacade,
 
   def assign(input: AssignRoleInput)
             (implicit identity: Identity): Try[Role] = {
-    lazy val resource = identity.department(maybeRoleEntity.get.departmentId).get
+    lazy val accesses = identity.accesses(maybeRoleEntity.get.departmentId)
     lazy val maybeRoleEntity = rolePersist.find(input.roleId)
     lazy val memberRoleEntity = MemberRoleEntity(
       input.memberId,
@@ -122,7 +122,7 @@ class RoleFacade(auth: AuthorizationFacade,
     validateWith(
       Guard(maybeRoleEntity.isEmpty, RoleNotFoundException),
       Guard(memberPersist.find(input.memberId).isEmpty, MemberNotFoundException),
-      Guard(!auth.hasAccess(RoleAssignAccess)(resource.accesses), NoPermissionException),
+      Guard(!auth.hasAccess(RoleAssignAccess)(accesses), NoPermissionException),
       Guard(memberRolePersist.find(input.memberId, input.roleId).isDefined, RoleAlreadyAssignedToMemberException)
     ) {
       memberRolePersist.insert(memberRoleEntity) match {
@@ -133,14 +133,14 @@ class RoleFacade(auth: AuthorizationFacade,
   }
 
   def revoke(input: RevokeRoleInput)(implicit identity: Identity): Try[Role] = {
-    lazy val resource = identity.department(maybeRoleEntity.get.departmentId).get
+    lazy val accesses = identity.accesses(maybeRoleEntity.get.departmentId)
     lazy val maybeRoleEntity = rolePersist.find(input.roleId)
     lazy val maybeMemberRoleEntity = memberRolePersist.find(input.memberId, input.roleId)
 
     validateWith(
       Guard(maybeRoleEntity.isEmpty, RoleNotFoundException),
       Guard(maybeMemberRoleEntity.isEmpty, CannotRevokeUnassignedMemberFromRoleException),
-      Guard(!auth.hasAccess(RoleRevokeAccess)(resource.accesses), NoPermissionException)
+      Guard(!auth.hasAccess(RoleRevokeAccess)(accesses), NoPermissionException)
     ) {
       memberRolePersist.delete(input.memberId, input.roleId) match {
         case true => Success(maybeRoleEntity.get) map Role.of

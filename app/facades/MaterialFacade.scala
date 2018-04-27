@@ -25,7 +25,7 @@ class MaterialFacade(auth: AuthorizationFacade,
 
   def create(input: CreateMaterialInput)
             (implicit identity: Identity): Try[Material] = {
-    lazy val resource = identity.department(input.departmentId).get
+    lazy val accesses = identity.accesses(input.departmentId)
     lazy val materialEntity = MaterialEntity(
       UUID.randomUUID(),
       MultiLanguageString.of(input.name),
@@ -35,7 +35,7 @@ class MaterialFacade(auth: AuthorizationFacade,
 
     validateWith(
       Guard(departmentPersist.find(input.departmentId).isEmpty, DepartmentNotFoundException),
-      Guard(!auth.hasAccess(MaterialCreateAccess)(resource.accesses), NoPermissionException)
+      Guard(!auth.hasAccess(MaterialCreateAccess)(accesses), NoPermissionException)
     ) {
       materialPersist.create(materialEntity) match {
         case true => Success(materialEntity) map Material.of
@@ -46,13 +46,13 @@ class MaterialFacade(auth: AuthorizationFacade,
 
   def delete(input: DeleteMaterialInput)
             (implicit identity: Identity): Try[Department] = {
-    lazy val resource = identity.department(maybeMaterial.get.departmentId).get
+    lazy val accesses = identity.accesses(maybeMaterial.get.departmentId)
     lazy val maybeMaterial = materialPersist.find(input.materialId)
     lazy val department = departmentPersist.find(maybeMaterial.get.departmentId).get
 
     validateWith(
       Guard(maybeMaterial.isEmpty, MaterialNotFoundException),
-      Guard(!auth.hasAccess(MaterialDeleteAccess)(resource.accesses), NoPermissionException)
+      Guard(!auth.hasAccess(MaterialDeleteAccess)(accesses), NoPermissionException)
     ) {
       materialPersist.delete(input.materialId) match {
         case true => Success(department) map Department.of

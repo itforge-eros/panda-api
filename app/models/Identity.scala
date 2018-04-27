@@ -3,6 +3,9 @@ package models
 import java.util.UUID
 
 import entities.MemberDepartmentRelationEntity
+import models.enums.Access
+
+import scala.language.postfixOps
 
 class Identity(member: Member, relations: List[MemberDepartmentRelationEntity]) {
 
@@ -13,6 +16,8 @@ class Identity(member: Member, relations: List[MemberDepartmentRelationEntity]) 
   def department(department: String): Option[Resource] = departmentNameResourceMapper.get(department.toLowerCase)
 
   def departments: List[Department] = relations map (_.department) map Department.of distinct
+
+  def accesses(departmentId: UUID): List[Access] = department(departmentId).toList.flatMap(_.accesses)
 
   lazy private val departmentNameResourceMapper: Map[String, Resource] = relations
     .groupBy(_.department.name.toLowerCase)
