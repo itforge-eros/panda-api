@@ -12,6 +12,7 @@ import models.enums.Access.{SpaceDeleteAccess, SpaceImageUploadAccess, SpaceUpda
 import models.inputs.{CreateSpaceInput, DeleteSpaceInput, UpdateSpaceInput, UploadSpaceImageInput}
 import persists._
 import utils.Guard
+import utils.datatypes.UuidUtil
 import utils.datatypes.UuidUtil.uuidToBase62
 
 import scala.language.postfixOps
@@ -73,6 +74,10 @@ class SpaceFacade(auth: AuthorizationFacade,
 
   def problems(space: Space): Try[List[Problem]] = validate() {
     problemPersist.findBySpaceId(space.id) map Problem.of
+  }
+
+  def images(id: UUID): List[String] = {
+    s"https://storage.googleapis.com/itforge/panda/images/spaces/${UuidUtil.uuidToBase62(id)}/1.jpg" :: Nil
   }
 
   def create(input: CreateSpaceInput)

@@ -20,7 +20,7 @@ case class Space(id: UUID,
 
   @GraphQLField
   def images(ctx: AppContext[Space]): List[String] = {
-    s"https://storage.googleapis.com/itforge/panda/images/spaces/${UuidUtil.uuidToBase62(id)}/1.jpg" :: Nil
+    ctx.ctx.spaceFacade.images(id)
   }
 
   @GraphQLField
