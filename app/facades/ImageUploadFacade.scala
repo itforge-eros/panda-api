@@ -53,12 +53,15 @@ class ImageUploadFacade(configuration: Configuration) {
       .replaceAll("\n", "")
   }
 
-  private val bucketName = configuration.getOptional[String]("google.bucket")
+  private def bucketName = configuration.getOptional[String]("google.bucket")
     .getOrElse(throw new Exception("Please specify google.bucket in configuration file"))
-  private val clientId = configuration.getOptional[String]("google.application.id")
+
+  private def clientId = configuration.getOptional[String]("google.application.id")
     .getOrElse(throw new Exception("Please specify google.application.id in configuration file"))
-  private val privateKey = configuration.getOptional[String]("google.application.key")
+
+  private def privateKey = configuration.getOptional[String]("google.application.key")
     .getOrElse(throw new Exception("Please specify google.application.key in configuration file"))
+
   private val duration = 60
 
 }
