@@ -1,17 +1,21 @@
 package persists.postgres
 
+import java.util.Date
+
 import anorm.Macro.ColumnNaming
 import anorm._
 import entities.SpaceEntity
 import persists.SearchPersist
 import play.api.db.Database
+import utils.datatypes.DateUtil
 
 class SearchPostgres(db: Database) extends SearchPersist {
 
   override def space(query: String,
                      department: Option[String],
                      tags: List[String],
-                     capacity: Option[Int]): List[SpaceEntity] = db.withConnection { implicit connection =>
+                     capacity: Option[Int],
+                     date: Date): List[SpaceEntity] = db.withConnection { implicit connection =>
     SQL"""
         SELECT
           spaces.id,
@@ -48,6 +52,7 @@ class SearchPostgres(db: Database) extends SearchPersist {
               SELECT 24::float - (sum(upper(period) - lower(period)))
               FROM reservation
               WHERE space_id = space.id
+              AND reservation.date = ${DateUtil.dateFormat.format(date)}::date
               GROUP BY space_id
             ), 24::float) AS available_duration
          	FROM space
@@ -60,6 +65,7 @@ class SearchPostgres(db: Database) extends SearchPersist {
          	AND space.is_available = true
         ) AS spaces
         WHERE ts_rank(document, to_tsquery($query)) + fuzzy_score / 40 + spaces.available_duration/1000000 > 0
+        AND spaces.available_duration > 0
         ORDER BY total_score DESC;
        """ as rowParser.*
   }

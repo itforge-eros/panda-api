@@ -1,7 +1,7 @@
 package facades
 
 import java.time.Instant
-import java.util.UUID
+import java.util.{Date, UUID}
 
 import definitions.exceptions.AuthorizationException.NoPermissionException
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
@@ -12,7 +12,7 @@ import models.enums.Access.{SpaceDeleteAccess, SpaceImageUploadAccess, SpaceUpda
 import models.inputs.{CreateSpaceInput, DeleteSpaceInput, UpdateSpaceInput, UploadSpaceImageInput}
 import persists._
 import utils.Guard
-import utils.datatypes.UuidUtil
+import utils.datatypes.{DateUtil, UuidUtil}
 import utils.datatypes.UuidUtil.uuidToBase62
 
 import scala.language.postfixOps
@@ -53,7 +53,8 @@ class SpaceFacade(auth: AuthorizationFacade,
       search.query,
       search.department,
       search.tags,
-      search.capacity
+      search.capacity,
+      search.date
     ) map Space.of
   }
 
@@ -191,15 +192,26 @@ class SpaceFacade(auth: AuthorizationFacade,
   case class SearchStatement(query: String,
                              department: Option[String],
                              tags: List[String],
-                             capacity: Option[Int])
+                             capacity: Option[Int],
+                             date: Date)
 
   object SearchStatement {
 
     def apply(tokens: List[SearchToken]): SearchStatement = SearchStatement(
-      tokens.filter(_.key == "query").map(_.value).mkString(" | "),
-      tokens.find(_.key == "department").map(_.value),
-      tokens.find(_.key == "tags").map(_.value.split(",").toList).getOrElse(Nil),
-      tokens.find(_.key == "capacity").flatMap(_.value.toIntOption)
+      tokens.filter(_.key == "query")
+        .map(_.value)
+        .mkString(" | "),
+      tokens.find(_.key == "department")
+        .map(_.value),
+      tokens.find(_.key == "tags")
+        .map(_.value.split(",").toList)
+        .getOrElse(Nil),
+      tokens.find(_.key == "capacity")
+        .flatMap(_.value.toIntOption),
+      tokens.find(_.key == "date")
+        .map(_.value)
+        .flatMap(DateUtil.parseDate)
+        .getOrElse(Date.from(Instant.now()))
     )
 
   }

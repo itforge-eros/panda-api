@@ -1,9 +1,7 @@
 package schema.mutation
 
-import java.util.UUID
-
-import models.{BaseModel, Member, Request}
 import models.inputs.{CancelRequestInput, CreateRequestInput}
+import models.{BaseModel, Member, Request}
 import sangria.macros.derive.GraphQLField
 
 import scala.language.postfixOps
