@@ -45,11 +45,11 @@ class SearchPostgres(db: Database) extends SearchPersist {
             space.updated_at,
             space.department_id,
             coalesce((
-              SELECT 24 - (sum(upper(period) - lower(period)))
+              SELECT 24::float - (sum(upper(period) - lower(period)))
               FROM reservation
               WHERE space_id = space.id
               GROUP BY space_id
-            ), 24) AS available_duration
+            ), 24::float) AS available_duration
          	FROM space
          	JOIN department ON department.id = space.department_id
          	WHERE space.capacity >= ${capacity.getOrElse(0): Int}
