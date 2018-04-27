@@ -38,6 +38,7 @@ object Permission {
       RoleAssignAccess,
       RoleRevokeAccess,
       ProblemReadAccess,
+      ProblemUpdateAccess,
       MaterialCreateAccess,
       MaterialDeleteAccess
     ))
@@ -87,7 +88,8 @@ object Permission {
   object ProblemReadPermission
     extends Permission("PROBLEM_READ_PERMISSION", "Provides read access to materials", List(
       SpaceReadAccess,
-      ProblemReadAccess
+      ProblemReadAccess,
+      ProblemUpdateAccess
     ))
 
 }

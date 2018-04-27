@@ -80,6 +80,11 @@ object Access {
     override val name = "PROBLEM_READ_ACCESS"
   }
 
+  @GraphQLName(ProblemUpdateAccess.name)
+  case object ProblemUpdateAccess extends Access {
+    override val name = "PROBLEM_UPDATE_ACCESS"
+  }
+
   @GraphQLName(MaterialCreateAccess.name)
   case object MaterialCreateAccess extends Access {
     override val name = "MATERIAL_CREATE_ACCESS"

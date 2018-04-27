@@ -12,4 +12,8 @@ object ProblemException {
     extends Exception("Cannot create problem.")
       with SafeException
 
+  object CannotUpdateProblemException
+    extends Exception("Cannot update problem.")
+      with SafeException
+
 }

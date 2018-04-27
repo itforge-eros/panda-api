@@ -33,6 +33,16 @@ class ProblemPostgres(db: Database) extends ProblemPersist
        """ executeStatement()
   }
 
+  override def update(problem: ProblemEntity): Boolean = db.withConnection { implicit connection =>
+    SQL"""
+        UPDATE problem SET
+          title = ${problem.title},
+          body = ${problem.body},
+          is_read = ${problem.isRead}
+        WHERE problem.id = ${problem.id}::uuid
+       """ executeStatement()
+  }
+
 
   private lazy val rowParser =
     Macro.namedParser[ProblemEntity](ColumnNaming.SnakeCase)

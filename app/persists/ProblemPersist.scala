@@ -12,4 +12,6 @@ trait ProblemPersist {
 
   def create(problem: ProblemEntity): Boolean
 
+  def update(problem: ProblemEntity): Boolean
+
 }

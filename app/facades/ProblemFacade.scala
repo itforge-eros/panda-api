@@ -7,10 +7,11 @@ import definitions.exceptions.AuthorizationException
 import definitions.exceptions.AuthorizationException.NoPermissionException
 import definitions.exceptions.HttpException.UnexpectedError
 import definitions.exceptions.ProblemException.{CannotCreateProblemException, ProblemNotFoundException}
+import definitions.exceptions.RoleException.CannotUpdateRoleException
 import definitions.exceptions.SpaceException.SpaceNotFoundException
 import entities.ProblemEntity
-import models.enums.Access.ProblemReadAccess
-import models.inputs.CreateProblemInput
+import models.enums.Access.{ProblemReadAccess, ProblemUpdateAccess}
+import models.inputs.{CreateProblemInput, UpdateProblemInput}
 import models.{Identity, Member, Problem}
 import persists.{ProblemPersist, SpacePersist}
 import utils.Guard
@@ -45,7 +46,7 @@ class ProblemFacade(auth: AuthorizationFacade,
       UUID.randomUUID(),
       input.title,
       input.body,
-      isRead = true,
+      isRead = false,
       Instant.now(),
       input.spaceId
     )
@@ -56,6 +57,27 @@ class ProblemFacade(auth: AuthorizationFacade,
       problemPersist.create(problemEntity) match {
         case true => Success(problemEntity) map Problem.of
         case false => Failure(CannotCreateProblemException)
+      }
+    }
+  }
+
+  def update(input: UpdateProblemInput)
+            (implicit identity: Identity): Try[Problem] = {
+    lazy val resource = identity.department(maybeSpaceEntity.get.departmentId).get
+    lazy val maybeProblemEntity = problemPersist.find(input.problemId)
+    lazy val maybeSpaceEntity = maybeProblemEntity
+      .map(_.spaceId)
+      .flatMap(spacePersist.find)
+      .toTry(SpaceNotFoundException)
+    lazy val updatedSpaceEntity = maybeProblemEntity.get.copy(isRead = input.isRead)
+
+    validateWith(
+      Guard(maybeProblemEntity.isEmpty, ProblemNotFoundException),
+      Guard(!auth.hasAccess(ProblemUpdateAccess)(resource.accesses), NoPermissionException)
+    ) {
+      problemPersist.update(updatedSpaceEntity) match {
+        case true => Success(updatedSpaceEntity) map Problem.of
+        case false => Failure(CannotUpdateRoleException)
       }
     }
   }
