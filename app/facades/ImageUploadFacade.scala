@@ -62,6 +62,6 @@ class ImageUploadFacade(configuration: Configuration) {
   private def privateKey = configuration.getOptional[String]("google.application.key")
     .getOrElse(throw new Exception("Please specify google.application.key in configuration file"))
 
-  private val duration = 60
+  private val duration = 300
 
 }
