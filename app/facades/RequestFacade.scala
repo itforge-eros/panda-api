@@ -55,6 +55,7 @@ class RequestFacade(auth: AuthorizationFacade,
       input.dates,
       input.period.toRange,
       Pending.name,
+      input.materials,
       Instant.now(),
       input.spaceId,
       identity.viewer.id

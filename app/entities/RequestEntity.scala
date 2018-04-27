@@ -8,6 +8,7 @@ case class RequestEntity(id: UUID,
                          dates: List[Date],
                          period: Range,
                          status: String,
+                         materials: List[String],
                          createdAt: Instant,
                          spaceId: UUID,
                          clientId: UUID)

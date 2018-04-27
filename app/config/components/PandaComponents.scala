@@ -1,15 +1,17 @@
 package config.components
 
+import akka.actor.ActorSystem
+import clients.ImageClient
 import com.softwaremill.macwire.wire
 import controllers.{AssetsComponents, GraphqlController}
 import facades._
-import models.{Identity, Member}
+import models.Identity
 import play.api.ApplicationLoader.Context
-import play.api.{BuiltInComponentsFromContext, LoggerConfigurator, NoHttpFiltersComponents}
 import play.api.i18n.I18nComponents
+import play.api.libs.concurrent.AkkaComponents
 import play.api.routing.Router
-import play.filters.HttpFiltersComponents
-import play.filters.cors.{CORSComponents, CORSFilter}
+import play.api.{BuiltInComponentsFromContext, LoggerConfigurator}
+import play.filters.cors.CORSComponents
 import router.Routes
 import schema.PandaContext
 
@@ -38,6 +40,7 @@ class PandaComponents(context: Context) extends BuiltInComponentsFromContext(con
   lazy val materialFacade: MaterialFacade = wire[MaterialFacade]
   lazy val problemFacade: ProblemFacade = wire[ProblemFacade]
   lazy val imageUploadFacade: ImageUploadFacade = wire[ImageUploadFacade]
+  lazy val imageClient: ImageClient = wire[ImageClient]
 
   lazy val graphqlController: GraphqlController = wire[GraphqlController]
   lazy val router: Router = wire[Routes]

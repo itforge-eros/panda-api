@@ -7,4 +7,5 @@ import utils.graphql.Scalar.RangeInput
 case class CreateRequestInput(spaceId: UUID,
                               body: Option[String],
                               dates: List[Date],
-                              period: RangeInput)
+                              period: RangeInput,
+                              materials: List[String])

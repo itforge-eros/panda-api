@@ -3,6 +3,8 @@ package facades
 import java.time.Instant
 import java.util.{Date, UUID}
 
+import akka.actor.ActorSystem
+import clients.ImageClient
 import definitions.exceptions.AuthorizationException.NoPermissionException
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
 import definitions.exceptions.SpaceException._
@@ -15,6 +17,7 @@ import utils.Guard
 import utils.datatypes.{DateUtil, UuidUtil}
 import utils.datatypes.UuidUtil.uuidToBase62
 
+import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
 
@@ -25,7 +28,9 @@ class SpaceFacade(auth: AuthorizationFacade,
                   reservationPersist: ReservationPersist,
                   departmentPersist: DepartmentPersist,
                   problemPersist: ProblemPersist,
-                  searchPersist: SearchPersist) extends BaseFacade {
+                  searchPersist: SearchPersist,
+                  imageClient: ImageClient,
+                  actorSystem: ActorSystem) extends BaseFacade {
 
   def find(id: UUID): Try[Space] = validateWith() {
     spacePersist.find(id) toTry SpaceNotFoundException map Space.of
@@ -77,8 +82,13 @@ class SpaceFacade(auth: AuthorizationFacade,
     problemPersist.findBySpaceId(space.id) map Problem.of
   }
 
-  def images(id: UUID): List[String] = {
-    s"https://storage.googleapis.com/itforge/panda/images/spaces/${UuidUtil.uuidToBase62(id)}/1.jpg" :: Nil
+  def images(id: UUID): Future[List[String]] = {
+    implicit val executionContext: ExecutionContextExecutor = actorSystem.dispatcher
+
+    imageClient.hasImage(s"itforge/panda/images/spaces/${UuidUtil.uuidToBase62(id)}/1.jpg") map {
+      case true => s"https://storage.googleapis.com/itforge/panda/images/spaces/${UuidUtil.uuidToBase62(id)}/1.jpg" :: Nil
+      case false => Nil
+    }
   }
 
   def create(input: CreateSpaceInput)

@@ -7,6 +7,8 @@ import entities.SpaceEntity
 import sangria.macros.derive._
 import utils.datatypes.UuidUtil
 
+import scala.concurrent.Future
+
 case class Space(id: UUID,
                  name: String,
                  fullName: String,
@@ -19,7 +21,7 @@ case class Space(id: UUID,
                  @GraphQLExclude departmentId: UUID) extends BaseModel {
 
   @GraphQLField
-  def images(ctx: AppContext[Space]): List[String] = {
+  def images(ctx: AppContext[Space]): Future[List[String]] = {
     ctx.ctx.spaceFacade.images(id)
   }
 
