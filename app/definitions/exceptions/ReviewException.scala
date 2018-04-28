@@ -12,4 +12,8 @@ object ReviewException {
     extends Exception("Cannot create review.")
       with SafeException
 
+  object AlreadyApproveReviewException
+    extends Exception("You already approve this request.")
+      with SafeException
+
 }

@@ -5,14 +5,14 @@ import java.util.UUID
 
 import definitions.exceptions.AuthorizationException.NoPermissionException
 import definitions.exceptions.RequestException.{RequestAlreadyClosedException, RequestNotFoundException}
-import definitions.exceptions.ReviewException.{CannotCreateReviewException, ReviewNotFoundException}
+import definitions.exceptions.ReviewException.{AlreadyApproveReviewException, CannotCreateReviewException, ReviewNotFoundException}
 import definitions.exceptions.SpaceException.SpaceNotFoundException
 import entities.{RequestEntity, ReservationEntity, ReviewEntity}
 import models.enums.Access.ReviewCreateAccess
 import models.enums.RequestStatus.{Completed, Failed, Pending}
 import models.enums.ReviewEvent
 import models.inputs.CreateReviewInput
-import models.{Identity, Review}
+import models.{Identity, Member, Review}
 import persists._
 import utils.Guard
 
@@ -47,7 +47,8 @@ class ReviewFacade(auth: AuthorizationFacade,
 
     validateWith(
       Guard(maybeSpace.isFailure, maybeSpace.failed.get),
-      Guard(!auth.hasAccess(ReviewCreateAccess)(accesses), NoPermissionException)
+      Guard(!auth.hasAccess(ReviewCreateAccess)(accesses), NoPermissionException),
+      Guard(hasAlreadyApproveRequest(identity.viewer, reviewEntity), AlreadyApproveReviewException)
     ) {
       findRequest(input.requestId) flatMap { requestEntity =>
         requestEntity.status == Pending.name match {
@@ -110,6 +111,12 @@ class ReviewFacade(auth: AuthorizationFacade,
     }
 
     reservations map reservationPersist.insert forall (_ == true)
+  }
+
+  private def hasAlreadyApproveRequest(member: Member, review: ReviewEntity) = {
+    reviewPersist.findByRequestId(review.requestId)
+      .filter(_.reviewerId == member.id)
+      .exists(_.event == ReviewEvent.Approve.name)
   }
 
   private def requiredApproval: Int = 2
