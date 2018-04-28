@@ -9,7 +9,13 @@ import sangria.macros.derive.GraphQLExclude
 case class Material(id: UUID,
                     name: MultiLanguageString,
                     createdAt: Instant,
-                    @GraphQLExclude departmentId: UUID) extends BaseModel
+                    @GraphQLExclude departmentId: UUID) extends BaseModel {
+
+  def department(ctx: AppContext[Material]): Department = resolve {
+    ctx.ctx.departmentFacade.find(departmentId)
+  }
+
+}
 
 object Material {
 
