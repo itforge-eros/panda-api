@@ -6,6 +6,7 @@ import java.util.{Date, UUID}
 import akka.actor.ActorSystem
 import clients.ImageClient
 import definitions.exceptions.AuthorizationException.NoPermissionException
+import definitions.exceptions.ConversionException.InvalidDateFormatException
 import definitions.exceptions.DepartmentException.DepartmentNotFoundException
 import definitions.exceptions.SpaceException._
 import entities.SpaceEntity
@@ -53,22 +54,22 @@ class SpaceFacade(auth: AuthorizationFacade,
       }
     }
 
-    val search = SearchStatement(tokens)
+    val maybeSearchStatement = SearchStatement(tokens)
     val invalidPrefixes = tokens
       .map(_.prefix)
       .filterNot(SearchStatement.validPrefix contains _)
-    lazy val searchResult = {
+    lazy val searchResult = maybeSearchStatement map { statement =>
       searchPersist.space(
-        search.query,
-        search.department,
-        search.tags,
-        search.capacity,
-        search.date
+        statement.query,
+        statement.department,
+        statement.tags,
+        statement.capacity,
+        statement.date
       ) map Space.of
     }
 
     invalidPrefixes.isEmpty match {
-      case true => Success(searchResult)
+      case true => searchResult
       case false => Failure(new InvalidSearchPrefix(invalidPrefixes))
     }
 
@@ -221,7 +222,7 @@ class SpaceFacade(auth: AuthorizationFacade,
 
   object SearchStatement {
 
-    def apply(tokens: List[SearchToken]): SearchStatement = SearchStatement(
+    def apply(tokens: List[SearchToken]): Try[SearchStatement] = Try(SearchStatement(
       tokens.filter(_.prefix == "query")
         .map(_.value)
         .mkString(" | "),
@@ -234,9 +235,10 @@ class SpaceFacade(auth: AuthorizationFacade,
         .flatMap(_.value.toIntOption),
       tokens.find(_.prefix == "date")
         .map(_.value)
-        .flatMap(DateUtil.parseDate)
+        .map(DateUtil.parseDate)
+        .map(_.getOrElse(throw InvalidDateFormatException))
         .getOrElse(Date.from(Instant.now()))
-    )
+    ))
 
     val validPrefix = List("query", "department", "tags", "capacity", "date")
 
