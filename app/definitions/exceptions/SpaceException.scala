@@ -36,4 +36,8 @@ object SpaceException {
     extends Exception("Invalid space tag. Only [a-z], [0-9] and '-' allowed and has at least 1 character.")
       with SafeException
 
+  class InvalidSearchPrefix(invalidPrefixes: List[String])
+    extends Exception(s"Invalid prefix: [${invalidPrefixes.mkString(", ")}]")
+      with SafeException
+
 }

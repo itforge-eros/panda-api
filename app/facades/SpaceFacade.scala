@@ -44,7 +44,7 @@ class SpaceFacade(auth: AuthorizationFacade,
     spacePersist.searchByName(name) map Space.of
   }
 
-  def search(query: String): Try[List[Space]] = validate() {
+  def search(query: String): Try[List[Space]] = validateWith() {
     val tokens = query.split(" ").toList flatMap { token =>
       token.split(":").toList match {
         case key :: value :: Nil => Some(SearchToken(key, value))
@@ -52,15 +52,27 @@ class SpaceFacade(auth: AuthorizationFacade,
         case _ => None
       }
     }
-    val search = SearchStatement(tokens)
 
-    searchPersist.space(
-      search.query,
-      search.department,
-      search.tags,
-      search.capacity,
-      search.date
-    ) map Space.of
+    val search = SearchStatement(tokens)
+    val invalidPrefixes = tokens
+      .map(_.prefix)
+      .filterNot(SearchStatement.validPrefix contains _)
+    lazy val searchResult = {
+      searchPersist.space(
+        search.query,
+        search.department,
+        search.tags,
+        search.capacity,
+        search.date
+      ) map Space.of
+    }
+
+    invalidPrefixes.isEmpty match {
+      case true => Success(searchResult)
+      case false => Failure(new InvalidSearchPrefix(invalidPrefixes))
+    }
+
+
   }
 
   def findAll: Try[List[Space]] = validate() {
@@ -199,7 +211,7 @@ class SpaceFacade(auth: AuthorizationFacade,
     raw"^[a-z0-9-]+$$".r.findFirstIn(tag).isDefined
   }
 
-  case class SearchToken(key: String, value: String)
+  case class SearchToken(prefix: String, value: String)
 
   case class SearchStatement(query: String,
                              department: Option[String],
@@ -210,21 +222,23 @@ class SpaceFacade(auth: AuthorizationFacade,
   object SearchStatement {
 
     def apply(tokens: List[SearchToken]): SearchStatement = SearchStatement(
-      tokens.filter(_.key == "query")
+      tokens.filter(_.prefix == "query")
         .map(_.value)
         .mkString(" | "),
-      tokens.find(_.key == "department")
+      tokens.find(_.prefix == "department")
         .map(_.value),
-      tokens.find(_.key == "tags")
+      tokens.find(_.prefix == "tags")
         .map(_.value.split(",").toList)
         .getOrElse(Nil),
-      tokens.find(_.key == "capacity")
+      tokens.find(_.prefix == "capacity")
         .flatMap(_.value.toIntOption),
-      tokens.find(_.key == "date")
+      tokens.find(_.prefix == "date")
         .map(_.value)
         .flatMap(DateUtil.parseDate)
         .getOrElse(Date.from(Instant.now()))
     )
+
+    val validPrefix = List("query", "department", "tags", "capacity", "date")
 
   }
 
