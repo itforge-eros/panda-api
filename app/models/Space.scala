@@ -5,7 +5,6 @@ import java.util.UUID
 
 import entities.SpaceEntity
 import sangria.macros.derive._
-import utils.datatypes.UuidUtil
 
 import scala.concurrent.Future
 

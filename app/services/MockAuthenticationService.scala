@@ -6,8 +6,9 @@ import scala.util.{Success, Try}
 
 class MockAuthenticationService extends AuthenticationService {
 
-  override def login(username: String, password: String): Option[ExistingMemberEntity] = {
-    existingMembers.find(_.username == username)
+  override def login(username: String, password: String): Option[ExistingMemberEntity] = password match {
+    case "password" => existingMembers.find(_.username == username)
+    case _ => None
   }
 
   private val existingMembers = List(
@@ -40,6 +41,24 @@ class MockAuthenticationService extends AuthenticationService {
       "Pornprom",
       "Kiawjak",
       "foofybuster@mail.com"
+    ),
+    ExistingMemberEntity(
+      "admin_user",
+      "Admin",
+      "Doe",
+      "john@mail.com"
+    ),
+    ExistingMemberEntity(
+      "approver_user",
+      "User",
+      "Doe",
+      "jane@mail.com"
+    ),
+    ExistingMemberEntity(
+      "client_user",
+      "Client",
+      "Doe",
+      "jenny@mail.com"
     ),
   )
 
