@@ -37,7 +37,7 @@ class RequestPostgres(db: Database) extends RequestPersist
            ${request.createdAt},
            ${request.spaceId}::uuid,
            ${request.clientId}::uuid,
-           ARRAY[${request.materials}]
+           ARRAY[${request.materials}]::varchar[]
          )
        """ executeInsert rowParser.singleOpt isDefined
   }
