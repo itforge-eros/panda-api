@@ -20,5 +20,5 @@ jobs:
             - ~/.m2
           key: v1-dependencies--{{ checksum "build.sbt" }}
       - run: cat /dev/null | sbt test:test
-      - run: docker login -u $DOCKER_USER -p $(echo $DOCKER_PASS | base64 --decode)
+      - run: docker login -u $DOCKER_USERNAME -p $(echo $DOCKER_PASSWORD | base64 --decode)
       - run: sbt docker:publish
