@@ -14,7 +14,9 @@ import models.enums.ReviewEvent
 import models.inputs.CreateReviewInput
 import models.{Identity, Member, Review}
 import persists._
+import services.{MailMessage, MailService}
 import utils.Guard
+import utils.datatypes.UuidUtil
 
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
@@ -23,7 +25,9 @@ class ReviewFacade(auth: AuthorizationFacade,
                    reviewPersist: ReviewPersist,
                    requestPersist: RequestPersist,
                    reservationPersist: ReservationPersist,
-                   spacePersist: SpacePersist) extends BaseFacade {
+                   spacePersist: SpacePersist,
+                   memberPersist: MemberPersist,
+                   mailService: MailService) extends BaseFacade {
 
   def find(id: UUID): Try[Review] = validateWith() {
     reviewPersist.find(id) toTry ReviewNotFoundException map Review.of
@@ -66,7 +70,21 @@ class ReviewFacade(auth: AuthorizationFacade,
     val rejections = reviews.filter(_.event == ReviewEvent.Reject.name)
 
     approvals.length >= requiredApproval match {
-      case true => requestPersist.setStatus(requestId, Completed.name)
+      case true => {
+        requestPersist.setStatus(requestId, Completed.name)
+        val requestUrlId = UuidUtil.uuidToBase62(requestId)
+        val mail = MailMessage(
+          "space@itforge.io",
+          requestPersist
+            .find(requestId)
+            .map(_.clientId)
+            .flatMap(memberPersist.find)
+            .map(_.email).get,
+          "Your request has been approved",
+          s"See https://space.itforge.io/my-request/$requestUrlId"
+        )
+        mailService.sendMail(mail)
+      }
       case false => None
     }
 

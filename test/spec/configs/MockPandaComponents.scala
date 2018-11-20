@@ -14,6 +14,7 @@ import play.api.routing.Router
 import play.api.{BuiltInComponentsFromContext, NoHttpFiltersComponents}
 import router.Routes
 import schema.PandaContext
+import services.MailService
 
 class MockPandaComponents(context: Context) extends BuiltInComponentsFromContext(context)
   with MockDatabaseComponents
@@ -41,6 +42,7 @@ class MockPandaComponents(context: Context) extends BuiltInComponentsFromContext
   lazy val problemFacade: ProblemFacade = wire[ProblemFacade]
   lazy val imageUploadFacade: ImageUploadFacade = wire[ImageUploadFacade]
   lazy val imageClient: ImageClient = wire[ImageClient]
+  lazy val mailService: MailService = wire[MailService]
 
   lazy val graphqlController: GraphqlController = wire[GraphqlController]
   lazy val router: Router = wire[Routes]

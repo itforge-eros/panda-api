@@ -14,6 +14,7 @@ import play.api.{BuiltInComponentsFromContext, LoggerConfigurator}
 import play.filters.cors.CORSComponents
 import router.Routes
 import schema.PandaContext
+import services.MailService
 
 class PandaComponents(context: Context) extends BuiltInComponentsFromContext(context)
   with DatabaseComponents
@@ -41,6 +42,7 @@ class PandaComponents(context: Context) extends BuiltInComponentsFromContext(con
   lazy val problemFacade: ProblemFacade = wire[ProblemFacade]
   lazy val imageUploadFacade: ImageUploadFacade = wire[ImageUploadFacade]
   lazy val imageClient: ImageClient = wire[ImageClient]
+  lazy val mailService: MailService = wire[MailService]
 
   lazy val graphqlController: GraphqlController = wire[GraphqlController]
   lazy val router: Router = wire[Routes]

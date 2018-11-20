@@ -26,8 +26,10 @@ val postgresqlVersion = "9.4.1208"
 val henkanVersion = "0.6.1"
 val jwtScalaVersion = "0.16.0"
 val doobieVersion = "0.5.2"
+val scalaKafkaClientVersion = "1.1.1"
 
 resolvers += Resolver.sonatypeRepo("releases")
+resolvers += Resolver.bintrayRepo("cakesolutions", "maven")
 
 libraryDependencies ++= Seq(
   jdbc,
@@ -59,7 +61,8 @@ libraryDependencies ++= Seq(
   "com.pauldijou" %% "jwt-circe" % jwtScalaVersion,
   "org.tpolecat" %% "doobie-core" % doobieVersion,
   "org.tpolecat" %% "doobie-postgres" % doobieVersion,
-  "org.tpolecat" %% "doobie-specs2" % doobieVersion
+  "org.tpolecat" %% "doobie-specs2" % doobieVersion,
+  "net.cakesolutions" %% "scala-kafka-client" % scalaKafkaClientVersion
 )
 
 scalacOptions += "-Ypartial-unification"
