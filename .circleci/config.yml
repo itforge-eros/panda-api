@@ -1,24 +1,18 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/api
     docker:
-      - image: circleci/openjdk:8-jdk
-    working_directory: ~/repo
-    environment:
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
+      - image: kavinvin/scala-sbt:2.12.5-1.1.2
     steps:
       - checkout
-      - setup_remote_docker
       - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "build.sbt" }}
-          - v1-dependencies-
+          key: sbt-cache
       - run: cat /dev/null | sbt test:compile
       - save_cache:
+          key: sbt-cache
           paths:
-            - ~/.m2
-          key: v1-dependencies--{{ checksum "build.sbt" }}
+            - "~/.ivy2/cache"
+            - "~/.sbt"
+            - "~/.m2"
       - run: cat /dev/null | sbt test:test
-      - run: docker login -u $DOCKER_USERNAME -p $(echo $DOCKER_PASSWORD | base64 --decode)
-      - run: sbt docker:publish
