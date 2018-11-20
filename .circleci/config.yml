@@ -6,6 +6,7 @@ jobs:
       - image: kavinvin/scala-sbt:2.12.5-1.1.2
     steps:
       - checkout
+      - setup_remote_docker
       - restore_cache:
           key: sbt-cache
       - run: cat /dev/null | sbt test:compile
