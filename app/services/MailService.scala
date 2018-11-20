@@ -11,8 +11,11 @@ import scala.concurrent.Future
 
 class MailService {
 
+  val topic = "mail"
+  val broker = "localhost:9092"
+
   private val producer = KafkaProducer(
-    Conf(new StringSerializer(), new StringSerializer(), bootstrapServers = "localhost:9092")
+    Conf(new StringSerializer(), new StringSerializer(), bootstrapServers = broker)
   )
 
   def sendMail(mailMessage: MailMessage): Future[RecordMetadata] =
