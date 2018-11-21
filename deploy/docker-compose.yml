@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   api:
-    image: kavinvin/panda-api
+    image: kavinvin/panda-api:1.0.1
     ports:
       - 9000:9000
     environment:
