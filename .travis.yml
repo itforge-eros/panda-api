@@ -11,6 +11,6 @@ before_cache:
   - find $HOME/.sbt -name "*.lock" | xargs rm
 deploy:
   provider: script
-  script: echo "No deploy"
+  script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && sbt docker:publish
   on:
     branch: develop

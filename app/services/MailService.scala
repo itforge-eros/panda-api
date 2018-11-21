@@ -20,7 +20,7 @@ class MailService(configuration: Configuration) {
   )
 
   def sendMail(mailMessage: MailMessage): Future[RecordMetadata] =
-    producer.send(new ProducerRecord("mail", mailMessage.asJson.toString()))
+    producer.send(new ProducerRecord(topic, mailMessage.asJson.toString()))
 
 }
 
