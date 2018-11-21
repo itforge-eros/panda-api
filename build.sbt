@@ -1,6 +1,6 @@
 name := "panda-api"
 organization := "io.itforge"
-version := "0.1.1"
+version := "1.0.1"
 scalaVersion := "2.12.5"
 
 lazy val root = (project in file("."))

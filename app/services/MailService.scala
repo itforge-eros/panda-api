@@ -6,13 +6,14 @@ import org.apache.kafka.common.serialization.StringSerializer
 import io.circe.generic.auto._
 import io.circe.syntax._
 import org.apache.kafka.clients.producer.{ProducerRecord, RecordMetadata}
+import play.api.Configuration
 
 import scala.concurrent.Future
 
-class MailService {
+class MailService(configuration: Configuration) {
 
-  val topic = "mail"
-  val broker = "localhost:9092"
+  val topic = configuration.get[String]("kafka.mailTopic")
+  val broker = configuration.get[String]("kafka.broker")
 
   private val producer = KafkaProducer(
     Conf(new StringSerializer(), new StringSerializer(), bootstrapServers = broker)

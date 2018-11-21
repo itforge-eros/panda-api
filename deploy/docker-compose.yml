@@ -1,0 +1,46 @@
+version: "3.7"
+services:
+  api:
+    image: kavinvin/panda-api
+    ports:
+      - 9000:9000
+    environment:
+      - POSTGRES_URL=jdbc:postgresql://35.198.250.145:5432/panda-api
+      - POSTGRES_USERNAME=panda-api
+      - POSTGRES_PASSWORD=skill39
+      - EVOLUTION_AUTO_APPLY=true
+      - APPLICATION_SECRET=skill39
+      - KAFKA_BROKER=kafka:9092
+      - KAFKA_MAIL_TOPIC=mail
+  website:
+    image: kavinvin/panda-website:1.1.6
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=production
+      - PANDA_API_HOST=https://api.space.itforge.io
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.0.1
+    ports:
+      - 2181:2181
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - ./data/zookeeper:/var/lib/zookeeper/data
+  kafka:
+    image: confluentinc/cp-kafka:5.0.1
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - ./data/kafka:/var/lib/kafka/data
+
