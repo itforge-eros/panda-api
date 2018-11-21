@@ -67,9 +67,8 @@ libraryDependencies ++= Seq(
 
 scalacOptions += "-Ypartial-unification"
 
-packageName in Docker := "panda-api"
-dockerRepository := Some("docker.io")
-dockerUsername := Some("kavinvin")
+packageName in Docker := "kavinvin-211411/panda-api"
+dockerRepository := Some("asia.gcr.io")
 dockerUpdateLatest := true
 dockerExposedPorts := Seq(9000)
 
