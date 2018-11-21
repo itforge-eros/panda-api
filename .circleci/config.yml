@@ -17,5 +17,3 @@ jobs:
             - "~/.sbt"
             - "~/.m2"
       - run: cat /dev/null | sbt test:test
-      - deploy:
-          command: docker login -u $DOCKER_USERNAME -p $(echo $DOCKER_PASSWORD | base64 --decode) && sbt docker:publish
