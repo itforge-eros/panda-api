@@ -79,7 +79,7 @@ class ReviewFacade(auth: AuthorizationFacade,
             .find(requestId)
             .map(_.clientId)
             .flatMap(memberPersist.find)
-            .map(_.email).get,
+            .map(_.email).toList,
           "Your request has been approved",
           s"See https://space.itforge.io/my-request/$requestUrlId"
         )
