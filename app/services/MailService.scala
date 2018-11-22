@@ -24,4 +24,4 @@ class MailService(configuration: Configuration) {
 
 }
 
-case class MailMessage(from: String, to: String, topic: String, body: String)
+case class MailMessage(from: String, to: String, subject: String, text: String)
