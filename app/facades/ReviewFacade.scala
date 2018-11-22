@@ -137,6 +137,6 @@ class ReviewFacade(auth: AuthorizationFacade,
       .exists(_.event == ReviewEvent.Approve.name)
   }
 
-  private def requiredApproval: Int = 2
+  private def requiredApproval: Int = 1
 
 }

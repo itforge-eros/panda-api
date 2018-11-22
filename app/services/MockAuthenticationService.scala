@@ -16,7 +16,7 @@ class MockAuthenticationService extends AuthenticationService {
       "59070009",
       "Kavin",
       "Ruengprateepsang",
-      "59070009@it.kmitl.ac.th"
+      "kavinvin@mail.com"
     ),
     ExistingMemberEntity(
       "59070022",
