@@ -68,11 +68,11 @@ class ReviewFacade(auth: AuthorizationFacade,
     val reviews = reviewPersist.findByRequestId(requestId)
     val approvals = reviews.filter(_.event == ReviewEvent.Approve.name)
     val rejections = reviews.filter(_.event == ReviewEvent.Reject.name)
+    val requestUrlId = UuidUtil.uuidToBase62(requestId)
 
     approvals.length >= requiredApproval match {
       case true => {
         requestPersist.setStatus(requestId, Completed.name)
-        val requestUrlId = UuidUtil.uuidToBase62(requestId)
         val mail = MailMessage(
           "space@itforge.io",
           requestPersist
