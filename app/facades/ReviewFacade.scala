@@ -89,7 +89,20 @@ class ReviewFacade(auth: AuthorizationFacade,
     }
 
     rejections.nonEmpty match {
-      case true => requestPersist.setStatus(requestId, Failed.name)
+      case true => {
+        val mail = MailMessage(
+          "space@itforge.io",
+          requestPersist
+            .find(requestId)
+            .map(_.clientId)
+            .flatMap(memberPersist.find)
+            .map(_.email).toList,
+          "Your request has been approved",
+          s"See https://space.itforge.io/my-request/$requestUrlId"
+        )
+        mailService.sendMail(mail)
+        requestPersist.setStatus(requestId, Failed.name)
+      }
       case false => true
     }
   }
